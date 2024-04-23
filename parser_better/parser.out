@@ -1,0 +1,642 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ELSE
+    IGNORE
+    LBRACE
+    RBRACE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> threads
+Rule 2     threads -> thread threads
+Rule 3     threads -> thread
+Rule 4     thread -> THREAD NUM statement_list
+Rule 5     statement_list -> PC statement statement_list
+Rule 6     statement_list -> PC statement
+Rule 7     statement -> simple_stmts
+Rule 8     statement -> compound_stmt
+Rule 9     simple_stmts -> simple_stmt SEMI
+Rule 10    simple_stmt -> assign
+Rule 11    simple_stmt -> goto_stmt
+Rule 12    compound_stmt -> if_stmt
+Rule 13    compound_stmt -> <empty>
+Rule 14    assign -> ID ASSIGN expr
+Rule 15    assign -> <empty>
+Rule 16    goto_stmt -> GOTO NUM
+Rule 17    expr -> expr PLUS val
+Rule 18    expr -> val
+Rule 19    val -> mem
+Rule 20    val -> exch
+Rule 21    val -> NUM
+Rule 22    exch -> EXCH LPAREN mem COMMA NUM RPAREN
+Rule 23    mem -> MEM LBRACK NUM RBRACK
+Rule 24    compare -> expr EQUAL expr
+Rule 25    compare -> expr NEQUAL expr
+Rule 26    if_stmt -> IF LPAREN compare RPAREN statement
+Rule 27    if_stmt -> <empty>
+
+Terminals, with rules where they appear
+
+ASSIGN               : 14
+COMMA                : 22
+ELSE                 : 
+EQUAL                : 24
+EXCH                 : 22
+GOTO                 : 16
+ID                   : 14
+IF                   : 26
+IGNORE               : 
+LBRACE               : 
+LBRACK               : 23
+LPAREN               : 22 26
+MEM                  : 23
+NEQUAL               : 25
+NUM                  : 4 16 21 22 23
+PC                   : 5 6
+PLUS                 : 17
+RBRACE               : 
+RBRACK               : 23
+RPAREN               : 22 26
+SEMI                 : 9
+THREAD               : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign               : 10
+compare              : 26
+compound_stmt        : 8
+exch                 : 20
+expr                 : 14 17 24 24 25 25
+goto_stmt            : 11
+if_stmt              : 12
+mem                  : 19 22
+program              : 0
+simple_stmt          : 9
+simple_stmts         : 7
+statement            : 5 6 26
+statement_list       : 4 5
+thread               : 2 3
+threads              : 1 2
+val                  : 17 18
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . threads
+    (2) threads -> . thread threads
+    (3) threads -> . thread
+    (4) thread -> . THREAD NUM statement_list
+
+    THREAD          shift and go to state 4
+
+    program                        shift and go to state 1
+    threads                        shift and go to state 2
+    thread                         shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> threads .
+
+    $end            reduce using rule 1 (program -> threads .)
+
+
+state 3
+
+    (2) threads -> thread . threads
+    (3) threads -> thread .
+    (2) threads -> . thread threads
+    (3) threads -> . thread
+    (4) thread -> . THREAD NUM statement_list
+
+    $end            reduce using rule 3 (threads -> thread .)
+    THREAD          shift and go to state 4
+
+    thread                         shift and go to state 3
+    threads                        shift and go to state 5
+
+state 4
+
+    (4) thread -> THREAD . NUM statement_list
+
+    NUM             shift and go to state 6
+
+
+state 5
+
+    (2) threads -> thread threads .
+
+    $end            reduce using rule 2 (threads -> thread threads .)
+
+
+state 6
+
+    (4) thread -> THREAD NUM . statement_list
+    (5) statement_list -> . PC statement statement_list
+    (6) statement_list -> . PC statement
+
+    PC              shift and go to state 8
+
+    statement_list                 shift and go to state 7
+
+state 7
+
+    (4) thread -> THREAD NUM statement_list .
+
+    THREAD          reduce using rule 4 (thread -> THREAD NUM statement_list .)
+    $end            reduce using rule 4 (thread -> THREAD NUM statement_list .)
+
+
+state 8
+
+    (5) statement_list -> PC . statement statement_list
+    (6) statement_list -> PC . statement
+    (7) statement -> . simple_stmts
+    (8) statement -> . compound_stmt
+    (9) simple_stmts -> . simple_stmt SEMI
+    (12) compound_stmt -> . if_stmt
+    (13) compound_stmt -> .
+    (10) simple_stmt -> . assign
+    (11) simple_stmt -> . goto_stmt
+    (26) if_stmt -> . IF LPAREN compare RPAREN statement
+    (27) if_stmt -> .
+    (14) assign -> . ID ASSIGN expr
+    (15) assign -> .
+    (16) goto_stmt -> . GOTO NUM
+
+  ! reduce/reduce conflict for PC resolved using rule 13 (compound_stmt -> .)
+  ! reduce/reduce conflict for THREAD resolved using rule 13 (compound_stmt -> .)
+  ! reduce/reduce conflict for $end resolved using rule 13 (compound_stmt -> .)
+    PC              reduce using rule 13 (compound_stmt -> .)
+    THREAD          reduce using rule 13 (compound_stmt -> .)
+    $end            reduce using rule 13 (compound_stmt -> .)
+    IF              shift and go to state 16
+    ID              shift and go to state 17
+    SEMI            reduce using rule 15 (assign -> .)
+    GOTO            shift and go to state 18
+
+  ! PC              [ reduce using rule 27 (if_stmt -> .) ]
+  ! THREAD          [ reduce using rule 27 (if_stmt -> .) ]
+  ! $end            [ reduce using rule 27 (if_stmt -> .) ]
+
+    statement                      shift and go to state 9
+    simple_stmts                   shift and go to state 10
+    compound_stmt                  shift and go to state 11
+    simple_stmt                    shift and go to state 12
+    if_stmt                        shift and go to state 13
+    assign                         shift and go to state 14
+    goto_stmt                      shift and go to state 15
+
+state 9
+
+    (5) statement_list -> PC statement . statement_list
+    (6) statement_list -> PC statement .
+    (5) statement_list -> . PC statement statement_list
+    (6) statement_list -> . PC statement
+
+    THREAD          reduce using rule 6 (statement_list -> PC statement .)
+    $end            reduce using rule 6 (statement_list -> PC statement .)
+    PC              shift and go to state 8
+
+    statement_list                 shift and go to state 19
+
+state 10
+
+    (7) statement -> simple_stmts .
+
+    PC              reduce using rule 7 (statement -> simple_stmts .)
+    THREAD          reduce using rule 7 (statement -> simple_stmts .)
+    $end            reduce using rule 7 (statement -> simple_stmts .)
+
+
+state 11
+
+    (8) statement -> compound_stmt .
+
+    PC              reduce using rule 8 (statement -> compound_stmt .)
+    THREAD          reduce using rule 8 (statement -> compound_stmt .)
+    $end            reduce using rule 8 (statement -> compound_stmt .)
+
+
+state 12
+
+    (9) simple_stmts -> simple_stmt . SEMI
+
+    SEMI            shift and go to state 20
+
+
+state 13
+
+    (12) compound_stmt -> if_stmt .
+
+    PC              reduce using rule 12 (compound_stmt -> if_stmt .)
+    THREAD          reduce using rule 12 (compound_stmt -> if_stmt .)
+    $end            reduce using rule 12 (compound_stmt -> if_stmt .)
+
+
+state 14
+
+    (10) simple_stmt -> assign .
+
+    SEMI            reduce using rule 10 (simple_stmt -> assign .)
+
+
+state 15
+
+    (11) simple_stmt -> goto_stmt .
+
+    SEMI            reduce using rule 11 (simple_stmt -> goto_stmt .)
+
+
+state 16
+
+    (26) if_stmt -> IF . LPAREN compare RPAREN statement
+
+    LPAREN          shift and go to state 21
+
+
+state 17
+
+    (14) assign -> ID . ASSIGN expr
+
+    ASSIGN          shift and go to state 22
+
+
+state 18
+
+    (16) goto_stmt -> GOTO . NUM
+
+    NUM             shift and go to state 23
+
+
+state 19
+
+    (5) statement_list -> PC statement statement_list .
+
+    THREAD          reduce using rule 5 (statement_list -> PC statement statement_list .)
+    $end            reduce using rule 5 (statement_list -> PC statement statement_list .)
+
+
+state 20
+
+    (9) simple_stmts -> simple_stmt SEMI .
+
+    PC              reduce using rule 9 (simple_stmts -> simple_stmt SEMI .)
+    THREAD          reduce using rule 9 (simple_stmts -> simple_stmt SEMI .)
+    $end            reduce using rule 9 (simple_stmts -> simple_stmt SEMI .)
+
+
+state 21
+
+    (26) if_stmt -> IF LPAREN . compare RPAREN statement
+    (24) compare -> . expr EQUAL expr
+    (25) compare -> . expr NEQUAL expr
+    (17) expr -> . expr PLUS val
+    (18) expr -> . val
+    (19) val -> . mem
+    (20) val -> . exch
+    (21) val -> . NUM
+    (23) mem -> . MEM LBRACK NUM RBRACK
+    (22) exch -> . EXCH LPAREN mem COMMA NUM RPAREN
+
+    NUM             shift and go to state 29
+    MEM             shift and go to state 30
+    EXCH            shift and go to state 31
+
+    compare                        shift and go to state 24
+    expr                           shift and go to state 25
+    val                            shift and go to state 26
+    mem                            shift and go to state 27
+    exch                           shift and go to state 28
+
+state 22
+
+    (14) assign -> ID ASSIGN . expr
+    (17) expr -> . expr PLUS val
+    (18) expr -> . val
+    (19) val -> . mem
+    (20) val -> . exch
+    (21) val -> . NUM
+    (23) mem -> . MEM LBRACK NUM RBRACK
+    (22) exch -> . EXCH LPAREN mem COMMA NUM RPAREN
+
+    NUM             shift and go to state 29
+    MEM             shift and go to state 30
+    EXCH            shift and go to state 31
+
+    expr                           shift and go to state 32
+    val                            shift and go to state 26
+    mem                            shift and go to state 27
+    exch                           shift and go to state 28
+
+state 23
+
+    (16) goto_stmt -> GOTO NUM .
+
+    SEMI            reduce using rule 16 (goto_stmt -> GOTO NUM .)
+
+
+state 24
+
+    (26) if_stmt -> IF LPAREN compare . RPAREN statement
+
+    RPAREN          shift and go to state 33
+
+
+state 25
+
+    (24) compare -> expr . EQUAL expr
+    (25) compare -> expr . NEQUAL expr
+    (17) expr -> expr . PLUS val
+
+    EQUAL           shift and go to state 34
+    NEQUAL          shift and go to state 35
+    PLUS            shift and go to state 36
+
+
+state 26
+
+    (18) expr -> val .
+
+    EQUAL           reduce using rule 18 (expr -> val .)
+    NEQUAL          reduce using rule 18 (expr -> val .)
+    PLUS            reduce using rule 18 (expr -> val .)
+    SEMI            reduce using rule 18 (expr -> val .)
+    RPAREN          reduce using rule 18 (expr -> val .)
+
+
+state 27
+
+    (19) val -> mem .
+
+    EQUAL           reduce using rule 19 (val -> mem .)
+    NEQUAL          reduce using rule 19 (val -> mem .)
+    PLUS            reduce using rule 19 (val -> mem .)
+    SEMI            reduce using rule 19 (val -> mem .)
+    RPAREN          reduce using rule 19 (val -> mem .)
+
+
+state 28
+
+    (20) val -> exch .
+
+    EQUAL           reduce using rule 20 (val -> exch .)
+    NEQUAL          reduce using rule 20 (val -> exch .)
+    PLUS            reduce using rule 20 (val -> exch .)
+    SEMI            reduce using rule 20 (val -> exch .)
+    RPAREN          reduce using rule 20 (val -> exch .)
+
+
+state 29
+
+    (21) val -> NUM .
+
+    EQUAL           reduce using rule 21 (val -> NUM .)
+    NEQUAL          reduce using rule 21 (val -> NUM .)
+    PLUS            reduce using rule 21 (val -> NUM .)
+    SEMI            reduce using rule 21 (val -> NUM .)
+    RPAREN          reduce using rule 21 (val -> NUM .)
+
+
+state 30
+
+    (23) mem -> MEM . LBRACK NUM RBRACK
+
+    LBRACK          shift and go to state 37
+
+
+state 31
+
+    (22) exch -> EXCH . LPAREN mem COMMA NUM RPAREN
+
+    LPAREN          shift and go to state 38
+
+
+state 32
+
+    (14) assign -> ID ASSIGN expr .
+    (17) expr -> expr . PLUS val
+
+    SEMI            reduce using rule 14 (assign -> ID ASSIGN expr .)
+    PLUS            shift and go to state 36
+
+
+state 33
+
+    (26) if_stmt -> IF LPAREN compare RPAREN . statement
+    (7) statement -> . simple_stmts
+    (8) statement -> . compound_stmt
+    (9) simple_stmts -> . simple_stmt SEMI
+    (12) compound_stmt -> . if_stmt
+    (13) compound_stmt -> .
+    (10) simple_stmt -> . assign
+    (11) simple_stmt -> . goto_stmt
+    (26) if_stmt -> . IF LPAREN compare RPAREN statement
+    (27) if_stmt -> .
+    (14) assign -> . ID ASSIGN expr
+    (15) assign -> .
+    (16) goto_stmt -> . GOTO NUM
+
+  ! reduce/reduce conflict for PC resolved using rule 13 (compound_stmt -> .)
+  ! reduce/reduce conflict for THREAD resolved using rule 13 (compound_stmt -> .)
+  ! reduce/reduce conflict for $end resolved using rule 13 (compound_stmt -> .)
+    PC              reduce using rule 13 (compound_stmt -> .)
+    THREAD          reduce using rule 13 (compound_stmt -> .)
+    $end            reduce using rule 13 (compound_stmt -> .)
+    IF              shift and go to state 16
+    ID              shift and go to state 17
+    SEMI            reduce using rule 15 (assign -> .)
+    GOTO            shift and go to state 18
+
+  ! PC              [ reduce using rule 27 (if_stmt -> .) ]
+  ! THREAD          [ reduce using rule 27 (if_stmt -> .) ]
+  ! $end            [ reduce using rule 27 (if_stmt -> .) ]
+
+    statement                      shift and go to state 39
+    simple_stmts                   shift and go to state 10
+    compound_stmt                  shift and go to state 11
+    simple_stmt                    shift and go to state 12
+    if_stmt                        shift and go to state 13
+    assign                         shift and go to state 14
+    goto_stmt                      shift and go to state 15
+
+state 34
+
+    (24) compare -> expr EQUAL . expr
+    (17) expr -> . expr PLUS val
+    (18) expr -> . val
+    (19) val -> . mem
+    (20) val -> . exch
+    (21) val -> . NUM
+    (23) mem -> . MEM LBRACK NUM RBRACK
+    (22) exch -> . EXCH LPAREN mem COMMA NUM RPAREN
+
+    NUM             shift and go to state 29
+    MEM             shift and go to state 30
+    EXCH            shift and go to state 31
+
+    expr                           shift and go to state 40
+    val                            shift and go to state 26
+    mem                            shift and go to state 27
+    exch                           shift and go to state 28
+
+state 35
+
+    (25) compare -> expr NEQUAL . expr
+    (17) expr -> . expr PLUS val
+    (18) expr -> . val
+    (19) val -> . mem
+    (20) val -> . exch
+    (21) val -> . NUM
+    (23) mem -> . MEM LBRACK NUM RBRACK
+    (22) exch -> . EXCH LPAREN mem COMMA NUM RPAREN
+
+    NUM             shift and go to state 29
+    MEM             shift and go to state 30
+    EXCH            shift and go to state 31
+
+    expr                           shift and go to state 41
+    val                            shift and go to state 26
+    mem                            shift and go to state 27
+    exch                           shift and go to state 28
+
+state 36
+
+    (17) expr -> expr PLUS . val
+    (19) val -> . mem
+    (20) val -> . exch
+    (21) val -> . NUM
+    (23) mem -> . MEM LBRACK NUM RBRACK
+    (22) exch -> . EXCH LPAREN mem COMMA NUM RPAREN
+
+    NUM             shift and go to state 29
+    MEM             shift and go to state 30
+    EXCH            shift and go to state 31
+
+    val                            shift and go to state 42
+    mem                            shift and go to state 27
+    exch                           shift and go to state 28
+
+state 37
+
+    (23) mem -> MEM LBRACK . NUM RBRACK
+
+    NUM             shift and go to state 43
+
+
+state 38
+
+    (22) exch -> EXCH LPAREN . mem COMMA NUM RPAREN
+    (23) mem -> . MEM LBRACK NUM RBRACK
+
+    MEM             shift and go to state 30
+
+    mem                            shift and go to state 44
+
+state 39
+
+    (26) if_stmt -> IF LPAREN compare RPAREN statement .
+
+    PC              reduce using rule 26 (if_stmt -> IF LPAREN compare RPAREN statement .)
+    THREAD          reduce using rule 26 (if_stmt -> IF LPAREN compare RPAREN statement .)
+    $end            reduce using rule 26 (if_stmt -> IF LPAREN compare RPAREN statement .)
+
+
+state 40
+
+    (24) compare -> expr EQUAL expr .
+    (17) expr -> expr . PLUS val
+
+    RPAREN          reduce using rule 24 (compare -> expr EQUAL expr .)
+    PLUS            shift and go to state 36
+
+
+state 41
+
+    (25) compare -> expr NEQUAL expr .
+    (17) expr -> expr . PLUS val
+
+    RPAREN          reduce using rule 25 (compare -> expr NEQUAL expr .)
+    PLUS            shift and go to state 36
+
+
+state 42
+
+    (17) expr -> expr PLUS val .
+
+    EQUAL           reduce using rule 17 (expr -> expr PLUS val .)
+    NEQUAL          reduce using rule 17 (expr -> expr PLUS val .)
+    PLUS            reduce using rule 17 (expr -> expr PLUS val .)
+    SEMI            reduce using rule 17 (expr -> expr PLUS val .)
+    RPAREN          reduce using rule 17 (expr -> expr PLUS val .)
+
+
+state 43
+
+    (23) mem -> MEM LBRACK NUM . RBRACK
+
+    RBRACK          shift and go to state 45
+
+
+state 44
+
+    (22) exch -> EXCH LPAREN mem . COMMA NUM RPAREN
+
+    COMMA           shift and go to state 46
+
+
+state 45
+
+    (23) mem -> MEM LBRACK NUM RBRACK .
+
+    EQUAL           reduce using rule 23 (mem -> MEM LBRACK NUM RBRACK .)
+    NEQUAL          reduce using rule 23 (mem -> MEM LBRACK NUM RBRACK .)
+    PLUS            reduce using rule 23 (mem -> MEM LBRACK NUM RBRACK .)
+    SEMI            reduce using rule 23 (mem -> MEM LBRACK NUM RBRACK .)
+    RPAREN          reduce using rule 23 (mem -> MEM LBRACK NUM RBRACK .)
+    COMMA           reduce using rule 23 (mem -> MEM LBRACK NUM RBRACK .)
+
+
+state 46
+
+    (22) exch -> EXCH LPAREN mem COMMA . NUM RPAREN
+
+    NUM             shift and go to state 47
+
+
+state 47
+
+    (22) exch -> EXCH LPAREN mem COMMA NUM . RPAREN
+
+    RPAREN          shift and go to state 48
+
+
+state 48
+
+    (22) exch -> EXCH LPAREN mem COMMA NUM RPAREN .
+
+    EQUAL           reduce using rule 22 (exch -> EXCH LPAREN mem COMMA NUM RPAREN .)
+    NEQUAL          reduce using rule 22 (exch -> EXCH LPAREN mem COMMA NUM RPAREN .)
+    PLUS            reduce using rule 22 (exch -> EXCH LPAREN mem COMMA NUM RPAREN .)
+    SEMI            reduce using rule 22 (exch -> EXCH LPAREN mem COMMA NUM RPAREN .)
+    RPAREN          reduce using rule 22 (exch -> EXCH LPAREN mem COMMA NUM RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 8 resolved using rule (compound_stmt -> <empty>)
+WARNING: rejected rule (if_stmt -> <empty>) in state 8
+WARNING: reduce/reduce conflict in state 33 resolved using rule (compound_stmt -> <empty>)
+WARNING: rejected rule (if_stmt -> <empty>) in state 33
+WARNING: Rule (if_stmt -> <empty>) is never reduced
