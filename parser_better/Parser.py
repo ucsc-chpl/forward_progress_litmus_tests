@@ -36,9 +36,13 @@ def p_compound_stmt(p):
                      | '''
 
 def p_assign(p):
-    '''assign : ID ASSIGN expr
+    '''assign : rhs ASSIGN expr
               |'''
 
+def p_rhs(p):
+    '''rhs : ID
+           | mem'''
+           
 def p_goto_stmt(p):
     '''goto_stmt : GOTO NUM'''
 

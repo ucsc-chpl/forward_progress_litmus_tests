@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN COMMA ELSE EQUAL EXCH GOTO ID IF IGNORE LBRACE LBRACK LPAREN MEM NEQUAL NUM PC PLUS RBRACE RBRACK RPAREN SEMI THREADprogram : threadsthreads : thread threads\n               | threadthread : THREAD NUM statement_liststatement_list : PC statement statement_list\n                      | PC statementstatement : simple_stmts\n                 | compound_stmtsimple_stmts : simple_stmt SEMIsimple_stmt : assign\n                   | goto_stmtcompound_stmt : if_stmt\n                     | assign : ID ASSIGN expr\n              |goto_stmt : GOTO NUMexpr : expr PLUS val\n            | valval : mem\n           | exch\n           | NUMexch : EXCH LPAREN mem COMMA NUM RPARENmem : MEM LBRACK NUM RBRACKcompare : expr EQUAL expr\n              | expr NEQUAL exprif_stmt : IF LPAREN compare RPAREN statement\n               | '
+_lr_signature = 'ASSIGN COMMA ELSE EQUAL EXCH GOTO ID IF IGNORE LBRACE LBRACK LPAREN MEM NEQUAL NUM PC PLUS RBRACE RBRACK RPAREN SEMI THREADprogram : threadsthreads : thread threads\n               | threadthread : THREAD NUM statement_liststatement_list : PC statement statement_list\n                      | PC statementstatement : simple_stmts\n                 | compound_stmtsimple_stmts : simple_stmt SEMIsimple_stmt : assign\n                   | goto_stmtcompound_stmt : if_stmt\n                     | assign : rhs ASSIGN expr\n              |rhs : ID\n           | memgoto_stmt : GOTO NUMexpr : expr PLUS val\n            | valval : mem\n           | exch\n           | NUMexch : EXCH LPAREN mem COMMA NUM RPARENmem : MEM LBRACK NUM RBRACKcompare : expr EQUAL expr\n              | expr NEQUAL exprif_stmt : IF LPAREN compare RPAREN statement\n               | '
     
-_lr_action_items = {'THREAD':([0,3,7,8,9,10,11,13,19,20,33,39,],[4,4,-4,-13,-6,-7,-8,-12,-5,-9,-13,-26,]),'$end':([1,2,3,5,7,8,9,10,11,13,19,20,33,39,],[0,-1,-3,-2,-4,-13,-6,-7,-8,-12,-5,-9,-13,-26,]),'NUM':([4,18,21,22,34,35,36,37,46,],[6,23,29,29,29,29,29,43,47,]),'PC':([6,8,9,10,11,13,20,33,39,],[8,-13,8,-7,-8,-12,-9,-13,-26,]),'IF':([8,33,],[16,16,]),'ID':([8,33,],[17,17,]),'SEMI':([8,12,14,15,23,26,27,28,29,32,33,42,45,48,],[-15,20,-10,-11,-16,-18,-19,-20,-21,-14,-15,-17,-23,-22,]),'GOTO':([8,33,],[18,18,]),'LPAREN':([16,31,],[21,38,]),'ASSIGN':([17,],[22,]),'MEM':([21,22,34,35,36,38,],[30,30,30,30,30,30,]),'EXCH':([21,22,34,35,36,],[31,31,31,31,31,]),'RPAREN':([24,26,27,28,29,40,41,42,45,47,48,],[33,-18,-19,-20,-21,-24,-25,-17,-23,48,-22,]),'EQUAL':([25,26,27,28,29,42,45,48,],[34,-18,-19,-20,-21,-17,-23,-22,]),'NEQUAL':([25,26,27,28,29,42,45,48,],[35,-18,-19,-20,-21,-17,-23,-22,]),'PLUS':([25,26,27,28,29,32,40,41,42,45,48,],[36,-18,-19,-20,-21,36,36,36,-17,-23,-22,]),'LBRACK':([30,],[37,]),'RBRACK':([43,],[45,]),'COMMA':([44,45,],[46,-23,]),}
+_lr_action_items = {'THREAD':([0,3,7,8,9,10,11,13,22,23,37,43,],[4,4,-4,-13,-6,-7,-8,-12,-5,-9,-13,-28,]),'$end':([1,2,3,5,7,8,9,10,11,13,22,23,37,43,],[0,-1,-3,-2,-4,-13,-6,-7,-8,-12,-5,-9,-13,-28,]),'NUM':([4,18,24,25,27,38,39,40,48,],[6,26,33,33,36,33,33,33,49,]),'PC':([6,8,9,10,11,13,23,37,43,],[8,-13,8,-7,-8,-12,-9,-13,-28,]),'IF':([8,37,],[16,16,]),'SEMI':([8,12,14,15,26,30,31,32,33,35,37,42,46,50,],[-15,23,-10,-11,-18,-20,-21,-22,-23,-14,-15,-25,-19,-24,]),'GOTO':([8,37,],[18,18,]),'ID':([8,37,],[19,19,]),'MEM':([8,24,25,37,38,39,40,41,],[21,21,21,21,21,21,21,21,]),'LPAREN':([16,34,],[24,41,]),'ASSIGN':([17,19,20,42,],[25,-16,-17,-25,]),'LBRACK':([21,],[27,]),'EXCH':([24,25,38,39,40,],[34,34,34,34,34,]),'RPAREN':([28,30,31,32,33,42,44,45,46,49,50,],[37,-20,-21,-22,-23,-25,-26,-27,-19,50,-24,]),'EQUAL':([29,30,31,32,33,42,46,50,],[38,-20,-21,-22,-23,-25,-19,-24,]),'NEQUAL':([29,30,31,32,33,42,46,50,],[39,-20,-21,-22,-23,-25,-19,-24,]),'PLUS':([29,30,31,32,33,35,42,44,45,46,50,],[40,-20,-21,-22,-23,40,-25,40,40,-19,-24,]),'RBRACK':([36,],[42,]),'COMMA':([42,47,],[-25,48,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'threads':([0,3,],[2,5,]),'thread':([0,3,],[3,3,]),'statement_list':([6,9,],[7,19,]),'statement':([8,33,],[9,39,]),'simple_stmts':([8,33,],[10,10,]),'compound_stmt':([8,33,],[11,11,]),'simple_stmt':([8,33,],[12,12,]),'if_stmt':([8,33,],[13,13,]),'assign':([8,33,],[14,14,]),'goto_stmt':([8,33,],[15,15,]),'compare':([21,],[24,]),'expr':([21,22,34,35,],[25,32,40,41,]),'val':([21,22,34,35,36,],[26,26,26,26,42,]),'mem':([21,22,34,35,36,38,],[27,27,27,27,27,44,]),'exch':([21,22,34,35,36,],[28,28,28,28,28,]),}
+_lr_goto_items = {'program':([0,],[1,]),'threads':([0,3,],[2,5,]),'thread':([0,3,],[3,3,]),'statement_list':([6,9,],[7,22,]),'statement':([8,37,],[9,43,]),'simple_stmts':([8,37,],[10,10,]),'compound_stmt':([8,37,],[11,11,]),'simple_stmt':([8,37,],[12,12,]),'if_stmt':([8,37,],[13,13,]),'assign':([8,37,],[14,14,]),'goto_stmt':([8,37,],[15,15,]),'rhs':([8,37,],[17,17,]),'mem':([8,24,25,37,38,39,40,41,],[20,31,31,20,31,31,31,47,]),'compare':([24,],[28,]),'expr':([24,25,38,39,],[29,35,44,45,]),'val':([24,25,38,39,40,],[30,30,30,30,46,]),'exch':([24,25,38,39,40,],[32,32,32,32,32,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -40,18 +40,20 @@ _lr_productions = [
   ('simple_stmt -> goto_stmt','simple_stmt',1,'p_simple_stmt','Parser.py',32),
   ('compound_stmt -> if_stmt','compound_stmt',1,'p_compound_stmt','Parser.py',35),
   ('compound_stmt -> <empty>','compound_stmt',0,'p_compound_stmt','Parser.py',36),
-  ('assign -> ID ASSIGN expr','assign',3,'p_assign','Parser.py',39),
+  ('assign -> rhs ASSIGN expr','assign',3,'p_assign','Parser.py',39),
   ('assign -> <empty>','assign',0,'p_assign','Parser.py',40),
-  ('goto_stmt -> GOTO NUM','goto_stmt',2,'p_goto_stmt','Parser.py',43),
-  ('expr -> expr PLUS val','expr',3,'p_expr','Parser.py',46),
-  ('expr -> val','expr',1,'p_expr','Parser.py',47),
-  ('val -> mem','val',1,'p_val','Parser.py',49),
-  ('val -> exch','val',1,'p_val','Parser.py',50),
-  ('val -> NUM','val',1,'p_val','Parser.py',51),
-  ('exch -> EXCH LPAREN mem COMMA NUM RPAREN','exch',6,'p_exch','Parser.py',53),
-  ('mem -> MEM LBRACK NUM RBRACK','mem',4,'p_mem','Parser.py',56),
-  ('compare -> expr EQUAL expr','compare',3,'p_compare','Parser.py',59),
-  ('compare -> expr NEQUAL expr','compare',3,'p_compare','Parser.py',60),
-  ('if_stmt -> IF LPAREN compare RPAREN statement','if_stmt',5,'p_if_stmt','Parser.py',63),
-  ('if_stmt -> <empty>','if_stmt',0,'p_if_stmt','Parser.py',64),
+  ('rhs -> ID','rhs',1,'p_rhs','Parser.py',43),
+  ('rhs -> mem','rhs',1,'p_rhs','Parser.py',44),
+  ('goto_stmt -> GOTO NUM','goto_stmt',2,'p_goto_stmt','Parser.py',47),
+  ('expr -> expr PLUS val','expr',3,'p_expr','Parser.py',50),
+  ('expr -> val','expr',1,'p_expr','Parser.py',51),
+  ('val -> mem','val',1,'p_val','Parser.py',53),
+  ('val -> exch','val',1,'p_val','Parser.py',54),
+  ('val -> NUM','val',1,'p_val','Parser.py',55),
+  ('exch -> EXCH LPAREN mem COMMA NUM RPAREN','exch',6,'p_exch','Parser.py',57),
+  ('mem -> MEM LBRACK NUM RBRACK','mem',4,'p_mem','Parser.py',60),
+  ('compare -> expr EQUAL expr','compare',3,'p_compare','Parser.py',63),
+  ('compare -> expr NEQUAL expr','compare',3,'p_compare','Parser.py',64),
+  ('if_stmt -> IF LPAREN compare RPAREN statement','if_stmt',5,'p_if_stmt','Parser.py',67),
+  ('if_stmt -> <empty>','if_stmt',0,'p_if_stmt','Parser.py',68),
 ]
