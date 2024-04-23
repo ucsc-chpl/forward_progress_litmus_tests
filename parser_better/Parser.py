@@ -22,7 +22,7 @@ def p_statement_list(p):
 #how do I define a line?
 def p_statement(p):
     '''statement : simple_stmts
-                 | compound_stmt'''
+                 | if_stmt'''
 #sus
 def p_simple_stmts(p):
     '''simple_stmts : simple_stmt SEMI'''
@@ -30,11 +30,11 @@ def p_simple_stmts(p):
 def p_simple_stmt(p):
     '''simple_stmt : assign
                    | goto_stmt'''
-
+"""
 def p_compound_stmt(p):
     '''compound_stmt : if_stmt
                      | '''
-
+"""
 def p_assign(p):
     '''assign : rhs ASSIGN expr
               |'''
@@ -42,7 +42,7 @@ def p_assign(p):
 def p_rhs(p):
     '''rhs : ID
            | mem'''
-           
+
 def p_goto_stmt(p):
     '''goto_stmt : GOTO NUM'''
 
