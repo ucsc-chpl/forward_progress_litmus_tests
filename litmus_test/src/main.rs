@@ -140,7 +140,7 @@ async fn execute_gpu_inner(
         cpass.set_bind_group(0, &bind_group, &[]);
         cpass.insert_debug_marker("compute collatz iterations");
         //dispatch 2 threads
-        cpass.dispatch_workgroups(1 as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
+        cpass.dispatch_workgroups(2 as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
     }
     //println!("encoder?");
     // Sets adds copy operation to command encoder.
