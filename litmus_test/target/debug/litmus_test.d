@@ -1,1 +1,1 @@
-/home/nrehman/forward_progress_litmus_tests/litmus_test/target/debug/litmus_test: /home/nrehman/forward_progress_litmus_tests/litmus_test/src/litmus_test.wgsl /home/nrehman/forward_progress_litmus_tests/litmus_test/src/main.rs
+/home/nrehman/forward_progress_litmus_tests/litmus_test/target/debug/litmus_test: /home/nrehman/forward_progress_litmus_tests/litmus_test/src/main.rs

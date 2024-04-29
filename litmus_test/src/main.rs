@@ -1,24 +1,35 @@
 use std::{borrow::Cow, str::FromStr};
 use wgpu::util::DeviceExt;
 use wasm_bindgen::prelude::*;
+use std::env;
+use std::fs;
+
 
 // Indicates a u32 overflow in an intermediate Collatz value
 const OVERFLOW: u32 = 0xffffffff;
 
 #[cfg_attr(test, allow(dead_code))]
 async fn run() {
-    let numbers = if std::env::args().len() <= 2 {
-        let default = vec![1, 2, 3, 4];
-        println!("No numbers were provided, defaulting to {default:?}");
-        default
+    //pass file name and number of threads
+    //put num threads in a comment at the top of the wgsl
+
+    let args: Vec<String> = env::args().collect();
+    let kernel_file : &str;
+    let num_threads : u32;
+
+    if args.len() > 1{
+        // sus
+        kernel_file = &&args[1];
+        print!("{}", kernel_file);
+        num_threads = *(&args[2].parse::<u32>().unwrap_or(0));
+        //support power mode in the future
     } else {
-        std::env::args()
-            .skip(2)
-            .map(|s| u32::from_str(&s).expect("You must pass a list of positive integers!"))
-            .collect()
-    };
+        kernel_file = "litmus_test.wgsl";
+        num_threads = 2;
+        println!("No argumets provided, defaulting to litmus_test.wgsl, 2 threads")
+    }
     println!("program started");
-    let steps = execute_gpu(&numbers).await.unwrap();
+    let steps = execute_gpu(num_threads, &kernel_file).await.unwrap();
     println!("execute_gpu finished");
     let disp_steps: Vec<String> = steps
         .iter()
@@ -28,13 +39,13 @@ async fn run() {
         })
         .collect();
 
-    println!("Steps: [{}]", disp_steps.join(", "));
+    println!("Threads finished: {}", disp_steps.join(", "));
     #[cfg(target_arch = "wasm32")]
-    log::info!("Steps: [{}]", disp_steps.join(", "));
+    log::info!("Threads finished: {}", disp_steps.join(", "));
 }
 
 #[cfg_attr(test, allow(dead_code))]
-async fn execute_gpu(numbers: &[u32]) -> Option<Vec<u32>> {
+async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<Vec<u32>> {
     // Instantiates instance of WebGPU
     println!("got into exec gpu");
     let instance = wgpu::Instance::default();
@@ -58,18 +69,28 @@ async fn execute_gpu(numbers: &[u32]) -> Option<Vec<u32>> {
         .await
         .unwrap();
     println!("got device");
-    execute_gpu_inner(&device, &queue, numbers).await
+    execute_gpu_inner(&device, &queue, num_threads, &kernel_file).await
 }
 
 async fn execute_gpu_inner(
     device: &wgpu::Device,
     queue: &wgpu::Queue,
-    numbers: &[u32],
+    num_threads: u32,
+    kernel_file: &str,
 ) -> Option<Vec<u32>> {
     // Loads the shader from WGSL
+    // rust is so silly
+    let contents = match fs::read_to_string(kernel_file) {
+        Ok(contents) => contents,
+        Err(e) => {
+            panic!("failed to read wgsl! {}", e);
+        }
+    };
     let cs_module = device.create_shader_module(wgpu::ShaderModuleDescriptor {
         label: None,
-        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("litmus_test.wgsl"))),
+        //source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!(kernel_file))),
+        //doesn't work because macro, use std::fs?
+        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(&contents)),
     });
     let dummy: i32 = 0;
     //println!("got shader");
@@ -140,7 +161,7 @@ async fn execute_gpu_inner(
         cpass.set_bind_group(0, &bind_group, &[]);
         cpass.insert_debug_marker("compute collatz iterations");
         //dispatch 2 threads
-        cpass.dispatch_workgroups(2 as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
+        cpass.dispatch_workgroups(num_threads as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
     }
     //println!("encoder?");
     // Sets adds copy operation to command encoder.
