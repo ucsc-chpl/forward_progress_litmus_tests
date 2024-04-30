@@ -40,10 +40,10 @@ def parse_a_chk_br(file, thread, pc, mem_locs):
     statement = f'''\t\t\tcase {pc}u {{
                     //UNCLEAR FROM TEST CASES WHETHER THIS IS INTENDED BEHAVIOR
                     if(atomicAdd(&mem_{args['arg0']}, 0) == {args['arg2']}) {{
-                        pc = {args['arg1']};
+                        pc = {args['arg1']}u;
                     }}
                     else {{
-                        pc = pc + 1;
+                        pc = pc + 1u;
                     }}
                     break;
                 }}
@@ -57,7 +57,7 @@ def parse_a_st(file, thread, pc, mem_locs):
     mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
                     atomicExchange(&mem_{args['arg0']}, {args['arg1']});
-                    pc = pc + 1;
+                    pc = pc + 1u;
                     break;
                 }}
     '''
@@ -130,6 +130,7 @@ def gen_wgsl(target_file, wgsl_name='test'):
             elif (re.match(td, line)):
                 args = re.match(td, line)
                 wgsl_kernel += parse_thread(wgsl_kernel, args['tid'], file, mem_locs)
+                num_threads += 1
         file.close()
     #add to the 'done' counter when program finishes
     wgsl_kernel += '''\tatomicAdd(&counter,1u);
@@ -167,15 +168,26 @@ def gen_crate(build_dir):
     os.system(f'cargo add ')
     #TODO write stuff to main
 
-def run_test(dir, wgsl_name, num_threads, power_mode='low_power'):
-    if(os.is_dir(dir)):
-        os.system(f'cd {build_dir}')
+def run_test(wgsl_name, 
+            num_threads, 
+            num_workgroups=1, 
+            power_mode='low_power', 
+            dir='/home/nrehman/forward_progress_litmus_tests/litmus_test/'):
+    if(os.path.isdir(dir)):
+        os.system(f'cp {wgsl_name} {dir}')
+        #os.system(f'cd {dir}')
+        print(f'wgsl kernel copied into {dir}\nkernel name: {wgsl_name}\nnum_threads: {num_threads}\ncommand: cd {dir} && cargo run {wgsl_name} {num_threads}')
     else:
         print("specified directory does not exist!")
         exit()
     pass
+    #cmd = f'cargo run {wgsl_name} {num_threads}'
+    #os.system(cmd)
     #return success or timeout (fail)
-    
+
+# for testing, ignore
+def test():
+    pass
 
 def main_2():
     parser = argparse.ArgumentParser()
@@ -201,11 +213,32 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-tf', '--test_file', help='path to test file')
     parser.add_argument('-g', '--gen_wgsl', help='generate wgsl')
+    parser.add_argument('-r', '--run', help='run application')
+    parser.add_argument('-t', '--test', help='for testing, ignore')
     args = parser.parse_args()
-    if(args.gen_wgsl):
-        if(args.test_file):
-            gen_wgsl(args.test_file, 'test')
-        else:
-            print('pls specify path to test file')
+
+    if(args.test):
+        test()
+    else:
+        if(args.run):
+            if(args.gen_wgsl):
+                if(args.test_file):
+                    gen_wgsl(args.test_file, args.test_file.replace('.txt',''))
+                    with open(args.test_file.replace('.txt', '.wgsl')) as file:
+                        top = re.match(r'\/\/(?P<num_threads>[0-9]+)\,(?P<num_workgroups>[0-9]+)', file.readline())
+                        print(top)
+                        num_threads = top['num_threads']
+                        num_workgroups = top['num_workgroups']
+                        file.close()
+                    
+                    run_test(args.test_file.replace('.txt', '.wgsl'), num_threads)
+                else:
+                    print('pls specify path to test file')
+            else:
+                if(args.test_file):
+                    gen_wgsl(args.test_file, 'test')
+                else:
+                    print('pls specify path to test file')
+
 if __name__ == '__main__':
     main()
