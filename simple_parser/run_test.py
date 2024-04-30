@@ -15,10 +15,11 @@ a_exch_br = r'atomic_exch_branch\((?P<arg0>[0-9]), (?P<arg1>[0-9]), (?P<arg2>[0-
 a_chk_br = r'atomic_chk_branch\((?P<arg0>[0-9]),(?P<arg1>[0-9]),(?P<arg2>[0-9])\)'
 a_st = r'atomic_store\((?P<arg0>[0-9]),(?P<arg1>[0-9])\)'
 
-def parse_a_exch_br(file, thread, pc):
+def parse_a_exch_br(file, thread, pc, mem_locs):
     line = file.readline()
     print(line)
     args = re.match(a_exch_br, line)
+    mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
                     if(atomicExchange(&mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
                         pc = {args['arg3']}u;
@@ -31,10 +32,11 @@ def parse_a_exch_br(file, thread, pc):
     '''
     return statement
 
-def parse_a_chk_br(file, thread, pc):
+def parse_a_chk_br(file, thread, pc, mem_locs):
     line = file.readline()
     print(line)
     args = re.match(a_chk_br, line)
+    mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
                     //UNCLEAR FROM TEST CASES WHETHER THIS IS INTENDED BEHAVIOR
                     if(atomicAdd(&mem_{args['arg0']}, 0) == {args['arg2']}) {{
@@ -48,10 +50,11 @@ def parse_a_chk_br(file, thread, pc):
     '''
     return statement
 
-def parse_a_st(file, thread, pc):
+def parse_a_st(file, thread, pc, mem_locs):
     line = file.readline()
     print(line)
     args = re.match(a_st, line)
+    mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
                     atomicExchange(&mem_{args['arg0']}, {args['arg1']});
                     pc = pc + 1;
@@ -60,7 +63,7 @@ def parse_a_st(file, thread, pc):
     '''
     return statement
 
-def parse_thread(wgsl_kernel, thread_id, file):
+def parse_thread(wgsl_kernel, thread_id, file, mem_locs):
     pc = 0
     thread = f'\tif(gid_x == {thread_id})' + '''{
         terminate = 0u;
@@ -85,11 +88,11 @@ def parse_thread(wgsl_kernel, thread_id, file):
             line = file.readline()
             continue
         elif(re.match(a_exch_br, line)):
-            thread += parse_a_exch_br(file, thread, pc)
+            thread += parse_a_exch_br(file, thread, pc, mem_locs)
         elif(re.match(a_chk_br, line)):
-            thread += parse_a_chk_br(file, thread, pc)
+            thread += parse_a_chk_br(file, thread, pc, mem_locs)
         elif(re.match(a_st, line)):
-            thread += parse_a_st(file, thread, pc)
+            thread += parse_a_st(file, thread, pc, mem_locs)
         elif(line == ''):
             #end of file reached
             break
@@ -110,19 +113,9 @@ def parse_thread(wgsl_kernel, thread_id, file):
 
 def gen_wgsl(target_file, wgsl_name='test'):
     #TODO support declaring multiple mem locations
-    wgsl_kernel = """@group(0)
-@binding(0)
-var<storage,read_write> counter: atomic<u32>;
-var<workgroup> mem_0: atomic<i32>;
-
-@compute
-@workgroup_size(1)
-fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
-    var gid_x:u32 = global_id.x;
-    var pc:u32 = 0;
-    var terminate:u32;
-"""
+    wgsl_kernel = ""
     #TODO think about how to do intra workgroup stuff
+    mem_locs = set()
     num_threads = 0;
     num_workgroups = 0;
     with open(target_file, 'r') as file:
@@ -136,14 +129,28 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
                 continue
             elif (re.match(td, line)):
                 args = re.match(td, line)
-                wgsl_kernel += parse_thread(wgsl_kernel, args['tid'], file)
+                wgsl_kernel += parse_thread(wgsl_kernel, args['tid'], file, mem_locs)
         file.close()
     #add to the 'done' counter when program finishes
     wgsl_kernel += '''\tatomicAdd(&counter,1u);
 }
 '''
-    #add number of threads and workgroups so the wgpu stuff knows what to do
-    wgsl_kernel = f'//{num_threads},{num_workgroups}\n' + wgsl_kernel
+    #declare all the vars and stuff
+    preamble = f'//{num_threads},{num_workgroups}\n' + """@group(0)
+@binding(0)
+var<storage,read_write> counter: atomic<u32>;
+"""
+    for loc in mem_locs:
+        preamble += f"var<workgroup> mem_{loc}: atomic<i32>;\n"
+    preamble += """
+@compute
+@workgroup_size(1)
+fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
+    var gid_x:u32 = global_id.x;
+    var pc:u32 = 0;
+    var terminate:u32;
+""" 
+    wgsl_kernel = preamble + wgsl_kernel
     with open(wgsl_name + '.wgsl', 'w') as out_file:
         out_file.write(wgsl_kernel)
         out_file.close()
