@@ -4,9 +4,8 @@ import argparse
 import re
 
 #QUESTIONS:
-# - inter-workgroup vs intra-workgroup?
-# - put it in the test
-# - thread 00 thread 0 workgroup
+# how do I set up web server on shrike I can access from my laptop?
+#  / how what tool is best / etc
 
 #for multiple workgroups
 #thread = r'THREAD(?P<tid>[0-9]+)\,(?P<wg>[0-9]+)'
@@ -39,7 +38,7 @@ def parse_a_chk_br(file, thread, pc, mem_locs):
     mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
                     //UNCLEAR FROM TEST CASES WHETHER THIS IS INTENDED BEHAVIOR
-                    if(atomicAdd(&mem_{args['arg0']}, 0) == {args['arg2']}) {{
+                    if(atomicLoad(&mem_{args['arg0']}) == {args['arg2']}) {{
                         pc = {args['arg1']}u;
                     }}
                     else {{
@@ -56,7 +55,7 @@ def parse_a_st(file, thread, pc, mem_locs):
     args = re.match(a_st, line)
     mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
-                    atomicExchange(&mem_{args['arg0']}, {args['arg1']});
+                    atomicStore(&mem_{args['arg0']}, {args['arg1']});
                     pc = pc + 1u;
                     break;
                 }}

@@ -1,5 +1,7 @@
 use std::{borrow::Cow, str::FromStr};
 use wgpu::util::DeviceExt;
+
+#[cfg(target_arch="wasm32")]
 use wasm_bindgen::prelude::*;
 use std::env;
 use std::fs;
@@ -8,7 +10,7 @@ use std::fs;
 // Indicates a u32 overflow in an intermediate Collatz value
 const OVERFLOW: u32 = 0xffffffff;
 
-#[cfg_attr(test, allow(dead_code))]
+//need to make this pub?? / what does async do?
 async fn run() {
     //pass file name and number of threads
     //put num threads in a comment at the top of the wgsl
@@ -68,6 +70,7 @@ async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<Vec<u32>> {
         )
         .await
         .unwrap();
+    println!("gpu: {}", adapter.get_info().name);
     println!("got device");
     execute_gpu_inner(&device, &queue, num_threads, &kernel_file).await
 }
@@ -216,6 +219,7 @@ fn main() {
     {
         std::panic::set_hook(Box::new(console_error_panic_hook::hook));
         console_log::init().expect("could not initialize logger");
+        //bro what this mean
         wasm_bindgen_futures::spawn_local(run());
     }
 }

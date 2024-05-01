@@ -1,9 +1,8 @@
-//3,0
+//2,0
 @group(0)
 @binding(0)
 var<storage,read_write> counter: atomic<u32>;
 var<workgroup> mem_0: atomic<i32>;
-var<workgroup> mem_1: atomic<i32>;
 
 @compute
 @workgroup_size(1)
@@ -19,34 +18,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
             }
             switch pc {
     			case 0u {
-                    //UNCLEAR FROM TEST CASES WHETHER THIS IS INTENDED BEHAVIOR
-                    if(atomicAdd(&mem_1, 0) == 0) {
-                        pc = 0u;
-                    }
-                    else {
-                        pc = pc + 1u;
-                    }
-                    break;
-                }
-    			case 1u {
-                    terminate = 1u;
-                    break;
-                }
-                default {
-                    //shouldn't happen 
-                }
-    		}
-		}
-	}
-	if(gid_x == 1){
-        terminate = 0u;
-        while (true) {
-            if(terminate == 1) {
-                break;
-            }
-            switch pc {
-    			case 0u {
-                    atomicExchange(&mem_0, 1);
+                    atomicStore(&mem_0, 1);
                     pc = pc + 1u;
                     break;
                 }
@@ -69,7 +41,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
             switch pc {
     			case 0u {
                     //UNCLEAR FROM TEST CASES WHETHER THIS IS INTENDED BEHAVIOR
-                    if(atomicAdd(&mem_0, 0) == 0) {
+                    if(atomicLoad(&mem_0) == 0) {
                         pc = 0u;
                     }
                     else {
@@ -78,11 +50,6 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
                     break;
                 }
     			case 1u {
-                    atomicExchange(&mem_1, 1);
-                    pc = pc + 1u;
-                    break;
-                }
-    			case 2u {
                     terminate = 1u;
                     break;
                 }
