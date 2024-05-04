@@ -1,0 +1,39 @@
+
+
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <title>litmus test</title>
+</head>
+<body>
+  <button id="greetButton">run test</button>
+  <div id="output"></div>
+  <script type="module">
+    import init from "./pkg/litmus_test_web.js";
+    import * as wasm_mod from "./pkg/litmus_test_web.js";
+
+    // Initialize WebAssembly module
+    init().then(() => {
+      // Event listener for button click
+      document.getElementById('greetButton').addEventListener('click', () => {
+        // Call greet function with parameter
+        console.log("before run()");
+        const resultPromise = wasm_mod.run();
+        console.log("after run");
+        if (resultPromise instanceof Promise) {
+        resultPromise.then(result => {
+            console.log("was a promise");
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = `Threads finished: ${result}`;
+          });
+        } else { // If greet() returns a direct value
+          console.log("not a promise");
+          const outputDiv = document.getElementById('output');
+          outputDiv.textContent = `Threads finished: ${resultPromise}`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
