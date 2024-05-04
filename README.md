@@ -13,5 +13,8 @@ the litmus test crate runs the tests with wgpu. The default (cargo run with no a
 
 cargo run your_kernel.wgsl num_threads
 
+#### litmus test web
+this crate runs a litmus test in the browser. To compile use the command `wasm-pack build --target web`. Start a local server and view in the browser (use chrome!). Click the run test button to run the test. 
+
 #### issues
 case statements: the wgsls use case statements to simulate gotos. Test case 2_threads_2_instructions 5 terminates with 2 threads when it is refactored to not use switch statements (2_thread_2_inst_5.wgsl in limus_test/), but with them fails.
