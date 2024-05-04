@@ -3,7 +3,7 @@ pub fn main() {
     #[cfg(not(target_arch = "wasm32"))]
     {
         env_logger::init();
-        pollster::block_on(run());
+        pollster::block_on(run(2, "2_2_5.wgsl"));
     }
     #[cfg(target_arch = "wasm32")]
     {
