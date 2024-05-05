@@ -49,7 +49,8 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
         )
         .await
         .unwrap();
-    println!("got device");
+    log::info!("running test on {}", adapter.get_info().name);
+    println!("got adapter");
     //execute_gpu_inner(&device, &queue).await
     let cs_module: wgpu::ShaderModule = match kernel_file {
         "2_2_5.wgsl" => {
