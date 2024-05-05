@@ -8,20 +8,19 @@ var<workgroup> mem_0: atomic<i32>;
 @workgroup_size(1)
 fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var gid_x:u32 = global_id.x;
-    var pc:u32 = 0;
-    var spin:u32;
+    var pc:i32 = 0;
+    var terminate:i32 = 0;
 	if(gid_x == 0){
         atomicStore(&mem_0, 1);
 	}
 	if(gid_x == 1){
-        spin = 1u;
-        while (spin == 1u) {
-            if(atomicLoad(&mem_0) == 0) {
-                spin = 1u;
-            }
-            else {
-                spin = 0u;
-            }
+        while (terminate == 0) {
+           if(atomicLoad(&mem_0) == 0){
+            terminate = 0;
+           }
+           else {
+            terminate = 1;
+           }
 		}
 	}
 	atomicAdd(&counter,1u);

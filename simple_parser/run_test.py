@@ -7,6 +7,8 @@ import re
 # how do I set up web server on shrike I can access from my laptop?
 #  / how what tool is best / etc
 
+
+# INITIALIZE mem in wgls
 #for multiple workgroups
 #thread = r'THREAD(?P<tid>[0-9]+)\,(?P<wg>[0-9]+)'
 td = r'THREAD(?P<tid>[0-9]+)'
