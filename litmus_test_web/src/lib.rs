@@ -170,6 +170,35 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
         Some(0)
     }
 }
+
+//change this so I can choose adapter
+#[wasm_bindgen]
+pub async fn get_gpu_name() -> Option<String> {
+    let instance = wgpu::Instance::default();
+    let adapter = instance
+        .request_adapter(&wgpu::RequestAdapterOptions::default())
+        .await
+        .expect("No suitable GPU adapters found on the system!");
+    
+    println!("got adapter");
+    // `request_device` instantiates the feature specific connection to the GPU, defining some parameters,
+    //  `features` being the available features.
+    let (device, queue) = adapter
+        .request_device(
+            &wgpu::DeviceDescriptor {
+                label: None,
+                required_features: wgpu::Features::empty(),
+                required_limits: wgpu::Limits::downlevel_defaults(),
+            },
+            None,
+        )
+        .await
+        .unwrap();
+    log::info!("gpu adapter: {}", adapter.get_info().name);
+    Some(adapter.get_info().name)
+}
+
+
 /* 
 #[wasm_bindgen]
 pub fn load_wgsl(kernel_file: &str) -> wgpu::ShaderModule {
