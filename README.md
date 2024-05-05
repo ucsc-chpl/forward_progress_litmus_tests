@@ -1,6 +1,9 @@
 # forward_progress_litmus_tests
 wgpu forward progress tests. 
 
+#### litmus test web (website)
+this crate runs a litmus test in the browser. To compile use the command `wasm-pack build --target web`. Start a local server in the litmus_test_web/ directory and view in the browser (use chrome!). Click the run test button to run the test. 
+
 #### Simple Parser
 the implementation of the Alloy litmus tests to wgsl is in simple_parser/run_test.py. To use:
 
@@ -13,8 +16,5 @@ the litmus test crate runs the tests with wgpu. The default (cargo run with no a
 
 cargo run your_kernel.wgsl num_threads
 
-#### litmus test web
-this crate runs a litmus test in the browser. To compile use the command `wasm-pack build --target web`. Start a local server and view in the browser (use chrome!). Click the run test button to run the test. 
-
 #### issues
-case statements: the wgsls use case statements to simulate gotos. Test case 2_threads_2_instructions 5 terminates with 2 threads when it is refactored to not use switch statements (2_thread_2_inst_5.wgsl in limus_test/), but with them fails.
+case statements: the wgsls use case statements to simulate gotos. Test case 2_threads_2_instructions 5 terminates with 2 threads when it is refactored to not use switch statements (2_thread_2_inst_5.wgsl in limus_test/), but with them fails. Same for replacing case statements with if statements.

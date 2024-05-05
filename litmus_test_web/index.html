@@ -23,26 +23,20 @@
       const gpuTypePromise = wasm_mod.get_gpu_name();
       if (gpuTypePromise instanceof Promise) {
         gpuTypePromise.then(gpuType => {
-            console.log("was a promise");
             console.log(gpuType);
             const outputP = document.getElementById('gpuType');
             outputP.textContent = `System GPU: ${gpuType}`;
           });
-      } else { // If greet() returns a direct value
-        console.log("not a promise");
+      } else { 
         const outputP = document.getElementById('gpuType');
         outputP.textContent = `System GPU: ${gpuTypePromise}`;
       }
       
       // Event listener for test case 5
       document.getElementById('2_2_5_button').addEventListener('click', () => {
-        // Call greet function with parameter
-        console.log("before run()");
         const resultPromise = wasm_mod.run(2, "2_2_5.wgsl");
-        console.log("after run");
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
-            console.log("was a promise");
             const outputDiv = document.getElementById('2_2_5_output');
             if(result == 0){
               outputDiv.textContent = `Threads finished: ${result} \n Refresh page to continue`;
@@ -50,44 +44,42 @@
             else {
               outputDiv.textContent = `Threads finished: ${result}`;
             }
-            
           });
-        } else { // If greet() returns a direct value
-          console.log("not a promise");
+        } else { 
           const outputDiv = document.getElementById('2_2_5_output');
           outputDiv.textContent = `Threads finished: ${resultPromise}`;
         }
       });
       document.getElementById('2_2_4_button').addEventListener('click', () => {
-        // Call greet function with parameter
-        console.log("before run()");
         const resultPromise = wasm_mod.run(2, "2_2_4.wgsl");
-        console.log("after run");
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
-            console.log("was a promise");
             const outputDiv = document.getElementById('2_2_4_output');
-            outputDiv.textContent = `Threads finished: ${result}`;
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} \n Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
           });
-        } else { // If greet() returns a direct value
-          console.log("not a promise");
+        } else {
           const outputDiv = document.getElementById('2_2_4_output');
           outputDiv.textContent = `Threads finished: ${resultPromise}`;
         }
       });
       document.getElementById('2_2_3_button').addEventListener('click', () => {
-        // Call greet function with parameter
-        console.log("before run()");
         const resultPromise = wasm_mod.run(2, "2_2_3.wgsl");
-        console.log("after run");
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
-            console.log("was a promise");
             const outputDiv = document.getElementById('2_2_3_output');
-            outputDiv.textContent = `Threads finished: ${result}`;
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} \n Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
           });
         } else { // If greet() returns a direct value
-          console.log("not a promise");
           const outputDiv = document.getElementById('2_2_3_output');
           outputDiv.textContent = `Threads finished: ${resultPromise}`;
         }
