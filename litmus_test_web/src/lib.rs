@@ -58,6 +58,12 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
                 source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5.wgsl"))),
             })
         }
+        "2_2_3.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_3.wgsl"))),
+            })
+        }
         "2_2_4.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
