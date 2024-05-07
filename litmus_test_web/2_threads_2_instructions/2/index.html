@@ -1,0 +1,53 @@
+
+
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <title>litmus test</title>
+</head>
+<body>
+  <p id="gpuType"></p>
+  <button id="run_button">run test</button>
+  <div id="run_output"></div>
+  <script type="module">
+    import init from "../../pkg/litmus_test_web.js";
+    import * as wasm_mod from "../../pkg/litmus_test_web.js";
+
+    // Initialize WebAssembly module
+    init().then(() => {
+      const gpuTypePromise = wasm_mod.get_gpu_name();
+      if (gpuTypePromise instanceof Promise) {
+        gpuTypePromise.then(gpuType => {
+            console.log(gpuType);
+            const outputP = document.getElementById('gpuType');
+            outputP.textContent = `System GPU: ${gpuType}`;
+          });
+      } else { 
+        const outputP = document.getElementById('gpuType');
+        outputP.textContent = `System GPU: ${gpuTypePromise}`;
+      }
+      
+      // Event listener for test case 5
+      document.getElementById('run_button').addEventListener('click', () => {
+        const resultPromise = wasm_mod.run(2, "2_2_2.wgsl");
+        if (resultPromise instanceof Promise) {
+        resultPromise.then(result => {
+            const outputDiv = document.getElementById('run_output');
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} \n Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+          });
+        } else { 
+          const outputDiv = document.getElementById('run_output');
+          outputDiv.textContent = `Threads finished: ${resultPromise}`;
+        }
+      });
+    });
+  </script>
+  <img src="2.png" alt="state transition diagram">
+</body>
+</html>

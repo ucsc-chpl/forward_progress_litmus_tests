@@ -12,7 +12,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var terminate:i32 = 0;
 	if(gid_x == 0){
         while(terminate == 0) {
-            if(atomicExchange(&mem_0, 1) == 0) {
+            if(atomicExchange(&mem_0, 0) == 0) {
                 terminate = 0;
             } else {
                 terminate = 1;
@@ -21,7 +21,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
 	}
 	if(gid_x == 1){
         while (terminate == 0) {
-            if(atomicExchange(&mem_0, 1) == 0){
+            if(atomicExchange(&mem_0, 0) == 0){
                 terminate = 0;
             }
             else {

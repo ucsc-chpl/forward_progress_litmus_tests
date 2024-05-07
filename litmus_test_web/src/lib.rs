@@ -53,10 +53,22 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
     println!("got adapter");
     //execute_gpu_inner(&device, &queue).await
     let cs_module: wgpu::ShaderModule = match kernel_file {
-        "2_2_5.wgsl" => {
+        "2_2_0.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_0.wgsl"))),
+            })
+        }
+        "2_2_1.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_1.wgsl"))),
+            })
+        }
+        "2_2_2.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_2.wgsl"))),
             })
         }
         "2_2_3.wgsl" => {
@@ -69,6 +81,24 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
                 source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_4.wgsl"))),
+            })
+        }
+        "2_2_5.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5.wgsl"))),
+            })
+        }
+        "2_2_6.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_6.wgsl"))),
+            })
+        }
+        "2_2_7.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_7.wgsl"))),
             })
         }
         _ => {
