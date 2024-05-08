@@ -2,7 +2,12 @@
 wgpu forward progress tests. 
 
 #### litmus test web (website)
-this crate runs a litmus test in the browser. To compile use the command `wasm-pack build --target web`. Start a local server in the litmus_test_web/ directory and view in the browser (use chrome!). Click the run test button to run the test. 
+This crate runs a litmus test in the browser. Steps to run:
+- Compile use the command `wasm-pack build --target web`. 
+- Start a local server in the litmus_test_web/ directory with `python3 -m http.server`
+- view in the browser at localhost:8000/ (use chrome!). 
+- Click view tests then select a test and run with the run button.
+- If a test case finishes it will display the number of threads that terminated.
 
 #### Simple Parser
 the implementation of the Alloy litmus tests to wgsl is in simple_parser/run_test.py. To use:

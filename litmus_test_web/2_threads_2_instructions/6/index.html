@@ -7,27 +7,42 @@
   <title>litmus test</title>
 </head>
 <body>
-  <p id="gpuType"></p>
+  <p id="arch"></p>
+  <p id="vendor"></p>
+  <p id="desc"></p>
+  <p id="device"></p>
   <button id="run_button">run test</button>
   <div id="run_output"></div>
+  <script>
+    async function initWebGPU() {
+        try {
+            const adapter = await navigator.gpu.requestAdapter();
+            const adapterInfo = await adapter.requestAdapterInfo();
+            const arch = document.getElementById('arch');
+            arch.textContent = `Architecture: ${adapterInfo.architecture}`;
+            const vendor = document.getElementById('vendor');
+            vendor.textContent = `Vendor: ${adapterInfo.vendor}`;
+            const device = document.getElementById('device');
+            device.textContent = `Device: ${adapterInfo.device}`;
+            const desc = document.getElementById('desc');
+            desc.textContent = `Description: ${adapterInfo.description}`;
+
+            // Create other WebGPU resources or perform rendering here...
+        } catch (error) {
+            console.error('Error initializing WebGPU:', error);
+            document.write('<p>Error initializing WebGPU: ' + error + '</p>');
+        }
+    }
+
+    // Initialize WebGPU when the page loads
+    window.onload = initWebGPU;
+  </script>
   <script type="module">
     import init from "../../pkg/litmus_test_web.js";
     import * as wasm_mod from "../../pkg/litmus_test_web.js";
 
     // Initialize WebAssembly module
     init().then(() => {
-      const gpuTypePromise = wasm_mod.get_gpu_name();
-      if (gpuTypePromise instanceof Promise) {
-        gpuTypePromise.then(gpuType => {
-            console.log(gpuType);
-            const outputP = document.getElementById('gpuType');
-            outputP.textContent = `System GPU: ${gpuType}`;
-          });
-      } else { 
-        const outputP = document.getElementById('gpuType');
-        outputP.textContent = `System GPU: ${gpuTypePromise}`;
-      }
-      
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {
         const resultPromise = wasm_mod.run(2, "2_2_6.wgsl");
