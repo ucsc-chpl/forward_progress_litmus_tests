@@ -27,23 +27,18 @@
             const desc = document.getElementById('desc');
             desc.textContent = `Description: ${adapterInfo.description}`;
 
-            // Create other WebGPU resources or perform rendering here...
         } catch (error) {
             console.error('Error initializing WebGPU:', error);
             document.write('<p>Error initializing WebGPU: ' + error + '</p>');
         }
     }
-
-    // Initialize WebGPU when the page loads
     window.onload = initWebGPU;
   </script>
   <script type="module">
     import init from "../../pkg/litmus_test_web.js";
     import * as wasm_mod from "../../pkg/litmus_test_web.js";
 
-    // Initialize WebAssembly module
     init().then(() => {
-      
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {
         const resultPromise = wasm_mod.run(2, "2_2_1.wgsl");
@@ -51,7 +46,8 @@
         resultPromise.then(result => {
             const outputDiv = document.getElementById('run_output');
             if(result == 0){
-              outputDiv.textContent = `Threads finished: ${result} \n Refresh page to continue`;
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
             }
             else {
               outputDiv.textContent = `Threads finished: ${result}`;
@@ -64,6 +60,19 @@
       });
     });
   </script>
-  <img src="1.png" alt="state transition diagram">
+  <style>
+    .content {
+      float: right;
+    }
+  </style>
+  <div class="container">
+    <div class="content">
+      <img src="1.png" alt="state transition diagram" width="500">
+    </div>
+  </div>
+  <div>
+    <img src="1_code.png" alt="pseudo code" width="300">
+  </div>
 </body>
 </html>
+                   
