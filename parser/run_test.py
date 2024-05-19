@@ -11,49 +11,73 @@ import re
 # INITIALIZE mem in wgls
 #for multiple workgroups
 #thread = r'THREAD(?P<tid>[0-9]+)\,(?P<wg>[0-9]+)'
+# REMEMBER TO ADD END TO branch pc possibilities
 td = r'THREAD(?P<tid>[0-9]+)'
-a_exch_br = r'atomic_exch_branch\((?P<arg0>[0-9]), (?P<arg1>[0-9]), (?P<arg2>[0-9]), (?P<arg3>[0-9])\)'
-a_chk_br = r'atomic_chk_branch\((?P<arg0>[0-9]),(?P<arg1>[0-9]),(?P<arg2>[0-9])\)'
+a_exch_br = r'atomic_exch_branch\((?P<arg0>[0-9]),(?P<arg1>[0-9]),(?P<arg2>[0-9]),((?P<arg3>([0-9]|END)))\)'
+a_chk_br = r'atomic_chk_branch\((?P<arg0>[0-9]),(?P<arg1>[0-9]),(?P<arg2>([0-9]|END))\)'
 a_st = r'atomic_store\((?P<arg0>[0-9]),(?P<arg1>[0-9])\)'
 
 def parse_a_exch_br(file, thread, pc, mem_locs):
     line = file.readline()
-    print(line)
+    #print(line)
     args = re.match(a_exch_br, line)
     mem_locs.add(args['arg0'])
-    statement = f'''\t\t\tcase {pc}u {{
-                    if(atomicExchange(&mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
-                        pc = {args['arg3']}u;
+    if(args['arg3'] == 'END'):
+        statement = f'''\t\t\tcase {pc}u {{
+                        if(atomicExchange(&mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
+                            terminate = 1u;
+                        }}
+                        else {{
+                            pc = pc + 1u;
+                        }}
+                        break;
                     }}
-                    else {{
-                        pc = pc + 1u;
+        '''
+    else:
+        statement = f'''\t\t\tcase {pc}u {{
+                        if(atomicExchange(&mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
+                            pc = {args['arg3']}u;
+                        }}
+                        else {{
+                            pc = pc + 1u;
+                        }}
+                        break;
                     }}
-                    break;
-                }}
-    '''
+        '''
     return statement
 
-def parse_a_chk_br(file, thread, pc, mem_locs):
+def parse_a_chk_br(file, thread, pc, mem_locs, target_file):
     line = file.readline()
-    print(line)
+    #print(line)
     args = re.match(a_chk_br, line)
     mem_locs.add(args['arg0'])
-    statement = f'''\t\t\tcase {pc}u {{
-                    //UNCLEAR FROM TEST CASES WHETHER THIS IS INTENDED BEHAVIOR
-                    if(atomicLoad(&mem_{args['arg0']}) == {args['arg2']}) {{
-                        pc = {args['arg1']}u;
+    if (args['arg2'] == 'END'):
+        statement = f'''\t\t\tcase {pc}u {{
+                        if(atomicLoad(&mem_{args['arg0']}) == {args['arg1']}) {{
+                            terminate = 1u;
+                        }}
+                        else {{
+                            pc = pc + 1u;
+                        }}
+                        break;
                     }}
-                    else {{
-                        pc = pc + 1u;
+        '''
+    else:
+        statement = f'''\t\t\tcase {pc}u {{
+                        if(atomicLoad(&mem_{args['arg0']}) == {args['arg1']}) {{
+                            pc = {args['arg2']}u;
+                        }}
+                        else {{
+                            pc = pc + 1u;
+                        }}
+                        break;
                     }}
-                    break;
-                }}
-    '''
+        '''
     return statement
 
 def parse_a_st(file, thread, pc, mem_locs):
     line = file.readline()
-    print(line)
+    #print(line)
     args = re.match(a_st, line)
     mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
@@ -64,12 +88,12 @@ def parse_a_st(file, thread, pc, mem_locs):
     '''
     return statement
 
-def parse_thread(wgsl_kernel, thread_id, file, mem_locs):
+def parse_thread(wgsl_kernel, thread_id, file, mem_locs, target_file):
     pc = 0
     thread = f'\tif(gid_x == {thread_id})' + '''{
         terminate = 0u;
         while (true) {
-            if(terminate == 1) {
+            if(terminate == 1u) {
                 break;
             }
             switch pc {
@@ -78,11 +102,11 @@ def parse_thread(wgsl_kernel, thread_id, file, mem_locs):
         #peek next line
         pos = file.tell()
         line = file.readline()
-        print(pc)
+        #print(pc)
         file.seek(pos)
         if(re.match(td, line)):
             #end of thread
-            print("end of thread reached")
+            #print("end of thread reached")
             break
         elif(line == '\n'):
             #whitespace, ignore (advance to next line)
@@ -91,7 +115,7 @@ def parse_thread(wgsl_kernel, thread_id, file, mem_locs):
         elif(re.match(a_exch_br, line)):
             thread += parse_a_exch_br(file, thread, pc, mem_locs)
         elif(re.match(a_chk_br, line)):
-            thread += parse_a_chk_br(file, thread, pc, mem_locs)
+            thread += parse_a_chk_br(file, thread, pc, mem_locs, target_file)
         elif(re.match(a_st, line)):
             thread += parse_a_st(file, thread, pc, mem_locs)
         elif(line == ''):
@@ -113,24 +137,24 @@ def parse_thread(wgsl_kernel, thread_id, file, mem_locs):
     return thread
 
 def gen_wgsl(target_file, wgsl_name='test'):
-    #TODO support declaring multiple mem locations
+    print(f"parsing target file : {target_file}")
     wgsl_kernel = ""
     #TODO think about how to do intra workgroup stuff
     mem_locs = set()
-    num_threads = 0;
-    num_workgroups = 0;
+    num_threads = 0
+    num_workgroups = 0
     with open(target_file, 'r') as file:
         while (True):
             line = file.readline()
             if (line == ''):
                 #end of file
-                break;
+                break
             elif (line == '\n'):
                 #whitespace, ignore
                 continue
             elif (re.match(td, line)):
                 args = re.match(td, line)
-                wgsl_kernel += parse_thread(wgsl_kernel, args['tid'], file, mem_locs)
+                wgsl_kernel += parse_thread(wgsl_kernel, args['tid'], file, mem_locs, target_file)
                 num_threads += 1
         file.close()
     #add to the 'done' counter when program finishes
@@ -149,11 +173,11 @@ var<storage,read_write> counter: atomic<u32>;
 @workgroup_size(1)
 fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var gid_x:u32 = global_id.x;
-    var pc:u32 = 0;
+    var pc:u32 = 0u;
     var terminate:u32;
 """ 
     wgsl_kernel = preamble + wgsl_kernel
-    with open(wgsl_name + '.wgsl', 'w') as out_file:
+    with open(wgsl_name, 'w') as out_file:
         out_file.write(wgsl_kernel)
         out_file.close()
     
@@ -215,6 +239,7 @@ def main():
     parser.add_argument('-tf', '--test_file', help='path to test file')
     parser.add_argument('-g', '--gen_wgsl', help='generate wgsl')
     parser.add_argument('-r', '--run', help='run application')
+    parser.add_argument('-o', '--out_file', help='path to output wgsl')
     parser.add_argument('-t', '--test', help='for testing, ignore')
     args = parser.parse_args()
 
@@ -224,15 +249,18 @@ def main():
         if(args.run):
             if(args.gen_wgsl):
                 if(args.test_file):
-                    gen_wgsl(args.test_file, args.test_file.replace('.txt',''))
-                    with open(args.test_file.replace('.txt', '.wgsl')) as file:
-                        top = re.match(r'\/\/(?P<num_threads>[0-9]+)\,(?P<num_workgroups>[0-9]+)', file.readline())
-                        print(top)
-                        num_threads = top['num_threads']
-                        num_workgroups = top['num_workgroups']
-                        file.close()
+                    if(args.out_file):
+                        gen_wgsl(args.test_file, args.out_file)
+                        with open(args.out_file) as file:
+                            top = re.match(r'\/\/(?P<num_threads>[0-9]+)\,(?P<num_workgroups>[0-9]+)', file.readline())
+                            print(top)
+                            num_threads = top['num_threads']
+                            num_workgroups = top['num_workgroups']
+                            file.close()
                     
-                    run_test(args.test_file.replace('.txt', '.wgsl'), num_threads)
+                        run_test(args.test_file.replace('.txt', '.wgsl'), num_threads)
+                    else:
+                        print("please specify outfile")
                 else:
                     print('pls specify path to test file')
             else:
