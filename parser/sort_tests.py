@@ -310,19 +310,25 @@ pub async fn get_gpu_name() -> Option<String> {
 # | | 2_thread_3_inst ..etc
 # | obe ...etc
 
-def gen_index_html_all_runner(dest_path, target_dir, wgsl_base_path, model):
+def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     index = preamble + run_button + initwebgpu
     index += """
+  <script type="module">
+    import init from "../../pkg/litmus_test_web.js";
+    import * as wasm_mod from "../../pkg/litmus_test_web.js";
+
     init().then(() => {
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {
+        let resultPromise;
 """
 
     for thread_inst in os.listdir(dest_path + '/' + model):
-        for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
-            test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
-            index += f"""
-        const resultPromise = wasm_mod.run(2, "{test_in}");
+        if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
+            for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
+                test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
+                index += f"""
+        resultPromise = wasm_mod.run(2, "{test_in}");
         if (resultPromise instanceof Promise) {{
         resultPromise.then(result => {{
             const outputDiv = document.getElementById('run_output');
@@ -344,28 +350,45 @@ def gen_index_html_all_runner(dest_path, target_dir, wgsl_base_path, model):
     });
   </script>
 """
-    index += style_stuff
-    with open(target_dir + 'index.html', 'w') as file:
+    #FIX THIS!
+    index += style_stuff.format(img_name='1.png')
+    out_path = dest_path + '/' + model + '/' + 'all_runner' + '/'
+    os.makedirs(out_path, exist_ok=True)
+    with open(out_path + 'index.html', 'w') as file:
         file.write(index)
         file.close()
 
 def gen_index_html_per_test_runner(test_name, target_dir, img):
-    index = preamble + run_button + initwebgpu + run_stuff.format(test_name=test_name) + style_stuff.format(img_name=img)
-    with open(target_dir + 'index.html', 'w') as file:
-        file.write(index)
-        file.close()
+    if os.path.isdir(os.path.join(dest_path.replace('/tests', '') + target_dir)):
+        index = preamble + run_button + initwebgpu + run_stuff.format(test_name=test_name) + style_stuff.format(img_name=img)
+        with open(os.path.join(dest_path.replace('/tests', ''), target_dir) + 'index.html', 'w') as file:
+            file.write(index)
+            file.close()
+    else:
+        print(f"gen_index_html_per_test_runner() recieved non dir target dir: {target_dir} skipping")
 
-
+# generates individual and all runner for all models
 def gen_index_html(dest_path, wgsl_base_path):
     # premble
     # button defs
     # initwebgpu script
     # run stuff
     # style stuff
+    for model in os.listdir(dest_path):
+        print(f"generating all runner index.html for {model}")
+        gen_index_html_all_runner(dest_path, wgsl_base_path, model)
+        for thread_inst in os.listdir(dest_path + '/' + model):
+            if(thread_inst != 'all_runner'):
+                if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
+                    for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
+                        test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
+                        test_in = test_target_dir + os.path.basename(test) + '.wgsl'
+                        test_img = test_target_dir + os.path.basename(test) + '.png'
+                        gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
     pass
 
 def test():
-    gen_index_html_per_test_runner('2_thread_2_inst.wgsl', '', '1.png')
+    gen_index_html(dest_path, wgsl_base_path)
 
 
 if __name__ == "__main__":
