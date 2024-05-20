@@ -25,6 +25,8 @@ import sys
 import run_test
 import shutil
 import argparse
+import re
+import subprocess
 
 wgsl_base_path="tests/"
 dest_path = "/home/nrehman/forward_progress_litmus_tests/src/tests/"
@@ -111,6 +113,25 @@ run_stuff = """
       }});
     }});
   </script>
+"""
+
+#format with model
+model_index_pa = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{model}</title>
+</head>
+<body>
+    <b></b>
+    <ul>
+"""
+
+model_index_end = """
+    </ul>
+</body>
+</html>
 """
 
 def bn(path):
@@ -428,6 +449,7 @@ def gen_index_html_per_test_runner(test_name, target_dir, img):
     else:
         print(f"gen_index_html_per_test_runner() recieved non dir target dir: {target_dir} skipping")
 
+
 # generates individual and all runner for all models
 def gen_index_html(dest_path, wgsl_base_path):
     # premble
@@ -438,18 +460,29 @@ def gen_index_html(dest_path, wgsl_base_path):
     for model in os.listdir(dest_path):
         print(f"generating all runner index.html for {model}")
         gen_index_html_all_runner(dest_path, wgsl_base_path, model)
+        m_index = model_index_pa.format(model=model)
+        m_index += f"""    <li><a href="./src/tests/{model}/all_runner/">Run All Tests</a></li>\n"""
         for thread_inst in os.listdir(dest_path + '/' + model):
-            if(thread_inst != 'all_runner'):
-                if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
-                    for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
-                        test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
-                        test_in = test_target_dir + os.path.basename(test) + '.wgsl'
-                        test_img = test_target_dir + os.path.basename(test) + '.png'
-                        gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
-    pass
+            if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
+                test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
+                if(thread_inst != 'all_runner'):
+                    m_index += f"""    <li><a href="./src/tests/{model}/{thread_inst}/">{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions</a></li>\n"""
+                    if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
+                        for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
+                            test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
+                            test_in = test_target_dir + os.path.basename(test) + '.wgsl'
+                            test_img = test_target_dir + os.path.basename(test) + '.png'
+                            gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
+        m_index += model_index_end
+        with open(dest_path + '/' + model + '/' + 'index.html', 'w') as file:
+            file.write(m_index)
+            file.close()
+
+
+
 
 def test():
-    gen_index_html(dest_path, wgsl_base_path)
+    validate_wgsls(dest_path)
 
 
 if __name__ == "__main__":
@@ -459,6 +492,7 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is actual /src/lib.rs')
     parser.add_argument('-i', '--make_index', help='makes index.htmls')
     parser.add_argument('-t', '--test', help='runs the test function. for debugging.')
+    parser.add_argument('-v', '--validate', help='validate all wgsls')
     args = parser.parse_args()
     if(args.test):
         test()
