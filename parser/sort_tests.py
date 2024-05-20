@@ -485,7 +485,7 @@ def gen_index_html(dest_path, wgsl_base_path):
         for thread_inst in os.listdir(dest_path + '/' + model):
             if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
                 test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
-                if(thread_inst != 'all_runner'):
+                if(thread_inst != 'all_runner' and thread_inst != 'index.html'):
                     t_index = model_index_pa.format(model=f"{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions")
                     m_index += f"""    <li><a href="./{thread_inst}/">{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions</a></li>\n"""
                     if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
