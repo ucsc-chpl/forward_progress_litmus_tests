@@ -490,11 +490,13 @@ def gen_index_html(dest_path, wgsl_base_path):
                     m_index += f"""    <li><a href="./{thread_inst}/">{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions</a></li>\n"""
                     if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
                         for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
-                            t_index += f"""    <li><a href="./{test}/">Test {test}</a></li>\n"""
-                            test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
-                            test_in = test_target_dir + os.path.basename(test) + '.wgsl'
-                            test_img = test_target_dir + os.path.basename(test) + '.png'
-                            gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
+                            if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
+                                t_index += f"""    <li><a href="./{test}/">Test {test}</a></li>\n"""
+                                test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
+                                test_in = test_target_dir + os.path.basename(test) + '.wgsl'
+                                test_img = test_target_dir + os.path.basename(test) + '.png'
+                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
+                        t_index += model_index_end
                         with open(os.path.join(dest_path, model, thread_inst) + '/index.html', 'w') as t_outfile:
                             t_outfile.write(t_index)
                             t_outfile.close()
