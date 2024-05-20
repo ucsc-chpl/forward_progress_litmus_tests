@@ -463,12 +463,12 @@ def gen_index_html(dest_path, wgsl_base_path):
         print(f"generating all runner index.html for {model}")
         gen_index_html_all_runner(dest_path, wgsl_base_path, model)
         m_index = model_index_pa.format(model=model)
-        m_index += f"""    <li><a href="./src/tests/{model}/all_runner/">Run All Tests</a></li>\n"""
+        m_index += f"""    <li><a href="./all_runner/">Run All Tests</a></li>\n"""
         for thread_inst in os.listdir(dest_path + '/' + model):
             if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
                 test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
                 if(thread_inst != 'all_runner'):
-                    m_index += f"""    <li><a href="./src/tests/{model}/{thread_inst}/">{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions</a></li>\n"""
+                    m_index += f"""    <li><a href="./{thread_inst}/">{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions</a></li>\n"""
                     if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
                         for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
                             test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
