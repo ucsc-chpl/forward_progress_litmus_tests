@@ -113,11 +113,70 @@ run_stuff = """
   </script>
 """
 
+def bn(path):
+    return os.path.basename(path)
+
+def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text):
+    os.makedirs(dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/', exist_ok=True)
+    shutil.copyfile(png, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.png')
+    shutil.copyfile(text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.txt')
+    shutil.copyfile(s_text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '_simple.txt')
+    run_test.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'.wgsl')
+
 def gen_wgsls_by_model(dest_path, test_path):
     for test_dir in [d for d in os.listdir(test_path) if os.path.isdir(os.path.join(test_path, d))]:
-        dest_subdir = dest_path + os.path.basename(test_dir)
+        for test in [d for d in os.listdir(os.path.join(test_path, test_dir)) if d not in ['csv', 'distinguishing', 'testExplorer.html', 'timestamps.txt']]:
+            with open(os.path.join(test_path,test_dir,test) + '/' + 'label_' + os.path.basename(test) + '.txt', 'r') as test_file:
+                for line_no, line in enumerate(test_file, start=1):
+                    cur_test_path = test_path + test_dir + '/' + os.path.basename(test) + '/'
+                    png = cur_test_path + os.path.basename(test) + '.png'
+                    text = cur_test_path + os.path.basename(test) + '.txt'
+                    s_test = cur_test_path + os.path.basename(test) + '_simple.txt'
+                    #WEAK VARIANTS
+                    if(line_no == 7):
+                        if(line.strip().replace('OBE - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'OBE', png, text, s_test)
+                   
+                    if(line_no == 8):
+                        if(line.strip().replace('HSA - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'HSA', png, text, s_test)
+
+                    if(line_no == 9):
+                        if(line.strip().replace('HSA_OBE - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'HSA_OBE', png, text, s_test)
+
+                    if(line_no == 10):
+                        if(line.strip().replace('LOBE - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'LOBE', png, text, s_test)
+
+                    if(line_no == 11):
+                        if(line.strip().replace('WEAK_FAIR - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'WEAK_FAIR', png, text, s_test)
+
+                    #strong variants:
+                    if(line_no == 14):
+                        if(line.strip().replace('OBE_STRONG - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'OBE_STRONG', png, text, s_test)
+
+                    if(line_no == 15):
+                        if(line.strip().replace('HSA_STRONG - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'HSA_STRONG', png, text, s_test)
+                    
+                    if(line_no == 16):
+                        if(line.strip().replace('HSA_OBE_STRONG - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'HSA_OBE_STRONG', png, text, s_test)
+                    
+                    if(line_no == 17):
+                        if(line.strip().replace('LOBE_STRONG - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'LOBE_STRONG', png, text, s_test)
+
+                    if(line_no == 18):
+                        if(line.strip().replace('STRONG_FAIR - Termination: ', '') == 'PASS'):
+                            copy_test(dest_path, test_dir, test, cur_test_path, 'STRONG_FAIR', png, text, s_test)
+
+
+        """
         for model in os.listdir(test_path + test_dir + '/distinguishing/'):
-            dest_subdir = dest_path + model.replace('.txt', '/')
             with open(test_path + test_dir + '/distinguishing/' + model, 'r') as model_file:
                 for line in model_file:
                     #line.strip()
@@ -133,9 +192,11 @@ def gen_wgsls_by_model(dest_path, test_path):
                     shutil.copyfile(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.txt')
                     shutil.copyfile(cur_test_path + '/' + line.strip() + '_simple.txt', cur_dest_path + '/' + line.strip() + '_simple.txt')
                     run_test.gen_wgsl(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.wgsl')
-
+"""
 def gen_runner_native(dest_path):
     pass
+
+
 # I should change this so its relative to the directory and not my user 0.o
 def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_progress_litmus_tests/src/lib.rs"):
     runner_s = """use std::borrow::Cow;
