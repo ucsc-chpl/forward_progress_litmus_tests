@@ -4,6 +4,7 @@
 # hsa
 # | 2_thread_2_inst
 # | | 1
+# | | | 1_simple.txt
 # | | | 1.txt
 # | | | 1.wgsl
 # | | | 1.png
@@ -19,6 +20,12 @@
 # | | | 2 ...etc
 # | | 2_thread_3_inst ..etc
 # | obe ...etc
+
+# TODO
+# - display 'test running' for the all runners
+#   - display number of tests finished
+# - add index.html in each of the x_threads_x_instructions directories
+# - fix image display
 
 import os
 import sys
@@ -468,13 +475,18 @@ def gen_index_html(dest_path, wgsl_base_path):
             if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
                 test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
                 if(thread_inst != 'all_runner'):
+                    t_index = model_index_pa.format(model=f"{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions")
                     m_index += f"""    <li><a href="./{thread_inst}/">{test_desc['num_threads']} threads, {test_desc['num_inst']} instructions</a></li>\n"""
                     if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
                         for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
+                            t_index += f"""    <li><a href="./{test}/">Test {test}</a></li>\n"""
                             test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
                             test_in = test_target_dir + os.path.basename(test) + '.wgsl'
                             test_img = test_target_dir + os.path.basename(test) + '.png'
                             gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
+                        with open(os.path.join(dest_path, model, thread_inst) + '/index.html', 'w') as t_outfile:
+                            t_outfile.write(t_index)
+                            t_outfile.close()
         m_index += model_index_end
         with open(dest_path + '/' + model + '/' + 'index.html', 'w') as file:
             file.write(m_index)
@@ -493,7 +505,7 @@ if __name__ == "__main__":
     parser.add_argument('-r', '--make_runner', help='makes the rust stuff')
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is actual /src/lib.rs')
     parser.add_argument('-i', '--make_index', help='makes index.htmls')
-    parser.add_argument('-t', '--test', help='runs the test function. for debugging.')
+    parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.')
     parser.add_argument('-v', '--validate', help='validate all wgsls')
     args = parser.parse_args()
     if(args.test):
