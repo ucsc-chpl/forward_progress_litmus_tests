@@ -94,10 +94,11 @@ run_stuff = """
     init().then(() => {{
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {{
+        const outputDiv = document.getElementById('run_output');
+        outputDiv.textContent = `running test...`;
         const resultPromise = wasm_mod.run(2, "{test_name}");
         if (resultPromise instanceof Promise) {{
         resultPromise.then(result => {{
-            const outputDiv = document.getElementById('run_output');
             if(result == 0){{
               outputDiv.textContent = `Threads finished: ${{result}} 
  Refresh page to continue`;
@@ -107,7 +108,6 @@ run_stuff = """
             }}
           }});
         }} else {{ 
-          const outputDiv = document.getElementById('run_output');
           outputDiv.textContent = `Threads finished: ${{resultPromise}}`;
         }}
       }});
