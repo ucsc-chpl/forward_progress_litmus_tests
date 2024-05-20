@@ -46,18 +46,18 @@
         const outputDiv = document.getElementById('run_output');
         var tests_passed = 0;
         var tests_failed = 0;
-        outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
+        outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
 
         resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/3_threads_4_instructions/93/93.wgsl");
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -69,11 +69,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -85,11 +85,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -101,11 +101,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -117,11 +117,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -133,11 +133,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -149,11 +149,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -165,11 +165,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -181,11 +181,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -197,11 +197,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -213,11 +213,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -229,11 +229,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -245,11 +245,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -261,11 +261,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -277,11 +277,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -293,11 +293,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -309,11 +309,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -325,11 +325,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -341,11 +341,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -357,11 +357,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -373,11 +373,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -389,11 +389,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -405,11 +405,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -421,11 +421,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -437,11 +437,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -453,11 +453,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -469,11 +469,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -485,11 +485,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -501,11 +501,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -517,11 +517,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -533,11 +533,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -549,11 +549,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -565,11 +565,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -581,11 +581,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -597,11 +597,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -613,11 +613,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -629,11 +629,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -645,11 +645,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -661,11 +661,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -677,11 +677,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -693,11 +693,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -709,11 +709,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -725,11 +725,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -741,11 +741,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -757,11 +757,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -773,11 +773,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -789,11 +789,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -805,11 +805,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -821,11 +821,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -837,11 +837,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -853,11 +853,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -869,11 +869,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -885,11 +885,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -901,11 +901,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -917,11 +917,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -933,11 +933,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -949,11 +949,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -965,11 +965,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -981,11 +981,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -997,11 +997,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1013,11 +1013,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1029,11 +1029,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1045,11 +1045,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1061,11 +1061,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1077,11 +1077,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1093,11 +1093,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1109,11 +1109,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1125,11 +1125,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1141,11 +1141,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1157,11 +1157,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1173,11 +1173,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1189,11 +1189,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1205,11 +1205,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1221,11 +1221,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1237,11 +1237,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1253,11 +1253,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1269,11 +1269,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1285,11 +1285,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1301,11 +1301,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1317,11 +1317,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1333,11 +1333,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1349,11 +1349,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1365,11 +1365,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1381,11 +1381,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1397,11 +1397,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1413,11 +1413,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1429,11 +1429,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1445,11 +1445,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1461,11 +1461,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1477,11 +1477,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1493,11 +1493,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1509,11 +1509,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1525,11 +1525,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1541,11 +1541,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1557,11 +1557,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1573,11 +1573,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1589,11 +1589,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1605,11 +1605,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1621,11 +1621,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1637,11 +1637,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1653,11 +1653,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1669,11 +1669,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1685,11 +1685,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1701,11 +1701,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1717,11 +1717,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1733,11 +1733,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1749,11 +1749,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1765,11 +1765,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1781,11 +1781,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1797,11 +1797,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1813,11 +1813,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1829,11 +1829,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1845,11 +1845,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1861,11 +1861,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1877,11 +1877,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1893,11 +1893,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1909,11 +1909,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1925,11 +1925,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1941,11 +1941,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1957,11 +1957,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1973,11 +1973,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -1989,11 +1989,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2005,11 +2005,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2021,11 +2021,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2037,11 +2037,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2053,11 +2053,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2069,11 +2069,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2085,11 +2085,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2101,11 +2101,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2117,11 +2117,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2133,11 +2133,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2149,11 +2149,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2165,11 +2165,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2181,11 +2181,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2197,11 +2197,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2213,11 +2213,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2229,11 +2229,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2245,11 +2245,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2261,11 +2261,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2277,11 +2277,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2293,11 +2293,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2309,11 +2309,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2325,11 +2325,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2341,11 +2341,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2357,11 +2357,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2373,11 +2373,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2389,11 +2389,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2405,11 +2405,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2421,11 +2421,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2437,11 +2437,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2453,11 +2453,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2469,11 +2469,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2485,11 +2485,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2501,11 +2501,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2517,11 +2517,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2533,11 +2533,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2549,11 +2549,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2565,11 +2565,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2581,11 +2581,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2597,11 +2597,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2613,11 +2613,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2629,11 +2629,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2645,11 +2645,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2661,11 +2661,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2677,11 +2677,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2693,11 +2693,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2709,11 +2709,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2725,11 +2725,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2741,11 +2741,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2757,11 +2757,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2773,11 +2773,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2789,11 +2789,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2805,11 +2805,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2821,11 +2821,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2837,11 +2837,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2853,11 +2853,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2869,11 +2869,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2885,11 +2885,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2901,11 +2901,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2917,11 +2917,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2933,11 +2933,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2949,11 +2949,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2965,11 +2965,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2981,11 +2981,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -2997,11 +2997,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -3013,11 +3013,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -3029,11 +3029,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -3045,11 +3045,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -3061,11 +3061,11 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
@@ -3077,18 +3077,18 @@
         resultPromise.then(result => {
             if(result == 0){
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_finished} Tests Failed: ${tests_failed}`;
+              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
           });
         } else { 
           outputDiv.textContent = `Threads finished: ${resultPromise}`;
         }
 
-      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
+      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
       });
     });
   </script>

@@ -415,7 +415,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         const outputDiv = document.getElementById('run_output');
         var tests_passed = 0;
         var tests_failed = 0;
-        outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
+        outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
 """
 
     for thread_inst in os.listdir(dest_path + '/' + model):
@@ -428,11 +428,11 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         resultPromise.then(result => {{
             if(result == 0){{
               tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
+              outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
             }}
             else {{
               tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
+              outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
             }}
           }});
         }} else {{ 
@@ -440,7 +440,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         }}
 """
     index += """
-      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
+      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
       });
     });
   </script>
