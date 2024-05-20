@@ -88,8 +88,8 @@ style_stuff = """
 """
 run_stuff = """
   <script type="module">
-    import init from "../../pkg/litmus_test_web.js";
-    import * as wasm_mod from "../../pkg/litmus_test_web.js";
+    import init from "../../../../../pkg/litmus_test_web.js";
+    import * as wasm_mod from "../../../../../pkg/litmus_test_web.js";
 
     init().then(() => {{
       // Event listener for test case 5
@@ -264,15 +264,17 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
 """
     for model in os.listdir(dest_path):
         for thread_inst in os.listdir(dest_path + os.path.basename(model)):
-            for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
-                test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
-                runner_s += f"""
-        "{test_in}" => {{
-            device.create_shader_module(wgpu::ShaderModuleDescriptor {{
-                label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("{test_in}"))),
-            }})
-        }}"""
+            if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
+                for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
+                    if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
+                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
+                        runner_s += f"""
+                "{test_in}" => {{
+                    device.create_shader_module(wgpu::ShaderModuleDescriptor {{
+                        label: None,
+                        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("{test_in}"))),
+                    }})
+                }}"""
     runner_s += """_ => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
@@ -380,7 +382,7 @@ pub async fn get_gpu_name() -> Option<String> {
     with open(outfile, 'w') as file:
         file.write(runner_s)
         file.close()
-    #print(runner_s)
+        #print(runner_s)
 
 # website structure
 # main page
@@ -396,8 +398,8 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     index = preamble + run_button + initwebgpu
     index += """
   <script type="module">
-    import init from "../../pkg/litmus_test_web.js";
-    import * as wasm_mod from "../../pkg/litmus_test_web.js";
+    import init from "../../../../pkg/litmus_test_web.js";
+    import * as wasm_mod from "../../../../pkg/litmus_test_web.js";
 
     init().then(() => {
       // Event listener for test case 5
@@ -501,4 +503,6 @@ if __name__ == "__main__":
     if(args.make_runner):
         if(args.outfile):
             gen_runner_web(dest_path, wgsl_base_path, outfile=args.outfile)
+    if(args.make_index):
+        gen_index_html(dest_path, wgsl_base_path)
 

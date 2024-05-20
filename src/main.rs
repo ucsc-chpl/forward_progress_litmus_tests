@@ -1,4 +1,5 @@
 use litmus_test_web::run;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen(start)]
 pub fn main() {
