@@ -22,9 +22,9 @@
 # | obe ...etc
 
 # TODO
-# - display 'test running' for the all runners
+# X (needs testing) display 'test running' for the all runners
 #   - display number of tests finished
-# - add index.html in each of the x_threads_x_instructions directories
+# X add index.html in each of the x_threads_x_instructions directories
 # - fix image display
 
 import os
@@ -128,10 +128,10 @@ model_index_pa = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{model}</title>
+    <title>{model} Tests</title>
 </head>
 <body>
-    <b></b>
+    <b>{model} Tests</b>
     <ul>
 """
 
@@ -412,6 +412,10 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {
         let resultPromise;
+        const outputDiv = document.getElementById('run_output');
+        var tests_passed = 0;
+        var tests_failed = 0;
+        outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
 """
 
     for thread_inst in os.listdir(dest_path + '/' + model):
@@ -422,21 +426,21 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         resultPromise = wasm_mod.run(2, "{test_in}");
         if (resultPromise instanceof Promise) {{
         resultPromise.then(result => {{
-            const outputDiv = document.getElementById('run_output');
             if(result == 0){{
-              outputDiv.textContent = `Threads finished: ${{result}} 
- Refresh page to continue`;
+              tests_failed += 1;
+              outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
             }}
             else {{
-              outputDiv.textContent = `Threads finished: ${{result}}`;
+              tests_passed += 1;
+              outputDiv.textContent = `Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
             }}
           }});
         }} else {{ 
-          const outputDiv = document.getElementById('run_output');
           outputDiv.textContent = `Threads finished: ${{resultPromise}}`;
         }}
 """
     index += """
+      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_finished}} Tests Failed: ${{tests_failed}}`;
       });
     });
   </script>
