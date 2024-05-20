@@ -415,22 +415,27 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         const outputDiv = document.getElementById('run_output');
         var tests_passed = 0;
         var tests_failed = 0;
+        var tests_completed = 0;
         outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
 """
-
+    num_tests = 0
     for thread_inst in os.listdir(dest_path + '/' + model):
         if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
             for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
-                test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
-                index += f"""
+                if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
+                    test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
+                    num_tests += 1
+                    index += f"""
         resultPromise = wasm_mod.run(2, "{test_in}");
         if (resultPromise instanceof Promise) {{
         resultPromise.then(result => {{
             if(result == 0){{
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
             }}
             else {{
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
             }}
@@ -439,10 +444,12 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
           outputDiv.textContent = `Threads finished: ${{resultPromise}}`;
         }}
 """
-    index += """
-      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
-      });
-    });
+    index += f"""
+      if(tests_completed === {num_tests}){{
+        outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
+      }}
+      }});
+    }});
   </script>
 """
     #FIX THIS!

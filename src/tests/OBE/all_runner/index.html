@@ -46,32 +46,19 @@
         const outputDiv = document.getElementById('run_output');
         var tests_passed = 0;
         var tests_failed = 0;
+        var tests_completed = 0;
         outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/all_runner/index.html/index.html.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
 
         resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/118/118.wgsl");
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -84,10 +71,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -100,26 +89,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/index.html/index.html.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -132,10 +107,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -148,10 +125,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -164,10 +143,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -180,10 +161,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -196,10 +179,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -212,10 +197,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -228,10 +215,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -244,10 +233,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -260,10 +251,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -276,10 +269,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -292,26 +287,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/index.html/index.html.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -324,10 +305,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -340,10 +323,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -356,10 +341,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -372,10 +359,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -388,10 +377,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -404,10 +395,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -420,10 +413,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -436,10 +431,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -452,10 +449,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -468,10 +467,12 @@
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
+              tests_completed += 1;
               tests_failed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
             else {
+              tests_completed += 1;
               tests_passed += 1;
               outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
             }
@@ -480,7 +481,9 @@
           outputDiv.textContent = `Threads finished: ${resultPromise}`;
         }
 
-      outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
+      if(tests_completed === 24){
+        outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+      }
       });
     });
   </script>
