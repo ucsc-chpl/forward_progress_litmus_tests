@@ -82,12 +82,17 @@ initwebgpu = """  <script>
   </script>
   """
 
-style_stuff = """
-<style>
+style_stuff = """<style>
     .content {{
-      float: right;
+        position: absolute;
+        top: 0;
+        right: 0;
     }}
   </style>
+  <div>
+    <p><iframe src="{text_file}" frameborder="0" height="400"
+      width="95%"></iframe></p>
+  </div>
   <div class="container">
     <div class="content">
       <img src="{img_name}" alt="state transition diagram" width="500">
@@ -96,6 +101,7 @@ style_stuff = """
 </body>
 </html>
 """
+
 run_stuff = """
   <script type="module">
     import init from "../../../../../pkg/litmus_test_web.js";
@@ -486,9 +492,13 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         file.write(index)
         file.close()
 
-def gen_index_html_per_test_runner(test_name, target_dir, img):
+def gen_index_html_per_test_runner(test_name, target_dir, img, text_file):
     if os.path.isdir(os.path.join(dest_path.replace('/tests', '') + target_dir)):
-        index = preamble + run_button + initwebgpu + run_stuff.format(test_name=test_name) + style_stuff.format(img_name=img)
+        index = preamble 
+        index += run_button 
+        index += initwebgpu 
+        index += run_stuff.format(test_name=test_name) 
+        index += style_stuff.format(img_name=img, text_file=text_file)
         with open(os.path.join(dest_path.replace('/tests', ''), target_dir) + 'index.html', 'w') as file:
             file.write(index)
             file.close()
@@ -521,7 +531,8 @@ def gen_index_html(dest_path, wgsl_base_path):
                                 test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
                                 test_in = test_target_dir + os.path.basename(test) + '.wgsl'
                                 test_img = os.path.basename(test) + '.png'
-                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img)
+                                text_file = os.path.basename(test) + '_simple.txt'
+                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img, text_file)
                         t_index += model_index_end
                         with open(os.path.join(dest_path, model, thread_inst) + '/index.html', 'w') as t_outfile:
                             t_outfile.write(t_index)
