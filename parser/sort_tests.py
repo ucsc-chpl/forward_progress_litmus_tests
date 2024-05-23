@@ -39,6 +39,8 @@ wgsl_base_path="tests/"
 dest_path = "/home/nrehman/forward_progress_litmus_tests/src/tests/"
 test_path = "/home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/"
 
+timeout_ms = 1000
+
 preamble = """
 <!doctype html>
 <html lang="en-US">
@@ -402,7 +404,54 @@ pub async fn get_gpu_name() -> Option<String> {
 # | obe ...etc
 
 def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
-    index = preamble + run_button + initwebgpu
+    promise_all = "     Promise.all([\n"
+    out_divs = ""
+    tests = ""
+    num_tests = 0
+    for thread_inst in os.listdir(dest_path + '/' + model):
+        if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
+            for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
+                if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
+                    # test stuff
+                    test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
+                    test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
+                    # add to this promise to the promise all statement
+                    promise_all += f"       resultPromise{num_tests},\n"
+                    # add this test to the test outputs
+                    out_divs += f"""<div id="output{num_tests}">{test_desc['num_threads']} instructions, {test_desc['num_inst']}, test {test}</div>\n"""
+                    tests += f"""
+        let resultPromise{num_tests} = Promise.race([wasm_mod.run(2, "{test_in}"), new Promise((resolve, _) => {{
+                setTimeout(() => {{
+                resolve(0);
+                }}, {timeout_ms});
+            }})]);
+        resultPromise{num_tests}.then((result) => {{
+            if(result == 0) {{
+                document.getElementById("output{num_tests}").textContent = "{test_desc['num_threads']} instructions, {test_desc['num_inst']}, test {test} : failed";
+            }} else {{
+                document.getElementById("output{num_tests}").textContent = "{test_desc['num_threads']} instructions, {test_desc['num_inst']}, test {test} : passed";
+            }}
+        }});
+
+"""
+                    num_tests += 1
+    promise_all += """]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
+            }
+            else {
+              tests_passed = tests_passed + 1;
+            }
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        }
+      );
+"""
+    index = preamble
+    index += """<button id="run_button">run all tests</button>\n\n"""
+    index += out_divs 
+    index += initwebgpu
     index += """
   <script type="module">
     import init from "../../../../pkg/litmus_test_web.js";
@@ -416,38 +465,12 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         var tests_passed = 0;
         var tests_failed = 0;
         var tests_completed = 0;
-        outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
+        outputDiv.textContent = "running tests...";
 """
-    num_tests = 0
-    for thread_inst in os.listdir(dest_path + '/' + model):
-        if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
-            for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
-                if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
-                    test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
-                    num_tests += 1
-                    index += f"""
-        resultPromise = wasm_mod.run(2, "{test_in}");
-        if (resultPromise instanceof Promise) {{
-        resultPromise.then(result => {{
-            if(result == 0){{
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
-            }}
-            else {{
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
-            }}
-          }});
-        }} else {{ 
-          outputDiv.textContent = `Threads finished: ${{resultPromise}}`;
-        }}
-"""
+    index += tests
+    index += promise_all
     index += f"""
-      if(tests_completed === {num_tests}){{
-        outputDiv.textContent = `All Tests Finished. Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
-      }}
+
       }});
     }});
   </script>
