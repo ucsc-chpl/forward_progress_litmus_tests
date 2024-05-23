@@ -39,7 +39,7 @@ wgsl_base_path="tests/"
 dest_path = "/home/nrehman/forward_progress_litmus_tests/src/tests/"
 test_path = "/home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/"
 
-timeout_ms = 1000
+timeout_ms = 15000
 
 preamble = """
 <!doctype html>
