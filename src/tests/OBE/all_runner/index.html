@@ -10,9 +10,33 @@
   <p id="vendor"></p>
   <p id="desc"></p>
   <p id="device"></p>
-
-<button id="run_button">run test</button>
+<button id="run_button">run all tests</button>
 <div id="run_output"></div>
+
+<div id="output0">2 instructions, 4, test 118</div>
+<div id="output1">2 instructions, 4, test 119</div>
+<div id="output2">2 instructions, 4, test 116</div>
+<div id="output3">2 instructions, 4, test 117</div>
+<div id="output4">2 instructions, 3, test 159</div>
+<div id="output5">2 instructions, 3, test 47</div>
+<div id="output6">2 instructions, 3, test 112</div>
+<div id="output7">2 instructions, 3, test 4</div>
+<div id="output8">2 instructions, 3, test 22</div>
+<div id="output9">2 instructions, 3, test 157</div>
+<div id="output10">2 instructions, 3, test 168</div>
+<div id="output11">2 instructions, 3, test 9</div>
+<div id="output12">2 instructions, 3, test 148</div>
+<div id="output13">2 instructions, 3, test 17</div>
+<div id="output14">2 instructions, 3, test 126</div>
+<div id="output15">2 instructions, 3, test 131</div>
+<div id="output16">2 instructions, 3, test 87</div>
+<div id="output17">2 instructions, 3, test 166</div>
+<div id="output18">2 instructions, 3, test 160</div>
+<div id="output19">2 instructions, 3, test 167</div>
+<div id="output20">2 instructions, 3, test 42</div>
+<div id="output21">2 instructions, 3, test 146</div>
+<div id="output22">2 instructions, 3, test 62</div>
+<div id="output23">2 instructions, 3, test 63</div>
   <script>
     async function initWebGPU() {
         try {
@@ -47,456 +71,384 @@
         var tests_passed = 0;
         var tests_failed = 0;
         var tests_completed = 0;
-        outputDiv.textContent = `Tests Passed: ${{tests_passed}} Tests Failed: ${{tests_failed}}`;
+        outputDiv.textContent = "running tests...";
 
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/118/118.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        let resultPromise0 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/118/118.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise0.then((result) => {
+            if(result == 0) {
+                document.getElementById("output0").textContent = "2 instructions, 4, test 118 : failed";
+            } else {
+                document.getElementById("output0").textContent = "2 instructions, 4, test 118 : passed";
+            }
+        });
+
+
+        let resultPromise1 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/119/119.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise1.then((result) => {
+            if(result == 0) {
+                document.getElementById("output1").textContent = "2 instructions, 4, test 119 : failed";
+            } else {
+                document.getElementById("output1").textContent = "2 instructions, 4, test 119 : passed";
+            }
+        });
+
+
+        let resultPromise2 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/116/116.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise2.then((result) => {
+            if(result == 0) {
+                document.getElementById("output2").textContent = "2 instructions, 4, test 116 : failed";
+            } else {
+                document.getElementById("output2").textContent = "2 instructions, 4, test 116 : passed";
+            }
+        });
+
+
+        let resultPromise3 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/117/117.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise3.then((result) => {
+            if(result == 0) {
+                document.getElementById("output3").textContent = "2 instructions, 4, test 117 : failed";
+            } else {
+                document.getElementById("output3").textContent = "2 instructions, 4, test 117 : passed";
+            }
+        });
+
+
+        let resultPromise4 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/159/159.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise4.then((result) => {
+            if(result == 0) {
+                document.getElementById("output4").textContent = "2 instructions, 3, test 159 : failed";
+            } else {
+                document.getElementById("output4").textContent = "2 instructions, 3, test 159 : passed";
+            }
+        });
+
+
+        let resultPromise5 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/47/47.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise5.then((result) => {
+            if(result == 0) {
+                document.getElementById("output5").textContent = "2 instructions, 3, test 47 : failed";
+            } else {
+                document.getElementById("output5").textContent = "2 instructions, 3, test 47 : passed";
+            }
+        });
+
+
+        let resultPromise6 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/112/112.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise6.then((result) => {
+            if(result == 0) {
+                document.getElementById("output6").textContent = "2 instructions, 3, test 112 : failed";
+            } else {
+                document.getElementById("output6").textContent = "2 instructions, 3, test 112 : passed";
+            }
+        });
+
+
+        let resultPromise7 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/4/4.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise7.then((result) => {
+            if(result == 0) {
+                document.getElementById("output7").textContent = "2 instructions, 3, test 4 : failed";
+            } else {
+                document.getElementById("output7").textContent = "2 instructions, 3, test 4 : passed";
+            }
+        });
+
+
+        let resultPromise8 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/22/22.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise8.then((result) => {
+            if(result == 0) {
+                document.getElementById("output8").textContent = "2 instructions, 3, test 22 : failed";
+            } else {
+                document.getElementById("output8").textContent = "2 instructions, 3, test 22 : passed";
+            }
+        });
+
+
+        let resultPromise9 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/157/157.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise9.then((result) => {
+            if(result == 0) {
+                document.getElementById("output9").textContent = "2 instructions, 3, test 157 : failed";
+            } else {
+                document.getElementById("output9").textContent = "2 instructions, 3, test 157 : passed";
+            }
+        });
+
+
+        let resultPromise10 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/168/168.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise10.then((result) => {
+            if(result == 0) {
+                document.getElementById("output10").textContent = "2 instructions, 3, test 168 : failed";
+            } else {
+                document.getElementById("output10").textContent = "2 instructions, 3, test 168 : passed";
+            }
+        });
+
+
+        let resultPromise11 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/9/9.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise11.then((result) => {
+            if(result == 0) {
+                document.getElementById("output11").textContent = "2 instructions, 3, test 9 : failed";
+            } else {
+                document.getElementById("output11").textContent = "2 instructions, 3, test 9 : passed";
+            }
+        });
+
+
+        let resultPromise12 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/148/148.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise12.then((result) => {
+            if(result == 0) {
+                document.getElementById("output12").textContent = "2 instructions, 3, test 148 : failed";
+            } else {
+                document.getElementById("output12").textContent = "2 instructions, 3, test 148 : passed";
+            }
+        });
+
+
+        let resultPromise13 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/17/17.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise13.then((result) => {
+            if(result == 0) {
+                document.getElementById("output13").textContent = "2 instructions, 3, test 17 : failed";
+            } else {
+                document.getElementById("output13").textContent = "2 instructions, 3, test 17 : passed";
+            }
+        });
+
+
+        let resultPromise14 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/126/126.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise14.then((result) => {
+            if(result == 0) {
+                document.getElementById("output14").textContent = "2 instructions, 3, test 126 : failed";
+            } else {
+                document.getElementById("output14").textContent = "2 instructions, 3, test 126 : passed";
+            }
+        });
+
+
+        let resultPromise15 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/131/131.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise15.then((result) => {
+            if(result == 0) {
+                document.getElementById("output15").textContent = "2 instructions, 3, test 131 : failed";
+            } else {
+                document.getElementById("output15").textContent = "2 instructions, 3, test 131 : passed";
+            }
+        });
+
+
+        let resultPromise16 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/87/87.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise16.then((result) => {
+            if(result == 0) {
+                document.getElementById("output16").textContent = "2 instructions, 3, test 87 : failed";
+            } else {
+                document.getElementById("output16").textContent = "2 instructions, 3, test 87 : passed";
+            }
+        });
+
+
+        let resultPromise17 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/166/166.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise17.then((result) => {
+            if(result == 0) {
+                document.getElementById("output17").textContent = "2 instructions, 3, test 166 : failed";
+            } else {
+                document.getElementById("output17").textContent = "2 instructions, 3, test 166 : passed";
+            }
+        });
+
+
+        let resultPromise18 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/160/160.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise18.then((result) => {
+            if(result == 0) {
+                document.getElementById("output18").textContent = "2 instructions, 3, test 160 : failed";
+            } else {
+                document.getElementById("output18").textContent = "2 instructions, 3, test 160 : passed";
+            }
+        });
+
+
+        let resultPromise19 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/167/167.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise19.then((result) => {
+            if(result == 0) {
+                document.getElementById("output19").textContent = "2 instructions, 3, test 167 : failed";
+            } else {
+                document.getElementById("output19").textContent = "2 instructions, 3, test 167 : passed";
+            }
+        });
+
+
+        let resultPromise20 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/42/42.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise20.then((result) => {
+            if(result == 0) {
+                document.getElementById("output20").textContent = "2 instructions, 3, test 42 : failed";
+            } else {
+                document.getElementById("output20").textContent = "2 instructions, 3, test 42 : passed";
+            }
+        });
+
+
+        let resultPromise21 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/146/146.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise21.then((result) => {
+            if(result == 0) {
+                document.getElementById("output21").textContent = "2 instructions, 3, test 146 : failed";
+            } else {
+                document.getElementById("output21").textContent = "2 instructions, 3, test 146 : passed";
+            }
+        });
+
+
+        let resultPromise22 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/62/62.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise22.then((result) => {
+            if(result == 0) {
+                document.getElementById("output22").textContent = "2 instructions, 3, test 62 : failed";
+            } else {
+                document.getElementById("output22").textContent = "2 instructions, 3, test 62 : passed";
+            }
+        });
+
+
+        let resultPromise23 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/63/63.wgsl"), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise23.then((result) => {
+            if(result == 0) {
+                document.getElementById("output23").textContent = "2 instructions, 3, test 63 : failed";
+            } else {
+                document.getElementById("output23").textContent = "2 instructions, 3, test 63 : passed";
+            }
+        });
+
+     Promise.all([
+       resultPromise0,
+       resultPromise1,
+       resultPromise2,
+       resultPromise3,
+       resultPromise4,
+       resultPromise5,
+       resultPromise6,
+       resultPromise7,
+       resultPromise8,
+       resultPromise9,
+       resultPromise10,
+       resultPromise11,
+       resultPromise12,
+       resultPromise13,
+       resultPromise14,
+       resultPromise15,
+       resultPromise16,
+       resultPromise17,
+       resultPromise18,
+       resultPromise19,
+       resultPromise20,
+       resultPromise21,
+       resultPromise22,
+       resultPromise23,
+]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
             }
             else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+              tests_passed = tests_passed + 1;
             }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
         }
+      );
 
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/119/119.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
 
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/116/116.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/117/117.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/159/159.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/47/47.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/112/112.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/4/4.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/22/22.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/157/157.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/168/168.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/9/9.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/148/148.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/17/17.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/126/126.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/131/131.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/87/87.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/166/166.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/160/160.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/167/167.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/42/42.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/146/146.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/62/62.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-        resultPromise = wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/63/63.wgsl");
-        if (resultPromise instanceof Promise) {
-        resultPromise.then(result => {
-            if(result == 0){
-              tests_completed += 1;
-              tests_failed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-            else {
-              tests_completed += 1;
-              tests_passed += 1;
-              outputDiv.textContent = `Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-            }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
-
-      if(tests_completed === 24){
-        outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-      }
       });
     });
   </script>
-
-<style>
-    .content {
-      float: right;
-    }
-  </style>
-  <div class="container">
-    <div class="content">
-      <img src="1.png" alt="state transition diagram" width="500">
-    </div>
-  </div>
 </body>
 </html>
