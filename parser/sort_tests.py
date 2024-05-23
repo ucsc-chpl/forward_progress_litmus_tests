@@ -58,6 +58,7 @@ run_button = """
 <button id="run_button">run test</button>
 <div id="run_output"></div>
 """
+
 initwebgpu = """  <script>
     async function initWebGPU() {
         try {
@@ -449,7 +450,8 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
       );
 """
     index = preamble
-    index += """<button id="run_button">run all tests</button>\n\n"""
+    index += """<button id="run_button">run all tests</button>\n"""
+    index += """<div id="run_output"></div>\n\n"""
     index += out_divs 
     index += initwebgpu
     index += """
