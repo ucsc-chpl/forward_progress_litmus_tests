@@ -478,7 +478,8 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
   </script>
 """
     #FIX THIS!
-    index += style_stuff.format(img_name='1.png')
+    index += """</body>
+</html>"""
     out_path = dest_path + '/' + model + '/' + 'all_runner' + '/'
     os.makedirs(out_path, exist_ok=True)
     with open(out_path + 'index.html', 'w') as file:
