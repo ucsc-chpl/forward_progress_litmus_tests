@@ -16,7 +16,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
 	if(gid_x == 1){
         spin = 1u;
         while (spin == 1u) {
-            // mem_0 can't ever be 2, should spin forever
+            // mem_0 shouldn't ever be 2, should spin forever
             if(atomicLoad(&mem_0) != 2) {
                 spin = 1u;
             }
