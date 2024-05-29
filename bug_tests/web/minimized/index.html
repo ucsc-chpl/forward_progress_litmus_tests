@@ -1,0 +1,77 @@
+
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <title>litmus test</title>
+</head>
+<body>
+  <p id="arch"></p>
+  <p id="vendor"></p>
+  <p id="desc"></p>
+  <p id="device"></p>
+
+<button id="run_button">run test</button>
+<div id="run_output"></div>
+  <script>
+    async function initWebGPU() {
+        try {
+            const adapter = await navigator.gpu.requestAdapter();
+            const adapterInfo = await adapter.requestAdapterInfo();
+            const arch = document.getElementById('arch');
+            arch.textContent = `Architecture: ${adapterInfo.architecture}`;
+            const vendor = document.getElementById('vendor');
+            vendor.textContent = `Vendor: ${adapterInfo.vendor}`;
+            const device = document.getElementById('device');
+            device.textContent = `Device: ${adapterInfo.device}`;
+            const desc = document.getElementById('desc');
+            desc.textContent = `Description: ${adapterInfo.description}`;
+
+        } catch (error) {
+            if(error.name === "cannot read properties of undefined (reading 'requestAdapter')") {
+              console.error('Error initializing WebGPU: ', 'no adapter found');
+              document.write('<p>Error initializing WebGPU: ' + 'no adapter found' + '</p>');
+            }
+            else {
+              console.error('Error initializing WebGPU:', error);
+              document.write('<p>Error initializing WebGPU: ' + error + '</p>');
+            }
+        }
+    }
+    window.onload = initWebGPU;
+  </script>
+  
+  <script type="module">
+    import init from "../../pkg/bug_tests.js";
+    import * as wasm_mod from "../../pkg/bug_tests.js";
+
+    init().then(() => {
+      // Event listener for test case 5
+      document.getElementById('run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "minimized.wgsl");
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+          });
+      });
+    });
+  </script>
+<style>
+    .content {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+  </style>
+  <div>
+    <p><iframe src="minimized.txt" frameborder="0" height="400"
+      width="95%"></iframe></p>
+  </div>
+</body>
+</html>
