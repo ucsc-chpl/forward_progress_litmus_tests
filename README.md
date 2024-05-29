@@ -8,6 +8,10 @@ To apply changes to the wgpu or wgsls, run:
 `wasm-pack build --target=web`
 to rebuild the wasm
 
+#### Setting Up Chrome and the Server
+1. enable wgpu: go to chrome://flags and enable ”WebGPU Developer Features”
+2. 
+
 #### Running natively
 In the bug_tests/ directory use
 `cargo run` 
