@@ -1,4 +1,4 @@
-use litmus_test_web::run;
+use bug_tests::run;
 use wasm_bindgen::prelude::*;
 #[cfg(not(target_arch = "wasm32"))]
 use std::env;

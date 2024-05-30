@@ -1,7 +1,3 @@
-//2,0
-//@group(0)
-//@binding(0)
-//var<storage,read_write> counter: atomic<u32>;
 
 struct RWBuffer {
     counter: atomic<u32>,
