@@ -42,15 +42,15 @@
   </script>
   
   <script type="module">
-    import init from "../../pkg/bug_tests.js";
-    import * as wasm_mod from "../../pkg/bug_tests.js";
+    import init from "../../../pkg/bug_tests.js";
+    import * as wasm_mod from "../../../pkg/bug_tests.js";
 
     init().then(() => {
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {
         const outputDiv = document.getElementById('run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run(2, "2_2_5.wgsl");
+        const resultPromise = wasm_mod.run(1, "./2_thread_per_workgroup/2_2_5_with_buffer.wgsl");
         resultPromise.then(result => {
             if(result == 0){
               outputDiv.textContent = `Threads finished: ${result}`;
@@ -70,7 +70,7 @@
     }
   </style>
   <div>
-    <p><iframe src="2_2_5.txt" frameborder="0" height="400"
+    <p><iframe src="2_2_5_with_buffer.txt" frameborder="0" height="400"
       width="95%"></iframe></p>
   </div>
 </body>

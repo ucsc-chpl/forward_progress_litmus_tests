@@ -42,40 +42,70 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
     info!("Running test on {}", adapter.get_info().name);
 
     let cs_module: wgpu::ShaderModule = match kernel_file {
-        "minimized.wgsl" => {
+        "./1_thread_per_workgroup/minimized.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("minimized.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./1_thread_per_workgroup/minimized.wgsl"))),
             })
         }
-        "minimized_with_dummy.wgsl" => {
+        "./1_thread_per_workgroup/minimized_with_dummy.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("minimized_with_dummy.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./1_thread_per_workgroup/minimized_with_dummy.wgsl"))),
             })
         }
-        "2_2_5.wgsl" => {
+        "./1_thread_per_workgroup/2_2_5.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./1_thread_per_workgroup/2_2_5.wgsl"))),
             })
         }
-        "2_2_5_with_buffer.wgsl" => {
+        "./1_thread_per_workgroup/2_2_5_with_buffer.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5_with_buffer.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./1_thread_per_workgroup/2_2_5_with_buffer.wgsl"))),
             })
         }
-        "2_2_5_with_pc.wgsl" => {
+        "./1_thread_per_workgroup/2_2_5_with_pc.wgsl" => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5_with_pc.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./1_thread_per_workgroup/2_2_5_with_pc.wgsl"))),
+            })
+        }
+        "./2_thread_per_workgroup/minimized.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./2_thread_per_workgroup/minimized.wgsl"))),
+            })
+        }
+        "./2_thread_per_workgroup/minimized_with_dummy.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./2_thread_per_workgroup/minimized_with_dummy.wgsl"))),
+            })
+        }
+        "./2_thread_per_workgroup/2_2_5.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./2_thread_per_workgroup/2_2_5.wgsl"))),
+            })
+        }
+        "./2_thread_per_workgroup/2_2_5_with_buffer.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./2_thread_per_workgroup/2_2_5_with_buffer.wgsl"))),
+            })
+        }
+        "./2_thread_per_workgroup/2_2_5_with_pc.wgsl" => {
+            device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: None,
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./2_thread_per_workgroup/2_2_5_with_pc.wgsl"))),
             })
         }
         _ => {
             device.create_shader_module(wgpu::ShaderModuleDescriptor {
                 label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5.wgsl"))),
+                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("./1_thread_per_workgroup/2_2_5.wgsl"))),
             })
         }
     };
