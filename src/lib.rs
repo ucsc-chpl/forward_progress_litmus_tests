@@ -11470,7 +11470,7 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
     let mem_1: i32 = 0;
     let mem_2: i32 = 0;
 
-    let data_in = [threads_finished, mem_0, mem_1, mem_2]
+    let data_in = [threads_finished, mem_0, mem_1, mem_2];
 
     let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
 

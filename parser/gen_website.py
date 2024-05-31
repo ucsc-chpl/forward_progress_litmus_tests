@@ -304,7 +304,7 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
     let mem_1: i32 = 0;
     let mem_2: i32 = 0;
 
-    let data_in = [threads_finished, mem_0, mem_1, mem_2]
+    let data_in = [threads_finished, mem_0, mem_1, mem_2];
 
     let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
 
@@ -548,9 +548,6 @@ def gen_index_html(dest_path, wgsl_base_path):
             file.write(m_index)
             file.close()
 
-
-
-
 def test():
     validate_wgsls(dest_path)
 
@@ -584,4 +581,8 @@ if __name__ == "__main__":
             gen_runner_web(dest_path, wgsl_base_path, outfile=args.outfile)
     if(args.make_index):
         gen_index_html(dest_path, wgsl_base_path)
+
+    # command to do all of it:
+    # python3 gen_website.py -c 1 --alloyfp_path <path_to_webtest_dir> -r 1 -o <path to src/lib.rs> -i 1
+    # for naomi: python3 gen_website.py -c 1 --alloyfp_path /home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/ -r 1 -o /home/nrehman/forward_progress_litmus_tests/src/lib.rs -i 1
 
