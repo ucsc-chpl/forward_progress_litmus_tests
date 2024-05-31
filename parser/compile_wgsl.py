@@ -24,7 +24,7 @@ def parse_a_exch_br(file, thread, pc, mem_locs):
     mem_locs.add(args['arg0'])
     if(args['arg3'] == 'END'):
         statement = f'''\t\t\tcase {pc}u {{
-                        if(atomicExchange(&mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
+                        if(atomicExchange(&rwBuffer.mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
                             terminate = 1u;
                         }}
                         else {{
@@ -35,7 +35,7 @@ def parse_a_exch_br(file, thread, pc, mem_locs):
         '''
     else:
         statement = f'''\t\t\tcase {pc}u {{
-                        if(atomicExchange(&mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
+                        if(atomicExchange(&rwBuffer.mem_{args['arg0']}, {args['arg2']}) == {args['arg1']}){{
                             pc = {args['arg3']}u;
                         }}
                         else {{
@@ -53,7 +53,7 @@ def parse_a_chk_br(file, thread, pc, mem_locs, target_file):
     mem_locs.add(args['arg0'])
     if (args['arg2'] == 'END'):
         statement = f'''\t\t\tcase {pc}u {{
-                        if(atomicLoad(&mem_{args['arg0']}) == {args['arg1']}) {{
+                        if(atomicLoad(&rwBuffer.mem_{args['arg0']}) == {args['arg1']}) {{
                             terminate = 1u;
                         }}
                         else {{
@@ -64,7 +64,7 @@ def parse_a_chk_br(file, thread, pc, mem_locs, target_file):
         '''
     else:
         statement = f'''\t\t\tcase {pc}u {{
-                        if(atomicLoad(&mem_{args['arg0']}) == {args['arg1']}) {{
+                        if(atomicLoad(&rwBuffer.mem_{args['arg0']}) == {args['arg1']}) {{
                             pc = {args['arg2']}u;
                         }}
                         else {{
@@ -81,7 +81,7 @@ def parse_a_st(file, thread, pc, mem_locs):
     args = re.match(a_st, line)
     mem_locs.add(args['arg0'])
     statement = f'''\t\t\tcase {pc}u {{
-                    atomicStore(&mem_{args['arg0']}, {args['arg1']});
+                    atomicStore(&rwBuffer.mem_{args['arg0']}, {args['arg1']});
                     pc = pc + 1u;
                     break;
                 }}
@@ -158,16 +158,23 @@ def gen_wgsl(target_file, wgsl_name='test'):
                 num_threads += 1
         file.close()
     #add to the 'done' counter when program finishes
-    wgsl_kernel += '''\tatomicAdd(&counter,1u);
+    wgsl_kernel += '''\tatomicAdd(&rwBuffer.counter,1u);
 }
 '''
-    #declare all the vars and stuff
-    preamble = f'//{num_threads},{num_workgroups}\n' + """@group(0)
-@binding(0)
-var<storage,read_write> counter: atomic<u32>;
+
+#new stuff
+    preamble = f'//{num_threads},{num_workgroups}\n' + """
+struct RWBuffer {
+    counter: atomic<u32>,
 """
     for loc in mem_locs:
-        preamble += f"var<workgroup> mem_{loc}: atomic<i32>;\n"
+        preamble += f"  mem_{loc}: atomic<i32>,\n"
+    print(f"num mem locs: {len(mem_locs)}")
+    preamble += """};
+@group(0)
+@binding(0)
+var<storage,read_write> rwBuffer: RWBuffer;
+"""
     preamble += """
 @compute
 @workgroup_size(1)

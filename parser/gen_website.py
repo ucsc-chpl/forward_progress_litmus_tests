@@ -159,7 +159,7 @@ def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text
     shutil.copyfile(png, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.png')
     shutil.copyfile(text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.txt')
     shutil.copyfile(s_text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '_simple.txt')
-    run_test.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'.wgsl')
+    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'.wgsl')
 
 def gen_wgsls_by_model(dest_path, test_path):
     for test_dir in [d for d in os.listdir(test_path) if os.path.isdir(os.path.join(test_path, d))]:
@@ -229,13 +229,12 @@ def gen_wgsls_by_model(dest_path, test_path):
                     shutil.copyfile(cur_test_path + '/' + line.strip() + '.png', cur_dest_path + '/' + line.strip() + '.png')
                     shutil.copyfile(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.txt')
                     shutil.copyfile(cur_test_path + '/' + line.strip() + '_simple.txt', cur_dest_path + '/' + line.strip() + '_simple.txt')
-                    run_test.gen_wgsl(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.wgsl')
+                    compile_wgsl.gen_wgsl(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.wgsl')
 """
 def gen_runner_native(dest_path):
     pass
 
-
-# I should change this so its relative to the directory and not my user 0.o
+#todo change num_threads to num_workgroups
 def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_progress_litmus_tests/src/lib.rs"):
     runner_s = """use std::borrow::Cow;
 use wgpu::util::DeviceExt;
@@ -300,8 +299,14 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
         }
     };
     
-    let dummy: i32 = 0;
-    let size = std::mem::size_of_val(&dummy) as wgpu::BufferAddress;
+    let threads_finished: i32 = 0;
+    let mem_0: i32 = 0;
+    let mem_1: i32 = 0;
+    let mem_2: i32 = 0;
+
+    let data_in = [threads_finished, mem_0, mem_1, mem_2]
+
+    let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
 
     let staging_buffer = device.create_buffer(&wgpu::BufferDescriptor {
         label: None,
@@ -311,7 +316,7 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
     });
     let storage_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
         label: Some("Storage Buffer"),
-        contents: bytemuck::cast_slice(&[dummy]),
+        contents: bytemuck::cast_slice(&data_in),
         usage: wgpu::BufferUsages::STORAGE
             | wgpu::BufferUsages::COPY_DST
             | wgpu::BufferUsages::COPY_SRC,

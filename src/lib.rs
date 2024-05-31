@@ -11465,8 +11465,14 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
         }
     };
     
-    let dummy: i32 = 0;
-    let size = std::mem::size_of_val(&dummy) as wgpu::BufferAddress;
+    let threads_finished: i32 = 0;
+    let mem_0: i32 = 0;
+    let mem_1: i32 = 0;
+    let mem_2: i32 = 0;
+
+    let data_in = [threads_finished, mem_0, mem_1, mem_2]
+
+    let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
 
     let staging_buffer = device.create_buffer(&wgpu::BufferDescriptor {
         label: None,
@@ -11476,7 +11482,7 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
     });
     let storage_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
         label: Some("Storage Buffer"),
-        contents: bytemuck::cast_slice(&[dummy]),
+        contents: bytemuck::cast_slice(&data_in),
         usage: wgpu::BufferUsages::STORAGE
             | wgpu::BufferUsages::COPY_DST
             | wgpu::BufferUsages::COPY_SRC,
