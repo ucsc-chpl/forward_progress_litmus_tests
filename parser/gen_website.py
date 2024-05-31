@@ -29,15 +29,16 @@
 
 import os
 import sys
-import run_test
+import compile_wgsl
 import shutil
 import argparse
 import re
 import subprocess
 
+repo_base_dir = os.getcwd().replace('/parser', '')
 wgsl_base_path="tests/"
-dest_path = "/home/nrehman/forward_progress_litmus_tests/src/tests/"
-test_path = "/home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/"
+dest_path = repo_base_dir + "/src/tests/"
+test_path_default = "/home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/"
 
 timeout_ms = 15000
 
@@ -552,6 +553,7 @@ def test():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--compile', help='compile wgsls')
+    parser.add_argument('--alloyfp_path', help='compile wgsls')
     parser.add_argument('-r', '--make_runner', help='makes the rust stuff')
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is actual /src/lib.rs')
     parser.add_argument('-i', '--make_index', help='makes index.htmls')
@@ -561,7 +563,17 @@ if __name__ == "__main__":
     if(args.test):
         test()
     if(args.compile):
-        gen_wgsls_by_model(dest_path, test_path)
+        if(args.alloyfp_path):
+            if(os.path.isdir(args.alloyfp_path)):
+                gen_wgsls_by_model(dest_path, args.alloyfp_path + '/')
+            else:
+                print("invalid path to AlloyForwardProgress repo! Exiting!")
+                exit()
+            
+        else:
+            print("no path to AlloyForwardProgress repo was given, defaulting to naomi's path")
+            gen_wgsls_by_model(dest_path, test_path_default)
+
     if(args.make_runner):
         if(args.outfile):
             gen_runner_web(dest_path, wgsl_base_path, outfile=args.outfile)
