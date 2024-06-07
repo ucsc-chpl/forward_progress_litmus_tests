@@ -27,10 +27,3 @@ this will copy the test into the litmus_test crate.
 #### Sort_Tests.py
 This script generates the website with tests sorted by progress model. 
 
-#### litmus test crate
-the litmus test crate runs the tests with wgpu. The default (cargo run with no arguments) runs the litmus_test.wgsl kernel with 2 threads. To run with a specific wgsl:
-
-cargo run your_kernel.wgsl num_threads
-
-#### issues
-case statements: the wgsls use case statements to simulate gotos. Test case 2_threads_2_instructions 5 terminates with 2 threads when it is refactored to not use switch statements (2_thread_2_inst_5.wgsl in limus_test/), but with them fails. Same for replacing case statements with if statements.
