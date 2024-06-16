@@ -1,6 +1,9 @@
 # forward_progress_litmus_tests
 wgpu forward progress tests. 
 
+#### main_with_workgroup_bug branch
+This branch contains all of the test cases compiled with the workgroup bug, i.e. the variables that were supposed to be global variables were worgroup variables. 
+
 #### litmus test web (website)
 This crate runs a litmus test in the browser. Steps to run:
 - Compile use the command `wasm-pack build --target web`. 
