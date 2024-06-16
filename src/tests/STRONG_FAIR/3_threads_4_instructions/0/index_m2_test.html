@@ -39,12 +39,21 @@
     import init from "../../../../../pkg/litmus_test_web.js";
     import * as wasm_mod from "../../../../../pkg/litmus_test_web.js";
 
+    async function run_lots_of_tests(test_name) {
+      const promises = [];
+      for (let i=0; i<10; i++) {
+        console.log(`launching ${i}th iteration`);
+        promises.push(wasm_mod.run(2, test_name));
+      }
+      return Promise.all(promises);
+    }
+
     init().then(() => {
       // Event listener for test case 5
       document.getElementById('run_button').addEventListener('click', () => {
         const outputDiv = document.getElementById('run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run(2, "tests/STRONG_FAIR/3_threads_4_instructions/0/0.wgsl");
+        const resultPromise = run_lots_of_tests("tests/STRONG_FAIR/3_threads_4_instructions/0/0.wgsl");
         if (resultPromise instanceof Promise) {
         resultPromise.then(result => {
             if(result == 0){
