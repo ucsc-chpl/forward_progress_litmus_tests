@@ -12,7 +12,7 @@ Steps to run:
 - Navigate to the root of this repository
 - Compile using the command `wasm-pack build --target web`. This will generate the webGPU bindings and javascript in the pkg/ directory.
 - Make sure webGPU is enabled in chrome (chrome://gpu, webGPU should have hardware acceleration enabled)
-- Start a local server in the litmus_test_web/ directory with `python3 -m http.server`
+- Start a local server in the root of this repo with `python3 -m http.server`
   - if you see something like 'failed to initialize webGPU' it probably means chrome is blocking the gpu because this is an http server. Launch a secure server (https) instead.
 - view in the browser at localhost:8000/ (use chrome!). 
 - Click view tests then select a test and run with the run button.
