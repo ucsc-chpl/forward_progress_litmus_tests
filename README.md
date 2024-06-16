@@ -1,5 +1,6 @@
 # forward_progress_litmus_tests
-wgpu forward progress tests. 
+# M2 CRASH TEST CASE
+code and summary in src/tests/M2_kernel_panic_isolated_test!
 
 #### main_with_workgroup_bug branch
 This branch contains all of the test cases compiled with the workgroup bug, i.e. the variables that were supposed to be global variables were worgroup variables. 
