@@ -1,5 +1,7 @@
 # forward_progress_litmus_tests
-wgpu forward progress tests. 
+wgpu forward progress tests.
+
+#### THIS BRANCH IS DEPRECATED
 
 #### litmus test web (website)
 This crate runs a litmus test in the browser. Steps to run:
