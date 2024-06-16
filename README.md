@@ -1,6 +1,9 @@
 # forward_progress_litmus_tests
 wgpu forward progress tests. 
 
+#### testing_wgsl_bugs branch
+This branch is for experimenting with test cases.
+
 #### litmus test web (website)
 This crate runs a litmus test in the browser. Steps to run:
 - Compile use the command `wasm-pack build --target web`. 
