@@ -1,7 +1,7 @@
 # forward_progress_litmus_tests
 
 #### Github Pages Website
-This branch is linked to the github pages website: [text](https://ucsc-chpl.github.io/forward_progress_litmus_tests/). Changes pushed to this branch will automatically be published to the webpage
+This branch is linked to the [github pages website](https://ucsc-chpl.github.io/forward_progress_litmus_tests/). Changes pushed to this branch will automatically be published to the webpage
 
 #### Dependancies
 - rust (`$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh`)
