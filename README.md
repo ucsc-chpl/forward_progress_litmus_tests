@@ -46,5 +46,16 @@ To generate the HTML files:
 
 Note that wasm-pack should be re-run whenever changes to the wgsls or rust code are made. 
 
+#### To-Do (in no particular order)
+- make the number of global buffer variables passed based on the max mem locations in the test cases (currently hard coded and some aren't used)
+- Add support for intra-workgroup tests
+- Create an all_runner for all of the tests so people only have to press one button
+- Figure out how to actually terminate tests that hang in the browser. Currently if the test is unresponsive for 15 seconds the website will say the test failed, but won't directly terminate the process (the driver probably will but its not guarunteed)
+- Reduce size of website
+  - only compile a test once and have a csv or something that says which models it passes under, and call the kernel with that (currently a given wgsl can have multiple copies)
+  - Put all of the javascript stuff in separate files instead of within the HTML
+  - Find a way to dynamically load the wgsls instead of statically loading them at compile time
+- Fix number of workgroups called (currently hardcoded as 2 0.o)
+
 
 
