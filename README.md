@@ -13,7 +13,7 @@ Steps to run:
 - Compile using the command `wasm-pack build --target web`. This will generate the webGPU bindings and javascript in the pkg/ directory.
 - Make sure webGPU is enabled in chrome (chrome://gpu, webGPU should have hardware acceleration enabled)
 - Start a local server in the root of this repo with `python3 -m http.server`
-  - if you see something like 'failed to initialize webGPU' it probably means chrome is blocking the gpu because this is an http server. Launch a secure server (https) instead.
+  - if you see something like 'failed to initialize webGPU' it probably means chrome is blocking the gpu because this is an http server. Launch a secure server (https, use the serve.py script) instead.
 - view in the browser at localhost:8000/ (use chrome!). 
 - Select a test and run with the run button.
 - If a test case finishes it will display the number of threads that terminated, otherwise it should display test failed after 15 seconds. It may not display this if the test case is seriously messing with chrome or the computer. 
