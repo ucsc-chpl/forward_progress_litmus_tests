@@ -1,5 +1,5 @@
 # forward_progress_litmus_tests
-# M2 CRASH TEST CASE
+### M2 CRASH TEST CASE
 code and summary in src/tests/M2_kernel_panic_isolated_test!
 
 #### main_with_workgroup_bug branch
