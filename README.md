@@ -15,7 +15,7 @@ Steps to run:
 - Start a local server in the root of this repo with `python3 -m http.server`
   - if you see something like 'failed to initialize webGPU' it probably means chrome is blocking the gpu because this is an http server. Launch a secure server (https) instead.
 - view in the browser at localhost:8000/ (use chrome!). 
-- Click view tests then select a test and run with the run button.
+- Select a test and run with the run button.
 - If a test case finishes it will display the number of threads that terminated, otherwise it should display test failed after 15 seconds. It may not display this if the test case is seriously messing with chrome or the computer. 
 
 #### Running Natively
