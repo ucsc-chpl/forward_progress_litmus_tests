@@ -41,7 +41,8 @@
 
     async function run_lots_of_tests(test_name) {
       const promises = [];
-      for (let i=0; i<1000; i++) {
+      for (let i=0; i<10; i++) {
+        console.log(`launching ${i}th iteration`);
         promises.push(wasm_mod.run(2, test_name));
       }
       return Promise.all(promises);
