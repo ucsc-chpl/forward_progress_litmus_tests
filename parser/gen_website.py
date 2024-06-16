@@ -1,3 +1,11 @@
+import os
+import sys
+import compile_wgsl
+import shutil
+import argparse
+import re
+import subprocess
+
 # generates wgsls from alloy forward progress tests, sorted by progress model
 
 # output file directory:
@@ -21,27 +29,24 @@
 # | | 2_thread_3_inst ..etc
 # | obe ...etc
 
-# TODO
-# X (needs testing) display 'test running' for the all runners
-#   - display number of tests finished
-# X add index.html in each of the x_threads_x_instructions directories
-# - fix image display
+# TODO Add all runner for HSA, OBE, HSA-OBE, LOBE (one button)
+# TODO figure out how to actually kill the test in the browser
+# TODO put scripts in separate javascript files instead of just in a script block in the HTML
+# TODO fix number of threads called
 
-import os
-import sys
-import compile_wgsl
-import shutil
-import argparse
-import re
-import subprocess
-
+# forward_progress_litmus_test path
 repo_base_dir = os.getcwd().replace('/parser', '')
+# Idk what this is for
 wgsl_base_path="tests/"
+# destination path for generated wgsls. Relative to repo_base_dir
 dest_path = repo_base_dir + "/src/tests/"
+# path to alloy forward progress repo, defaults to naomi's path
 test_path_default = "/home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/"
 
+#timeout test in website after 15 seconds (this doesn't actually kill the test)
 timeout_ms = 15000
 
+# boiler plate for HTMLs
 preamble = """
 <!doctype html>
 <html lang="en-US">
@@ -60,6 +65,7 @@ run_button = """
 <div id="run_output"></div>
 """
 
+# more HTML boiler plate, this displays the device info
 initwebgpu = """  <script>
     async function initWebGPU() {
         try {
@@ -83,6 +89,7 @@ initwebgpu = """  <script>
   </script>
   """
 
+# for displaying images and code
 style_stuff = """<style>
     .content {{
         position: absolute;
@@ -103,6 +110,7 @@ style_stuff = """<style>
 </html>
 """
 
+# calls the shader and displays the output (SUS)
 run_stuff = """
   <script type="module">
     import init from "../../../../../pkg/litmus_test_web.js";
@@ -151,9 +159,11 @@ model_index_end = """
 </html>
 """
 
+# alias for basename
 def bn(path):
     return os.path.basename(path)
 
+# copies the relevant files from the alloy_forward_progress repo and generates the wgsl
 def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text):
     os.makedirs(dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/', exist_ok=True)
     shutil.copyfile(png, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.png')
@@ -161,6 +171,7 @@ def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text
     shutil.copyfile(s_text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '_simple.txt')
     compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'.wgsl')
 
+# generates all of the wgsls and sorts them by progress model
 def gen_wgsls_by_model(dest_path, test_path):
     for test_dir in [d for d in os.listdir(test_path) if os.path.isdir(os.path.join(test_path, d))]:
         for test in [d for d in os.listdir(os.path.join(test_path, test_dir)) if d not in ['csv', 'distinguishing', 'testExplorer.html', 'timestamps.txt']]:
@@ -212,29 +223,8 @@ def gen_wgsls_by_model(dest_path, test_path):
                         if(line.strip().replace('STRONG_FAIR - Termination: ', '') == 'PASS'):
                             copy_test(dest_path, test_dir, test, cur_test_path, 'STRONG_FAIR', png, text, s_test)
 
-
-        """
-        for model in os.listdir(test_path + test_dir + '/distinguishing/'):
-            with open(test_path + test_dir + '/distinguishing/' + model, 'r') as model_file:
-                for line in model_file:
-                    #line.strip()
-                    # copy png pic, the txt file, and the simple.txt
-                    cur_test_path = test_path + test_dir + '/' + line.strip()
-                    cur_dest_path = dest_path + model.replace('.txt', '/') + test_dir + '/' + line.strip()
-                    if not os.path.exists(cur_dest_path):
-                        os.makedirs(cur_dest_path)
-                        print(f"made dir {cur_dest_path}")
-                    #else:
-                        #print(f"path already exists: {cur_dest_path}")
-                    shutil.copyfile(cur_test_path + '/' + line.strip() + '.png', cur_dest_path + '/' + line.strip() + '.png')
-                    shutil.copyfile(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.txt')
-                    shutil.copyfile(cur_test_path + '/' + line.strip() + '_simple.txt', cur_dest_path + '/' + line.strip() + '_simple.txt')
-                    compile_wgsl.gen_wgsl(cur_test_path + '/' + line.strip() + '.txt', cur_dest_path + '/' + line.strip() + '.wgsl')
-"""
-def gen_runner_native(dest_path):
-    pass
-
-#todo change num_threads to num_workgroups
+# TODO change num_threads to num_workgroups
+# generates lib.rs for test website
 def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_progress_litmus_tests/src/lib.rs"):
     runner_s = """use std::borrow::Cow;
 use wgpu::util::DeviceExt;
@@ -406,16 +396,7 @@ pub async fn get_gpu_name() -> Option<String> {
         file.close()
         #print(runner_s)
 
-# website structure
-# main page
-# | hsa
-# | | test_all
-# | | 2_thread_2_inst
-# | | | 1
-# | | | 2 ...etc
-# | | 2_thread_3_inst ..etc
-# | obe ...etc
-
+# generates the all_runner html for a given model
 def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     promise_all = "     Promise.all([\n"
     out_divs = ""
@@ -489,7 +470,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     }});
   </script>
 """
-    #FIX THIS!
+    #FIX THIS! (update idk what I mean by fix this)
     index += """</body>
 </html>"""
     out_path = dest_path + '/' + model + '/' + 'all_runner' + '/'
@@ -498,6 +479,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         file.write(index)
         file.close()
 
+# generates HTML for single test
 def gen_index_html_per_test_runner(test_name, target_dir, img, text_file):
     if os.path.isdir(os.path.join(dest_path.replace('/tests', '') + target_dir)):
         index = preamble 
@@ -511,8 +493,7 @@ def gen_index_html_per_test_runner(test_name, target_dir, img, text_file):
     else:
         print(f"gen_index_html_per_test_runner() recieved non dir target dir: {target_dir} skipping")
 
-
-# generates individual and all runner for all models
+# generates all of the HTML files
 def gen_index_html(dest_path, wgsl_base_path):
     # premble
     # button defs
@@ -548,19 +529,18 @@ def gen_index_html(dest_path, wgsl_base_path):
             file.write(m_index)
             file.close()
 
+# for testing, ignore
 def test():
     validate_wgsls(dest_path)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--compile', help='compile wgsls')
     parser.add_argument('--alloyfp_path', help='compile wgsls')
     parser.add_argument('-r', '--make_runner', help='makes the rust stuff')
-    parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is actual /src/lib.rs')
+    parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs')
     parser.add_argument('-i', '--make_index', help='makes index.htmls')
     parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.')
-    parser.add_argument('-v', '--validate', help='validate all wgsls')
     args = parser.parse_args()
     if(args.test):
         test()
@@ -582,7 +562,18 @@ if __name__ == "__main__":
     if(args.make_index):
         gen_index_html(dest_path, wgsl_base_path)
 
-    # command to do all of it:
+    # command to do everything (generate wgsls and htmls):
     # python3 gen_website.py -c 1 --alloyfp_path <path_to_webtest_dir> -r 1 -o <path to src/lib.rs> -i 1
-    # for naomi: python3 gen_website.py -c 1 --alloyfp_path /home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/ -r 1 -o /home/nrehman/forward_progress_litmus_tests/src/lib.rs -i 1
+    # Example (for naomi): python3 gen_website.py -c 1 --alloyfp_path /home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/ -r 1 -o /home/nrehman/forward_progress_litmus_tests/src/lib.rs -i 1
+
+    # command to just generate wgsls:
+    # python3 gen_website.py -c 1 --alloyfp_path <path_to_webtest_dir>
+
+    # command to generate the rust code:
+    # python3 gen_website.py -r 1 -o <path to src/lib.rs>
+
+    # command to generate the index.htmls
+    # python3 gen_website.py -i 1
+
+    # to validate all of the wgsls run ./val_wgsls.sh
 

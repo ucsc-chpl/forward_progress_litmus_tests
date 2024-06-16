@@ -3,23 +3,40 @@ import sys
 import argparse
 import re
 
-#QUESTIONS:
-# how do I set up web server on shrike I can access from my laptop?
-#  / how what tool is best / etc
+# TODO make all variables either signed or unsigned (currently consistent but arbitrary)
+# TODO make the number of global buffer variables passed based on the max mem locations in the test cases (currently hard coded and some aren't used)
+# TODO think about how to do intra workgroup stuff
 
-
-# INITIALIZE mem in wgls
-#for multiple workgroups
+#for multiple threads per workgroup (not yet implemented)
 #thread = r'THREAD(?P<tid>[0-9]+)\,(?P<wg>[0-9]+)'
-# REMEMBER TO ADD END TO branch pc possibilities
+
+# thread header
 td = r'THREAD(?P<tid>[0-9]+)'
+
+# atomic exchange branch instruction 
+# if(atomic_exch(arg0, arg2) == arg1) goto arg3
+# arg0 = memory address
+# arg1 = value to compare
+# arg2 = value to exchange
+# arg3 = branch pc
 a_exch_br = r'atomic_exch_branch\((?P<arg0>[0-9]),(?P<arg1>[0-9]),(?P<arg2>[0-9]),((?P<arg3>([0-9]|END)))\)'
+
+# atomic check branch instruction
+# if (atomicLoad(arg0) == arg1) goto arg2
+# arg0 = mem location to check
+# arg1 = value to check against
+# arg2 = branch pc
 a_chk_br = r'atomic_chk_branch\((?P<arg0>[0-9]),(?P<arg1>[0-9]),(?P<arg2>([0-9]|END))\)'
+
+# atomic store
+# you know how a store works
+# arg0 = mem location to store to
+# arg1 = value to store
 a_st = r'atomic_store\((?P<arg0>[0-9]),(?P<arg1>[0-9])\)'
 
+# parses atomic exch branch instructions, returns associated wgsl code
 def parse_a_exch_br(file, thread, pc, mem_locs):
     line = file.readline()
-    #print(line)
     args = re.match(a_exch_br, line)
     mem_locs.add(args['arg0'])
     if(args['arg3'] == 'END'):
@@ -46,6 +63,7 @@ def parse_a_exch_br(file, thread, pc, mem_locs):
         '''
     return statement
 
+# parses atomic check branch instructions, returns associated wgsl code
 def parse_a_chk_br(file, thread, pc, mem_locs, target_file):
     line = file.readline()
     #print(line)
@@ -75,6 +93,7 @@ def parse_a_chk_br(file, thread, pc, mem_locs, target_file):
         '''
     return statement
 
+# parses atomic store instructions, returns associated wgsl code
 def parse_a_st(file, thread, pc, mem_locs):
     line = file.readline()
     #print(line)
@@ -88,6 +107,7 @@ def parse_a_st(file, thread, pc, mem_locs):
     '''
     return statement
 
+# generates the wgsl code for a single thread
 def parse_thread(wgsl_kernel, thread_id, file, mem_locs, target_file):
     pc = 0
     thread = f'\tif(gid_x == {thread_id})' + '''{
@@ -102,25 +122,29 @@ def parse_thread(wgsl_kernel, thread_id, file, mem_locs, target_file):
         #peek next line
         pos = file.tell()
         line = file.readline()
-        #print(pc)
         file.seek(pos)
+        # wouldn't a switch statement be lovely right here
+
+        #end of thread
         if(re.match(td, line)):
-            #end of thread
-            #print("end of thread reached")
             break
+        #whitespace, ignore (advance to next line)
         elif(line == '\n'):
-            #whitespace, ignore (advance to next line)
             line = file.readline()
             continue
+        # parse atomic exch branch
         elif(re.match(a_exch_br, line)):
             thread += parse_a_exch_br(file, thread, pc, mem_locs)
+        # parse atomic check branch
         elif(re.match(a_chk_br, line)):
             thread += parse_a_chk_br(file, thread, pc, mem_locs, target_file)
+        # parse atomic store
         elif(re.match(a_st, line)):
             thread += parse_a_st(file, thread, pc, mem_locs)
+        # end of file reached
         elif(line == ''):
-            #end of file reached
             break
+        # parsing error
         else:
             print(f'Parser error! offending line: {line}')
             exit()
@@ -133,13 +157,14 @@ def parse_thread(wgsl_kernel, thread_id, file, mem_locs, target_file):
                     //shouldn't happen 
                 }}
     '''
+    # add the last curly braces
     thread += '\t\t}\n\t\t}\n\t}\n'
     return thread
 
+# generates the entire wgsl
 def gen_wgsl(target_file, wgsl_name='test'):
     print(f"parsing target file : {target_file}")
     wgsl_kernel = ""
-    #TODO think about how to do intra workgroup stuff
     mem_locs = set()
     num_threads = 0
     num_workgroups = 0
@@ -161,8 +186,7 @@ def gen_wgsl(target_file, wgsl_name='test'):
     wgsl_kernel += '''\tatomicAdd(&rwBuffer.counter,1u);
 }
 '''
-
-#new stuff
+    # stitch all of the generated code together
     preamble = f'//{num_threads},{num_workgroups}\n' + """
 struct RWBuffer {
     counter: atomic<u32>,
@@ -187,65 +211,19 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     with open(wgsl_name, 'w') as out_file:
         out_file.write(wgsl_kernel)
         out_file.close()
-    
-
-def gen_crate(build_dir):
-    if(os.is_dir(build_dir)):
-        os.system(f'cd {build_dir}')
-    else:
-        os.system(f'mkdir {build_dir}')
-        os.system(f'cd {build_dir}')
-    os.system(f'cargo new litmus-tests')
-    #TODO finish adding stuff
-    os.system(f'cargo add ')
-    #TODO write stuff to main
-
-def run_test(wgsl_name, 
-            num_threads, 
-            num_workgroups=1, 
-            power_mode='low_power', 
-            dir='/home/nrehman/forward_progress_litmus_tests/litmus_test/'):
-    if(os.path.isdir(dir)):
-        os.system(f'cp {wgsl_name} {dir}')
-        #os.system(f'cd {dir}')
-        print(f'wgsl kernel copied into {dir}\nkernel name: {wgsl_name}\nnum_threads: {num_threads}\ncommand: cd {dir} && cargo run {wgsl_name} {num_threads}')
-    else:
-        print("specified directory does not exist!")
-        exit()
-    pass
-    #cmd = f'cargo run {wgsl_name} {num_threads}'
-    #os.system(cmd)
-    #return success or timeout (fail)
 
 # for testing, ignore
 def test():
     pass
 
-def main_2():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('-b', '--build', help='build crate')
-    parser.add_argument('-d', '--build_dir', help='directory to build crate (defualts to .)')
-    parser.add_argument('-tf', '--test_file', help='path to test file')
-    parser.add_argument('-r', '--run_test', help='run the test')
-    #see if you can pass the name of the device you want
-    parser.add_argument('-p', '--power_mode', help='high power or low power')
-    #work group stuff (inter workgroup vs intra workgroup)
-    parser.add_argument('-wg', '--workgroups', help='UNIMPLEMENTED!')
-    parser.add_argument('-w', '--wasm', help='compile to wasm 32 unknown-unknown')
-    args = parser.parse_args()
-
-    if(args.build):
-        if(args.build_dir):
-            gen_crate(ags.build_dir)
-        else:
-            gen_crate(sys.pwd())
-
+# run the program with command line arguments
 def main():
+    # command line arguments
     parser = argparse.ArgumentParser()
+    # path to test txt file (in alloy_forward_progress)
     parser.add_argument('-tf', '--test_file', help='path to test file')
+    # generate wgsl
     parser.add_argument('-g', '--gen_wgsl', help='generate wgsl')
-    parser.add_argument('-r', '--run', help='run application')
     parser.add_argument('-o', '--out_file', help='path to output wgsl')
     parser.add_argument('-t', '--test', help='for testing, ignore')
     args = parser.parse_args()
@@ -253,28 +231,27 @@ def main():
     if(args.test):
         test()
     else:
-        if(args.run):
-            if(args.gen_wgsl):
-                if(args.test_file):
-                    if(args.out_file):
-                        gen_wgsl(args.test_file, args.out_file)
-                        with open(args.out_file) as file:
-                            top = re.match(r'\/\/(?P<num_threads>[0-9]+)\,(?P<num_workgroups>[0-9]+)', file.readline())
-                            print(top)
-                            num_threads = top['num_threads']
-                            num_workgroups = top['num_workgroups']
-                            file.close()
-                    
-                        run_test(args.test_file.replace('.txt', '.wgsl'), num_threads)
-                    else:
-                        print("please specify outfile")
+        if(args.gen_wgsl):
+            if(args.test_file):
+                if(args.out_file):
+                    gen_wgsl(args.test_file, args.out_file)
+                    with open(args.out_file) as file:
+                        top = re.match(r'\/\/(?P<num_threads>[0-9]+)\,(?P<num_workgroups>[0-9]+)', file.readline())
+                        print(top)
+                        num_threads = top['num_threads']
+                        num_workgroups = top['num_workgroups']
+                        file.close()
+                
+                    run_test(args.test_file.replace('.txt', '.wgsl'), num_threads)
                 else:
-                    print('pls specify path to test file')
+                    print("please specify outfile")
             else:
-                if(args.test_file):
-                    gen_wgsl(args.test_file, 'test')
-                else:
-                    print('pls specify path to test file')
+                print('pls specify path to test file')
+        else:
+            if(args.test_file):
+                gen_wgsl(args.test_file, 'test')
+            else:
+                print('pls specify path to test file')
 
 if __name__ == '__main__':
     main()
