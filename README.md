@@ -30,7 +30,9 @@ Steps to run:
 compile_wgsl.py takes a .txt file from the alloy_forward_progress directory and generates a wgsl. To use:
 `python3 compile_wgsl.py -g 1 -tf /path/to/test.txt -o /path/to/outfile.wgsl`
 
-gen_website.py contains the script for generating all of the wgsls from the alloy_forward_progress repo and generating the HTML files for the website. To generate everything: (wgsls, rust lib.rs, and HTML):
+gen_website.py contains the script for generating all of the wgsls from the alloy_forward_progress repo and generating the HTML files for the website. 
+
+To generate everything: (wgsls, rust lib.rs, and HTML):
 `python3 gen_website.py -c 1 --alloyfp_path <path_to_webtest_dir> -r 1 -o <path to src/lib.rs> -i 1`
 
 To generate the wgsls:
