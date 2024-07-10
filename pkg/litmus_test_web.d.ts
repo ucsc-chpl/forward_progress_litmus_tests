@@ -8,10 +8,10 @@
 export function run(num_threads: number, kernel_file: string): Promise<number>;
 /**
 * @param {number} num_threads
-* @param {string} kernel_file
+* @param {string} kernel_path
 * @returns {Promise<number | undefined>}
 */
-export function execute_gpu(num_threads: number, kernel_file: string): Promise<number | undefined>;
+export function execute_gpu(num_threads: number, kernel_path: string): Promise<number | undefined>;
 /**
 * @returns {Promise<string | undefined>}
 */
@@ -31,6 +31,7 @@ export interface InitOutput {
   readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h944b2f21aba6d4a9: (a: number, b: number, c: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly wasm_bindgen__convert__closures__invoke2_mut__h29f96d9b42d809c2: (a: number, b: number, c: number, d: number) => void;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

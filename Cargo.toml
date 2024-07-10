@@ -28,10 +28,10 @@ wasm-bindgen = "0.2"
 wgpu-hal = "0.19.3"
 naga = "0.19.2"
 env = "0.0.0"
-
 console_error_panic_hook = "0.1.6"
 tracing-wasm = "0.2.1"
 wasm-bindgen-futures = "0.4.30"
 web-sys = { version = "0.3", features = ["Document", "Window", "Element"] }
+include_dir = "0.7.4"
 
 [features]
