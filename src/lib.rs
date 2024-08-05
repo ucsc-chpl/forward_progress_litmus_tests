@@ -11463,6 +11463,12 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str) -> Option<u32> {
                         label: None,
                         source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("tests/test/round_robin.wgsl"))),
                     })
+                },
+                "tests/test/chunked.wgsl" => {
+                    device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                        label: None,
+                        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("tests/test/chunked.wgsl"))),
+                    })
                 }, &_ => {
                     device.create_shader_module(wgpu::ShaderModuleDescriptor {
                         label: None,

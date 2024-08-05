@@ -11,8 +11,10 @@
   <p id="desc"></p>
   <p id="device"></p>
 
-<button id="run_button">run test</button>
-<div id="run_output"></div>
+<button id="rr_run_button">run round robin test</button>
+<div id="rr_run_output"></div>
+<button id="ch_run_button">run chunked test</button>
+<div id="ch_run_output"></div>
   <script>
     async function initWebGPU() {
         try {
@@ -41,11 +43,26 @@
 
     init().then(() => {
       // Event listener for test case 5
-      document.getElementById('run_button').addEventListener('click', () => {
-        const outputDiv = document.getElementById('run_output');
+      document.getElementById('rr_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('rr_run_output');
         outputDiv.textContent = `running test...`;
         console.log("running test");
         const resultPromise = wasm_mod.run(32, "tests/test/round_robin.wgsl");
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+          });
+      });
+      document.getElementById('ch_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('ch_run_output');
+        outputDiv.textContent = `running test...`;
+        console.log("running test");
+        const resultPromise = wasm_mod.run(32, "tests/test/chunked.wgsl");
         resultPromise.then(result => {
             if(result == 0){
               outputDiv.textContent = `Threads finished: ${result} 
