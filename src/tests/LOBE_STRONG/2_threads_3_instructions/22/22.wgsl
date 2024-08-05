@@ -1,8 +1,12 @@
 //2,0
+
+struct RWBuffer {
+    counter: atomic<u32>,
+  mem_0: atomic<i32>,
+};
 @group(0)
 @binding(0)
-var<storage,read_write> counter: atomic<u32>;
-var<workgroup> mem_0: atomic<i32>;
+var<storage,read_write> rwBuffer: RWBuffer;
 
 @compute
 @workgroup_size(1)
@@ -18,7 +22,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
             }
             switch pc {
     			case 0u {
-                        if(atomicLoad(&mem_0) == 1) {
+                        if(atomicLoad(&rwBuffer.mem_0) == 1) {
                             pc = 0u;
                         }
                         else {
@@ -44,12 +48,12 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
             }
             switch pc {
     			case 0u {
-                    atomicStore(&mem_0, 1);
+                    atomicStore(&rwBuffer.mem_0, 1);
                     pc = pc + 1u;
                     break;
                 }
     			case 1u {
-                    atomicStore(&mem_0, 0);
+                    atomicStore(&rwBuffer.mem_0, 0);
                     pc = pc + 1u;
                     break;
                 }
@@ -63,5 +67,5 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     		}
 		}
 	}
-	atomicAdd(&counter,1u);
+	atomicAdd(&rwBuffer.counter,1u);
 }

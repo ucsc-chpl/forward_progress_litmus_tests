@@ -1,0 +1,70 @@
+
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <title>litmus test</title>
+</head>
+<body>
+  <p id="arch"></p>
+  <p id="vendor"></p>
+  <p id="desc"></p>
+  <p id="device"></p>
+<button id="run_button">run all tests</button>
+<div id="run_output"></div>
+
+  <script>
+    async function initWebGPU() {
+        try {
+            const adapter = await navigator.gpu.requestAdapter();
+            const adapterInfo = await adapter.requestAdapterInfo();
+            const arch = document.getElementById('arch');
+            arch.textContent = `Architecture: ${adapterInfo.architecture}`;
+            const vendor = document.getElementById('vendor');
+            vendor.textContent = `Vendor: ${adapterInfo.vendor}`;
+            const device = document.getElementById('device');
+            device.textContent = `Device: ${adapterInfo.device}`;
+            const desc = document.getElementById('desc');
+            desc.textContent = `Description: ${adapterInfo.description}`;
+
+        } catch (error) {
+            console.error('Error initializing WebGPU:', error);
+            document.write('<p>Error initializing WebGPU: ' + error + '</p>');
+        }
+    }
+    window.onload = initWebGPU;
+  </script>
+  
+  <script type="module">
+    import init from "../../../../pkg/litmus_test_web.js";
+    import * as wasm_mod from "../../../../pkg/litmus_test_web.js";
+
+    init().then(() => {
+      // Event listener for test case 5
+      document.getElementById('run_button').addEventListener('click', () => {
+        let resultPromise;
+        const outputDiv = document.getElementById('run_output');
+        var tests_passed = 0;
+        var tests_failed = 0;
+        var tests_completed = 0;
+        outputDiv.textContent = "running tests...";
+     Promise.all([
+]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
+            }
+            else {
+              tests_passed = tests_passed + 1;
+            }
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        }
+      );
+
+
+      });
+    });
+  </script>
+</body>
+</html>
