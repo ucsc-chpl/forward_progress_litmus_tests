@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 use log::{info};
 
 #[wasm_bindgen]
-pub async fn run(num_threads: u32, kernel_file: &str) -> u32 {
+pub async fn run(num_threads: i32, kernel_file: &str) -> u32 {
     info!("Program started, running kernel");
 
     let threads_finished = execute_gpu(num_threads, kernel_file).await.unwrap();
@@ -17,7 +17,7 @@ pub async fn run(num_threads: u32, kernel_file: &str) -> u32 {
 }
 
 #[wasm_bindgen]
-pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
+pub async fn execute_gpu(num_threads: i32, kernel_file: &str) -> Option<u32> {
     info!("Got into exec gpu");
     let instance = wgpu::Instance::default();
     info!("Got instance");
@@ -11458,25 +11458,34 @@ pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
                         source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("tests/WEAK_FAIR/3_threads_4_instructions/99/99.wgsl"))),
                     })
                 },
-                "round_robin.wgsl" => {
+                "tests/test/round_robin.wgsl" => {
                     device.create_shader_module(wgpu::ShaderModuleDescriptor {
                         label: None,
-                        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("tests/WEAK_FAIR/3_threads_4_instructions/99/99.wgsl"))),
+                        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("tests/test/round_robin.wgsl"))),
                     })
                 }, &_ => {
-                    info!("GPU timeout, test failed!");
-                    panic!("NO VALID FILE PATH SPECIFIED");
+                    device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                        label: None,
+                        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("tests/HSA/2_threads_2_instructions/3/3.wgsl"))),
+                    })
                 }
     };
-    
-    let MAX_THREADS: i32 = 32;
-    let NUM_TESTING_THREADS: i32 = 2;
-    let threads_finished: i32 = 0;
-    let mem_0: i32 = 0;
-    let mem_1: i32 = 0;
-    let mem_2: i32 = 0;
+    // AHHHHHHH why is rust like this why
+    const NUM_SCALARS: usize = 3;
+    const DUMMY_BUFFER_SIZE: usize = 253;
 
-    let data_in = [MAX_THREADS, NUM_TESTING_THREADS, threads_finished, mem_0, mem_1, mem_2];
+    let MAX_THREADS: i32 = 32;
+    let NUM_TESTING_THREADS: i32 = num_threads;
+    let threads_finished: i32 = 0;
+    // its all zeros anyway, this buffer is used for all of the memory locs
+    let mem: [i32; DUMMY_BUFFER_SIZE] = [0; DUMMY_BUFFER_SIZE];
+    let mut data_in: [i32; DUMMY_BUFFER_SIZE + NUM_SCALARS] = [0; DUMMY_BUFFER_SIZE + NUM_SCALARS];
+
+    data_in[0] = threads_finished;
+    data_in[1] = MAX_THREADS;
+    data_in[2] = NUM_TESTING_THREADS;
+
+    data_in[3..].copy_from_slice(&mem);
 
     let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
 
