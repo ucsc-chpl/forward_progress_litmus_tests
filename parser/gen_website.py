@@ -5,6 +5,7 @@ import shutil
 import argparse
 import re
 import subprocess
+from website_constants import Paths
 
 # generates wgsls from alloy forward progress tests, sorted by progress model
 
