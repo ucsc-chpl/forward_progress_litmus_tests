@@ -1,12 +1,12 @@
 import os
 import sys
-import compile_wgsl
+import compile_wgsl_new as compile_wgsl
 import shutil
 import argparse
 import re
 import subprocess
-from website_constants import Paths
-
+from website_constants import Paths, HTML_all, HTML_Per_Test, HTML_All_Runner
+from wgpu_constants import WGPU_Runner
 # generates wgsls from alloy forward progress tests, sorted by progress model
 
 # output file directory:
@@ -35,111 +35,8 @@ from website_constants import Paths
 # TODO put scripts in separate javascript files instead of just in a script block in the HTML
 # TODO fix number of threads called
 
-# forward_progress_litmus_test path
-repo_base_dir = os.getcwd().replace('/parser', '')
-# Idk what this is for
-wgsl_base_path="tests/"
-# destination path for generated wgsls. Relative to repo_base_dir
-dest_path = repo_base_dir + "/src/tests/"
-# path to alloy forward progress repo, defaults to naomi's path
-test_path_default = "/home/nrehman/AlloyForwardProgress/artifact/web_test_explorer/"
-
 #timeout test in website after 15 seconds (this doesn't actually kill the test)
 timeout_ms = 15000
-
-# boiler plate for HTMLs
-preamble = """
-<!doctype html>
-<html lang="en-US">
-<head>
-  <meta charset="utf-8" />
-  <title>litmus test</title>
-</head>
-<body>
-  <p id="arch"></p>
-  <p id="vendor"></p>
-  <p id="desc"></p>
-  <p id="device"></p>
-"""
-run_button = """
-<button id="run_button">run test</button>
-<div id="run_output"></div>
-"""
-
-# more HTML boiler plate, this displays the device info
-initwebgpu = """  <script>
-    async function initWebGPU() {
-        try {
-            const adapter = await navigator.gpu.requestAdapter();
-            const adapterInfo = await adapter.requestAdapterInfo();
-            const arch = document.getElementById('arch');
-            arch.textContent = `Architecture: ${adapterInfo.architecture}`;
-            const vendor = document.getElementById('vendor');
-            vendor.textContent = `Vendor: ${adapterInfo.vendor}`;
-            const device = document.getElementById('device');
-            device.textContent = `Device: ${adapterInfo.device}`;
-            const desc = document.getElementById('desc');
-            desc.textContent = `Description: ${adapterInfo.description}`;
-
-        } catch (error) {
-            console.error('Error initializing WebGPU:', error);
-            document.write('<p>Error initializing WebGPU: ' + error + '</p>');
-        }
-    }
-    window.onload = initWebGPU;
-  </script>
-  """
-
-# for displaying images and code
-style_stuff = """<style>
-    .content {{
-        position: absolute;
-        top: 0;
-        right: 0;
-    }}
-  </style>
-  <div>
-    <p><iframe src="{text_file}" frameborder="0" height="400"
-      width="95%"></iframe></p>
-  </div>
-  <div class="container">
-    <div class="content">
-      <img src="{img_name}" alt="state transition diagram" width="500">
-    </div>
-  </div>
-</body>
-</html>
-"""
-
-# calls the shader and displays the output (SUS)
-run_stuff = """
-  <script type="module">
-    import init from "../../../../../pkg/litmus_test_web.js";
-    import * as wasm_mod from "../../../../../pkg/litmus_test_web.js";
-
-    init().then(() => {{
-      // Event listener for test case 5
-      document.getElementById('run_button').addEventListener('click', () => {{
-        const outputDiv = document.getElementById('run_output');
-        outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run(2, "{test_name}");
-        if (resultPromise instanceof Promise) {{
-        resultPromise.then(result => {{
-            if(result == 0){{
-              outputDiv.textContent = `Threads finished: ${{result}} 
- Refresh page to continue`;
-            }}
-            else {{
-              outputDiv.textContent = `Threads finished: ${{result}}`;
-            }}
-          }});
-        }} else {{ 
-          outputDiv.textContent = `Threads finished: ${{resultPromise}}`;
-        }}
-      }});
-    }});
-  </script>
-"""
 
 #format with model
 model_index_pa = """<!DOCTYPE html>
@@ -159,6 +56,12 @@ model_index_end = """
 </body>
 </html>
 """
+
+# python format is a nightmare with all of these curly braces
+def cust_format(string: str, replacements: dict):
+    for key, value in replacements.items():
+        string = string.replace('?' + key + '?', str(value))
+    return string
 
 # alias for basename
 def bn(path):
@@ -227,171 +130,20 @@ def gen_wgsls_by_model(dest_path, test_path):
 # TODO change num_threads to num_workgroups
 # generates lib.rs for test website
 def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_progress_litmus_tests/src/lib.rs"):
-    runner_s = """use std::borrow::Cow;
-use wgpu::util::DeviceExt;
-use wasm_bindgen::prelude::*;
-use log::{info};
+    runner_s = WGPU_Runner.INCLUDES_STR.value
+    runner_s += WGPU_Runner.RUN_FN_STR.value
 
-#[wasm_bindgen]
-pub async fn run(num_threads: u32, kernel_file: &str) -> u32 {
-    info!("Program started, running kernel");
-
-    let threads_finished = execute_gpu(num_threads, kernel_file).await.unwrap();
-
-    info!("Finished execute_gpu");
-    let disp_steps: String = threads_finished.to_string();
-
-    info!("Threads finished: {}", disp_steps);
-    return threads_finished;
-}
-
-#[wasm_bindgen]
-pub async fn execute_gpu(num_threads: u32, kernel_file: &str) -> Option<u32> {
-    info!("Got into exec gpu");
-    let instance = wgpu::Instance::default();
-    info!("Got instance");
-    // `request_adapter` instantiates the general connection to the GPU
-    let adapter = instance
-        .request_adapter(&wgpu::RequestAdapterOptions::default())
-        .await?;
-    println!("got adapter");
-    let (device, queue) = adapter
-        .request_device(
-            &wgpu::DeviceDescriptor {
-                label: None,
-                required_features: wgpu::Features::empty(),
-                required_limits: wgpu::Limits::downlevel_defaults(),
-            },
-            None,
-        )
-        .await
-        .unwrap();
-    info!("Running test on {}", adapter.get_info().name);
-    let cs_module: wgpu::ShaderModule = match kernel_file {
-"""
+    # get all of the include strs
+    tests = ''
     for model in os.listdir(dest_path):
         for thread_inst in os.listdir(dest_path + os.path.basename(model)):
             if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
                 for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
                     if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
                         test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
-                        runner_s += f"""
-                "{test_in}" => {{
-                    device.create_shader_module(wgpu::ShaderModuleDescriptor {{
-                        label: None,
-                        source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("{test_in}"))),
-                    }})
-                }}"""
-    runner_s += """_ => {
-            device.create_shader_module(wgpu::ShaderModuleDescriptor {
-                label: None,
-                source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(include_str!("2_2_5.wgsl"))),
-            })
-        }
-    };
-    
-    let threads_finished: i32 = 0;
-    let mem_0: i32 = 0;
-    let mem_1: i32 = 0;
-    let mem_2: i32 = 0;
-
-    let data_in = [threads_finished, mem_0, mem_1, mem_2];
-
-    let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
-
-    let staging_buffer = device.create_buffer(&wgpu::BufferDescriptor {
-        label: None,
-        size,
-        usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
-        mapped_at_creation: false,
-    });
-    let storage_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-        label: Some("Storage Buffer"),
-        contents: bytemuck::cast_slice(&data_in),
-        usage: wgpu::BufferUsages::STORAGE
-            | wgpu::BufferUsages::COPY_DST
-            | wgpu::BufferUsages::COPY_SRC,
-    });
-
-    // Instantiates the pipeline.
-    let compute_pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
-        label: None,
-        layout: None,
-        module: &cs_module,
-        entry_point: "main",
-    });
-
-    let bind_group_layout = compute_pipeline.get_bind_group_layout(0);
-    let bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
-        label: None,
-        layout: &bind_group_layout,
-        entries: &[wgpu::BindGroupEntry {
-            binding: 0,
-            resource: storage_buffer.as_entire_binding(),
-        }],
-    });
-    let mut encoder =
-        device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
-    {
-        let mut cpass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-            label: None,
-            timestamp_writes: None,
-        });
-        cpass.set_pipeline(&compute_pipeline);
-        cpass.set_bind_group(0, &bind_group, &[]);
-        cpass.insert_debug_marker("compute collatz iterations");
-        cpass.dispatch_workgroups(num_threads as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
-    }
-
-    encoder.copy_buffer_to_buffer(&storage_buffer, 0, &staging_buffer, 0, size);
-    queue.submit(Some(encoder.finish()));
-    let buffer_slice = staging_buffer.slice(..);
-    let (sender, receiver) = flume::bounded(1);
-    buffer_slice.map_async(wgpu::MapMode::Read, move |v| sender.send(v).unwrap());
-    device.poll(wgpu::Maintain::wait()).panic_on_timeout();
-    if let Ok(Ok(())) = receiver.recv_async().await {
-        // Gets contents of buffer
-        let data = buffer_slice.get_mapped_range();
-        let result = bytemuck::cast_slice(&data).to_vec();
-
-        drop(data);
-        staging_buffer.unmap(); // Unmaps buffer from memory
-                                // If you are familiar with C++ these 2 lines can be thought of similarly to:
-                                //   delete myPointer;
-                                //   myPointer = NULL;
-                                // It effectively frees the memory
-
-        
-        Some(result[0])
-    } else {
-        info!("GPU timeout, test failed!");
-        Some(0)
-    }
-}
-
-#[wasm_bindgen]
-pub async fn get_gpu_name() -> Option<String> {
-    let instance = wgpu::Instance::default();
-    let adapter = instance
-        .request_adapter(&wgpu::RequestAdapterOptions::default())
-        .await
-        .expect("No suitable GPU adapters found on the system!");
-    
-    let (device, queue) = adapter
-        .request_device(
-            &wgpu::DeviceDescriptor {
-                label: None,
-                required_features: wgpu::Features::empty(),
-                required_limits: wgpu::Limits::downlevel_defaults(),
-            },
-            None,
-        )
-        .await
-        .unwrap();
-    info!("GPU adapter: {}", adapter.get_info().name);
-    Some(adapter.get_info().name)
-}
-"""
+                        tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
+                        
+    runner_s += cust_format(WGPU_Runner.EXECUTE_GPU_FN_STR.value, {'test_paths' : tests})
     with open(outfile, 'w') as file:
         file.write(runner_s)
         file.close()
@@ -399,7 +151,7 @@ pub async fn get_gpu_name() -> Option<String> {
 
 # generates the all_runner html for a given model
 def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
-    promise_all = "     Promise.all([\n"
+    promise_all = HTML_All_Runner.PROMISE_START_STR.value
     out_divs = ""
     tests = ""
     num_tests = 0
@@ -411,69 +163,29 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                     test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
                     test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
                     # add to this promise to the promise all statement
-                    promise_all += f"       resultPromise{num_tests},\n"
+                    promise_all += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests)
                     # add this test to the test outputs
-                    out_divs += f"""<div id="output{num_tests}">{test_desc['num_threads']} instructions, {test_desc['num_inst']}, test {test}</div>\n"""
-                    tests += f"""
-        let resultPromise{num_tests} = Promise.race([wasm_mod.run(2, "{test_in}"), new Promise((resolve, _) => {{
-                setTimeout(() => {{
-                resolve(0);
-                }}, {timeout_ms});
-            }})]);
-        resultPromise{num_tests}.then((result) => {{
-            if(result == 0) {{
-                document.getElementById("output{num_tests}").textContent = "{test_desc['num_threads']} instructions, {test_desc['num_inst']}, test {test} : failed";
-            }} else {{
-                document.getElementById("output{num_tests}").textContent = "{test_desc['num_threads']} instructions, {test_desc['num_inst']}, test {test} : passed";
-            }}
-        }});
-
-"""
+                    out_divs += HTML_All_Runner.TEST_DIV_STR.value.format(num_tests=num_tests, instructions=test_desc['num_inst'], num_threads=test_desc['num_threads'], test=test)
+                    tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in, 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test)
+                    
                     num_tests += 1
-    promise_all += """]).then((results) => {
-          for(let th_fin of results) {
-            if(th_fin == 0) {
-              tests_failed = tests_failed + 1;
-            }
-            else {
-              tests_passed = tests_passed + 1;
-            }
-          }
-          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
-        }
-      );
-"""
-    index = preamble
-    index += """<button id="run_button">run all tests</button>\n"""
-    index += """<div id="run_output"></div>\n\n"""
+    promise_all += HTML_All_Runner.PROMISE_END_STR.value
+    index = HTML_all.PREAMBLE_STR.value
+    index += HTML_All_Runner.RUN_BUTTON_STR.value
+    index += HTML_All_Runner.RUN_OUTPUT_STR.value
     index += out_divs 
-    index += initwebgpu
-    index += """
-  <script type="module">
-    import init from "../../../../pkg/litmus_test_web.js";
-    import * as wasm_mod from "../../../../pkg/litmus_test_web.js";
-
-    init().then(() => {
-      // Event listener for test case 5
-      document.getElementById('run_button').addEventListener('click', () => {
-        let resultPromise;
-        const outputDiv = document.getElementById('run_output');
-        var tests_passed = 0;
-        var tests_failed = 0;
-        var tests_completed = 0;
-        outputDiv.textContent = "running tests...";
-"""
+    index += HTML_all.INIT_WEBGPU_STR.value
+    index += HTML_All_Runner.SCRIPT_INIT_STR.value
     index += tests
     index += promise_all
-    index += f"""
-
-      }});
-    }});
-  </script>
-"""
-    #FIX THIS! (update idk what I mean by fix this)
-    index += """</body>
-</html>"""
+    index += HTML_All_Runner.SCRIPT_END_STR.value
+    # TODO: create a model index file with all of the const strings labeled in comments
+    index += HTML_All_Runner.POSTSCRIPT_STR.value
     out_path = dest_path + '/' + model + '/' + 'all_runner' + '/'
     os.makedirs(out_path, exist_ok=True)
     with open(out_path + 'index.html', 'w') as file:
@@ -481,13 +193,13 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         file.close()
 
 # generates HTML for single test
-def gen_index_html_per_test_runner(test_name, target_dir, img, text_file):
+def gen_index_html_per_test_runner(test_name, target_dir, img, text_file, dest_path):
     if os.path.isdir(os.path.join(dest_path.replace('/tests', '') + target_dir)):
-        index = preamble 
-        index += run_button 
-        index += initwebgpu 
-        index += run_stuff.format(test_name=test_name) 
-        index += style_stuff.format(img_name=img, text_file=text_file)
+        index = HTML_all.PREAMBLE_STR.value
+        index += HTML_all.RUN_BUTTON_STR.value 
+        index += HTML_all.INIT_WEBGPU_STR.value 
+        index += HTML_Per_Test.RUN_STR.value.format(test_name=test_name) 
+        index += HTML_Per_Test.STYLE_STR.value.format(img_name=img, text_file=text_file)
         with open(os.path.join(dest_path.replace('/tests', ''), target_dir) + 'index.html', 'w') as file:
             file.write(index)
             file.close()
@@ -501,6 +213,8 @@ def gen_index_html(dest_path, wgsl_base_path):
     # initwebgpu script
     # run stuff
     # style stuff
+
+    # I actually have no idea whats going on here 0.o
     for model in os.listdir(dest_path):
         print(f"generating all runner index.html for {model}")
         gen_index_html_all_runner(dest_path, wgsl_base_path, model)
@@ -520,7 +234,7 @@ def gen_index_html(dest_path, wgsl_base_path):
                                 test_in = test_target_dir + os.path.basename(test) + '.wgsl'
                                 test_img = os.path.basename(test) + '.png'
                                 text_file = os.path.basename(test) + '_simple.txt'
-                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img, text_file)
+                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img, text_file, dest_path)
                         t_index += model_index_end
                         with open(os.path.join(dest_path, model, thread_inst) + '/index.html', 'w') as t_outfile:
                             t_outfile.write(t_index)
@@ -534,34 +248,35 @@ def gen_index_html(dest_path, wgsl_base_path):
 def test():
     validate_wgsls(dest_path)
 
+# this is an absolute mess
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--compile', help='compile wgsls')
-    parser.add_argument('--alloyfp_path', help='compile wgsls')
-    parser.add_argument('-r', '--make_runner', help='makes the rust stuff')
-    parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs')
-    parser.add_argument('-i', '--make_index', help='makes index.htmls')
-    parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.')
+    parser.add_argument('-c', '--compile', help='compile wgsls', default=False)
+    parser.add_argument('--alloyfp_path', help='path to alloy forward progress directory', default='../../AlloyForwardProgress/artifact/web_test_explorer/')
+    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=True)
+    parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='lib.rs')
+    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=False)
+    parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.', default=False)
     args = parser.parse_args()
     if(args.test):
         test()
     if(args.compile):
         if(args.alloyfp_path):
             if(os.path.isdir(args.alloyfp_path)):
-                gen_wgsls_by_model(dest_path, args.alloyfp_path + '/')
+                gen_wgsls_by_model(Paths.DEST_PATH.value, args.alloyfp_path + '/')
             else:
                 print("invalid path to AlloyForwardProgress repo! Exiting!")
                 exit()
             
         else:
             print("no path to AlloyForwardProgress repo was given, defaulting to naomi's path")
-            gen_wgsls_by_model(dest_path, test_path_default)
+            gen_wgsls_by_model(Paths.DEST_PATH.value, Paths.DEFAULT_TEST_PATH.value)
 
     if(args.make_runner):
         if(args.outfile):
-            gen_runner_web(dest_path, wgsl_base_path, outfile=args.outfile)
+            gen_runner_web(Paths.DEST_PATH.value, Paths.WGSL_BASE_PATH.value, outfile=args.outfile)
     if(args.make_index):
-        gen_index_html(dest_path, wgsl_base_path)
+        gen_index_html(Paths.DEST_PATH.value, Paths.WGSL_BASE_PATH.value)
 
     # command to do everything (generate wgsls and htmls):
     # python3 gen_website.py -c 1 --alloyfp_path <path_to_webtest_dir> -r 1 -o <path to src/lib.rs> -i 1

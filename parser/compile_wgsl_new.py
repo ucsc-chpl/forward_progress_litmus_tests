@@ -27,11 +27,11 @@ def parse_a_exch_br(file, pc, mem_locs, heuristic='single'):
     statement = ''
     if(args['arg_3'] == 'END'):
         if heuristic == 'single':
-            statement = cust_format(Inst_Strings_Single.A_EXCH_BR_STR.value, {'pc': pc,'arg_0': args['arg_0'], 'arg_1': args['arg1'], 'arg_2' : args['arg_2'], 'goto' : 'terminate = 1u;'})
+            statement = cust_format(Inst_Strings_Single.A_EXCH_BR_STR.value, {'pc': pc,'arg_0': args['arg_0'], 'arg_1': args['arg_1'], 'arg_2' : args['arg_2'], 'goto' : 'terminate = 1u;'})
         elif heuristic == 'round_robin':
-            statement = cust_format(Inst_Strings_Round_Robin.A_EXCH_BR_STR.value, {'pc': pc,'arg_0': args['arg_0'], 'arg_1': args['arg1'], 'arg_2' : args['arg_2'], 'goto' : 'terminate = 1u;'})
+            statement = cust_format(Inst_Strings_Round_Robin.A_EXCH_BR_STR.value, {'pc': pc,'arg_0': args['arg_0'], 'arg_1': args['arg_1'], 'arg_2' : args['arg_2'], 'goto' : 'terminate = 1u;'})
         elif heuristic == 'chunked':
-            statement = cust_format(Inst_Strings_Chunked.A_EXCH_BR_STR.value, {'pc': pc,'arg_0': args['arg_0'], 'arg_1': args['arg1'], 'arg_2' : args['arg_2'], 'goto' : 'terminate = 1u;'})
+            statement = cust_format(Inst_Strings_Chunked.A_EXCH_BR_STR.value, {'pc': pc,'arg_0': args['arg_0'], 'arg_1': args['arg_1'], 'arg_2' : args['arg_2'], 'goto' : 'terminate = 1u;'})
         else:
             print(f"invalid heuristic! {heuristic}")
     else:
