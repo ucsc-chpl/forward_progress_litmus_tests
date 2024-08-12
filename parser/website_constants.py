@@ -22,10 +22,6 @@ class HTML_all(Enum):
   <p id="desc"></p>
   <p id="device"></p>
 '''
-    RUN_BUTTON_STR = '''
-<button id="run_button">run test</button>
-<div id="run_output"></div>
-'''
     INIT_WEBGPU_STR = '''  <script>
     async function initWebGPU() {
         try {
@@ -50,6 +46,14 @@ class HTML_all(Enum):
   '''
 
 class HTML_Per_Test(Enum):
+    RUN_BUTTON_STR = '''
+<button id="single_run_button">run single test</button>
+<div id="single_run_output"></div>
+<button id="round_robin_run_button">run round robin test</button>
+<div id="round_robin_run_output"></div>
+<button id="chunked_run_button">run chunked test</button>
+<div id="chunked_run_output"></div>
+'''
     STYLE_STR = '''<style>
     .content {{
         position: absolute;
@@ -76,11 +80,10 @@ class HTML_Per_Test(Enum):
 
     init().then(() => {{
       // Event listener for test case 5
-      document.getElementById('run_button').addEventListener('click', () => {{
-        const outputDiv = document.getElementById('run_output');
+      document.getElementById('single_run_button').addEventListener('click', () => {{
+        const outputDiv = document.getElementById('single_run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run(2, "{test_name}");
-        if (resultPromise instanceof Promise) {{
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_single.wgsl");
         resultPromise.then(result => {{
             if(result == 0){{
               outputDiv.textContent = `Threads finished: ${{result}} 
@@ -89,10 +92,37 @@ class HTML_Per_Test(Enum):
             else {{
               outputDiv.textContent = `Threads finished: ${{result}}`;
             }}
-          }});
-        }} else {{ 
-          outputDiv.textContent = `Threads finished: ${{resultPromise}}`;
-        }}
+        }});
+      }});
+      // Event listener for test case 5
+      document.getElementById('round_robin_run_button').addEventListener('click', () => {{
+        const outputDiv = document.getElementById('round_robin_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_round_robin.wgsl");
+        resultPromise.then(result => {{
+            if(result == 0){{
+              outputDiv.textContent = `Threads finished: ${{result}} 
+ Refresh page to continue`;
+            }}
+            else {{
+              outputDiv.textContent = `Threads finished: ${{result}}`;
+            }}
+        }});
+      }});
+      // Event listener for test case 5
+      document.getElementById('chunked_run_button').addEventListener('click', () => {{
+        const outputDiv = document.getElementById('chunked_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_chunked.wgsl");
+        resultPromise.then(result => {{
+            if(result == 0){{
+              outputDiv.textContent = `Threads finished: ${{result}} 
+ Refresh page to continue`;
+            }}
+            else {{
+              outputDiv.textContent = `Threads finished: ${{result}}`;
+            }}
+        }});
       }});
     }});
   </script>

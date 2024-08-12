@@ -7,6 +7,9 @@ import re
 import subprocess
 from website_constants import Paths, HTML_all, HTML_Per_Test, HTML_All_Runner
 from wgpu_constants import WGPU_Runner
+
+# Potential features
+# - check if files already exist before writing, add a --clobber flag to overwrite them if they do otherwise keep old files
 # generates wgsls from alloy forward progress tests, sorted by progress model
 
 # output file directory:
@@ -73,7 +76,9 @@ def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text
     shutil.copyfile(png, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.png')
     shutil.copyfile(text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.txt')
     shutil.copyfile(s_text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '_simple.txt')
-    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'.wgsl')
+    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_single.wgsl', heuristic='single')
+    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_round_robin.wgsl', heuristic='round_robin')
+    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_chunked.wgsl', heuristic='chunked')
 
 # generates all of the wgsls and sorts them by progress model
 def gen_wgsls_by_model(dest_path, test_path):
@@ -140,7 +145,14 @@ def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_pro
             if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
                 for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
                     if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
-                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
+                        # single
+                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '_single.wgsl'
+                        tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
+                        # round robin
+                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '_round_robin.wgsl'
+                        tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
+                        # chunked
+                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '_chunked.wgsl'
                         tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
                         
     runner_s += cust_format(WGPU_Runner.EXECUTE_GPU_FN_STR.value, {'test_paths' : tests})
@@ -196,9 +208,10 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
 def gen_index_html_per_test_runner(test_name, target_dir, img, text_file, dest_path):
     if os.path.isdir(os.path.join(dest_path.replace('/tests', '') + target_dir)):
         index = HTML_all.PREAMBLE_STR.value
-        index += HTML_all.RUN_BUTTON_STR.value 
-        index += HTML_all.INIT_WEBGPU_STR.value 
-        index += HTML_Per_Test.RUN_STR.value.format(test_name=test_name) 
+        index += HTML_Per_Test.RUN_BUTTON_STR.value 
+        index += HTML_all.INIT_WEBGPU_STR.value
+        # FIXME: get correct value for num_threads
+        index += HTML_Per_Test.RUN_STR.value.format(test_name=test_name, num_threads=2) 
         index += HTML_Per_Test.STYLE_STR.value.format(img_name=img, text_file=text_file)
         with open(os.path.join(dest_path.replace('/tests', ''), target_dir) + 'index.html', 'w') as file:
             file.write(index)
@@ -231,7 +244,7 @@ def gen_index_html(dest_path, wgsl_base_path):
                             if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
                                 t_index += f"""    <li><a href="./{test}/">Test {test}</a></li>\n"""
                                 test_target_dir = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/'
-                                test_in = test_target_dir + os.path.basename(test) + '.wgsl'
+                                test_in = test_target_dir + os.path.basename(test)
                                 test_img = os.path.basename(test) + '.png'
                                 text_file = os.path.basename(test) + '_simple.txt'
                                 gen_index_html_per_test_runner(test_in, test_target_dir, test_img, text_file, dest_path)
@@ -253,9 +266,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--compile', help='compile wgsls', default=False)
     parser.add_argument('--alloyfp_path', help='path to alloy forward progress directory', default='../../AlloyForwardProgress/artifact/web_test_explorer/')
-    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=True)
+    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=False)
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='lib.rs')
-    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=False)
+    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=True)
     parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.', default=False)
     args = parser.parse_args()
     if(args.test):
