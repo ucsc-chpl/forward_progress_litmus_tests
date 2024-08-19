@@ -1,8 +1,9 @@
-//2,0
-
 struct RWBuffer {
     counter: atomic<u32>,
-  mem_0: atomic<i32>,
+    MAX_THREADS: i32,
+    NUM_TESTING_THREADS: u32,
+      mem_0: atomic<i32>,
+
 };
 @group(0)
 @binding(0)
@@ -14,14 +15,14 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var gid_x:u32 = global_id.x;
     var pc:u32 = 0u;
     var terminate:u32;
-	if(gid_x == 0){
+if(gid_x == 0){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
                 break;
             }
             switch pc {
-    			case 0u {
+			case 0u {
                         if(atomicExchange(&rwBuffer.mem_0, 1) == 0){
                             pc = 2u;
                         }
@@ -30,7 +31,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
                         }
                         break;
                     }
-        			case 1u {
+			case 1u {
                     atomicStore(&rwBuffer.mem_0, 0);
                     pc = pc + 1u;
                     break;
@@ -44,7 +45,8 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
                         }
                         break;
                     }
-        			case 3u {
+
+                case 3u {
                     terminate = 1u;
                     break;
                 }
@@ -54,14 +56,14 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     		}
 		}
 	}
-	if(gid_x == 1){
+if(gid_x == 1){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
                 break;
             }
             switch pc {
-    			case 0u {
+			case 0u {
                         if(atomicExchange(&rwBuffer.mem_0, 1) == 1){
                             pc = 0u;
                         }
@@ -70,7 +72,8 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
                         }
                         break;
                     }
-        			case 1u {
+
+                case 1u {
                     terminate = 1u;
                     break;
                 }

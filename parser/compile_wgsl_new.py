@@ -124,7 +124,12 @@ def parse_thread(wgsl_kernel, thread_id, file, mem_locs, target_file, heuristic)
             print(f'Parser error! offending line: {line}')
             exit()
         pc += 1
-    thread = cust_format(BP_Strings.SINGLE_THREAD_STR.value, {'thread_id':thread_id, 'pc_insts':pc_insts, 'last_pc':pc})
+    if heuristic == 'single':
+        thread = cust_format(BP_Strings.SINGLE_THREAD_STR.value, {'thread_id':thread_id, 'pc_insts':pc_insts, 'last_pc':pc})
+    elif heuristic == 'round_robin':
+        thread = cust_format(BP_Strings.ROUND_ROBIN_THREAD_STR.value, {'thread_id':thread_id, 'pc_insts':pc_insts, 'last_pc':pc})
+    elif heuristic == 'chunked':
+        thread = cust_format(BP_Strings.CHUNKED_THREAD_STR.value, {'thread_id':thread_id, 'pc_insts':pc_insts, 'last_pc':pc})
 
     return thread
 

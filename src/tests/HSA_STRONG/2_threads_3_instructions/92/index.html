@@ -11,8 +11,12 @@
   <p id="desc"></p>
   <p id="device"></p>
 
-<button id="run_button">run test</button>
-<div id="run_output"></div>
+<button id="single_run_button">run single test</button>
+<div id="single_run_output"></div>
+<button id="round_robin_run_button">run round robin test</button>
+<div id="round_robin_run_output"></div>
+<button id="chunked_run_button">run chunked test</button>
+<div id="chunked_run_output"></div>
   <script>
     async function initWebGPU() {
         try {
@@ -41,11 +45,10 @@
 
     init().then(() => {
       // Event listener for test case 5
-      document.getElementById('run_button').addEventListener('click', () => {
-        const outputDiv = document.getElementById('run_output');
+      document.getElementById('single_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('single_run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/92/92.wgsl");
-        if (resultPromise instanceof Promise) {
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/92/92_single.wgsl", 2);
         resultPromise.then(result => {
             if(result == 0){
               outputDiv.textContent = `Threads finished: ${result} 
@@ -54,10 +57,37 @@
             else {
               outputDiv.textContent = `Threads finished: ${result}`;
             }
-          });
-        } else { 
-          outputDiv.textContent = `Threads finished: ${resultPromise}`;
-        }
+        });
+      });
+      // Event listener for test case 5
+      document.getElementById('round_robin_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('round_robin_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/92/92_round_robin.wgsl", 32);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+        });
+      });
+      // Event listener for test case 5
+      document.getElementById('chunked_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('chunked_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/92/92_chunked.wgsl", 32);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+        });
       });
     });
   </script>

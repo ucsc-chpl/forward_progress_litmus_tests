@@ -9,10 +9,10 @@ use log::{info};
 '''
     RUN_FN_STR = '''
 #[wasm_bindgen]
-pub async fn run(num_threads: i32, kernel_file: &str) -> u32 {
+pub async fn run(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> u32 {
     info!("Program started, running kernel");
 
-    let threads_finished = execute_gpu(num_threads, kernel_file).await.unwrap();
+    let threads_finished = execute_gpu(num_threads, kernel_file, num_workgroups).await.unwrap();
 
     info!("Finished execute_gpu");
     let disp_steps: String = threads_finished.to_string();
@@ -24,7 +24,7 @@ pub async fn run(num_threads: i32, kernel_file: &str) -> u32 {
 
     EXECUTE_GPU_FN_STR = '''
 #[wasm_bindgen]
-pub async fn execute_gpu(num_threads: i32, kernel_file: &str) -> Option<u32> {
+pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> Option<u32> {
     info!("Got into exec gpu");
     let instance = wgpu::Instance::default();
     info!("Got instance");
@@ -112,7 +112,7 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str) -> Option<u32> {
         cpass.set_pipeline(&compute_pipeline);
         cpass.set_bind_group(0, &bind_group, &[]);
         cpass.insert_debug_marker("compute collatz iterations");
-        cpass.dispatch_workgroups(num_threads as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
+        cpass.dispatch_workgroups(num_workgroups as u32, 1, 1); // Number of cells to run, the (x,y,z) size of item being processed
     }
 
     encoder.copy_buffer_to_buffer(&storage_buffer, 0, &staging_buffer, 0, size);

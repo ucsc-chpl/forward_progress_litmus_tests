@@ -40012,6 +40012,7 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str) -> Option<u32> {
     };
     const NUM_SCALARS: usize = 3;
     const DUMMY_BUFFER_SIZE: usize = 253;
+    const MAX_THREADS = 32;
 
     let MAX_THREADS: i32 = 32;
     let NUM_TESTING_THREADS: i32 = num_threads;

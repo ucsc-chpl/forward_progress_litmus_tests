@@ -33,7 +33,7 @@ class Inst_REs(Enum):
 class BP_Strings(Enum):
     STRUCT_STR = '''struct RWBuffer {{
     counter: atomic<u32>,
-    MAX_THREADS: i32,
+    MAX_THREADS: u32,
     NUM_TESTING_THREADS: u32,
     {mem_locs}
 }};'''
@@ -110,7 +110,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var terminate:u32;
 '''
     BOILER_PLATE_ROUND_ROBIN_STR = '''
-    var total_num_threads:i32 = rwBuffer.MAX_THREADS;
+    var total_num_threads:u32 = rwBuffer.MAX_THREADS;
     var num_testing_threads:u32 = ?num_testing_threads?u;
     var index = gid_x / num_testing_threads;
 '''

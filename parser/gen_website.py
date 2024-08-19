@@ -141,6 +141,7 @@ def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_pro
     # get all of the include strs
     tests = ''
     for model in os.listdir(dest_path):
+        print(model)
         for thread_inst in os.listdir(dest_path + os.path.basename(model)):
             if os.path.isdir(os.path.join(dest_path, model, thread_inst)):
                 for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
@@ -162,29 +163,47 @@ def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_pro
         #print(runner_s)
 
 # generates the all_runner html for a given model
-def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
+def gen_index_html_all_runner(dest_path, wgsl_base_path, model): 
     promise_all = HTML_All_Runner.PROMISE_START_STR.value
     out_divs = ""
-    tests = ""
+    single_tests = ""
+    round_robin_tests = ""
+    chunked_tests = ""
     num_tests = 0
     for thread_inst in os.listdir(dest_path + '/' + model):
         if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
             for test in os.listdir(dest_path + '/' + os.path.basename(model) + '/' + os.path.basename(thread_inst)):
                 if(os.path.isdir(os.path.join(dest_path, model, thread_inst, test))):
                     # test stuff
-                    test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '.wgsl'
+                    test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test)
                     test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
                     # add to this promise to the promise all statement
                     promise_all += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests)
                     # add this test to the test outputs
                     out_divs += HTML_All_Runner.TEST_DIV_STR.value.format(num_tests=num_tests, instructions=test_desc['num_inst'], num_threads=test_desc['num_threads'], test=test)
-                    tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+
+                    single_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
                                                                        num_threads=test_desc['num_threads'], 
-                                                                       test_in=test_in, 
+                                                                       test_in=test_in + '_single.wgsl', 
                                                                        timeout_ms=timeout_ms,
                                                                        num_inst=test_desc['num_inst'],
-                                                                       test=test)
+                                                                       test=test,
+                                                                       num_workgroups=test_desc['num_threads'])
                     
+                    round_robin_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_round_robin.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=32)
+                    chunked_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_chunked.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=32)
                     num_tests += 1
     promise_all += HTML_All_Runner.PROMISE_END_STR.value
     index = HTML_all.PREAMBLE_STR.value
@@ -193,10 +212,24 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     index += out_divs 
     index += HTML_all.INIT_WEBGPU_STR.value
     index += HTML_All_Runner.SCRIPT_INIT_STR.value
-    index += tests
+    # single tests runner
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='single')
+    index += single_tests
     index += promise_all
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # round robin tests runner
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='round_robin')
+    index += round_robin_tests
+    index += promise_all
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # chunked tsts runner
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='chunked')
+    index += chunked_tests
+    index += promise_all
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     index += HTML_All_Runner.SCRIPT_END_STR.value
     # TODO: create a model index file with all of the const strings labeled in comments
+    # what if instead of building litmus tests based off of progress models we built progress models based on litmus tests??
     index += HTML_All_Runner.POSTSCRIPT_STR.value
     out_path = dest_path + '/' + model + '/' + 'all_runner' + '/'
     os.makedirs(out_path, exist_ok=True)
@@ -205,13 +238,13 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
         file.close()
 
 # generates HTML for single test
-def gen_index_html_per_test_runner(test_name, target_dir, img, text_file, dest_path):
+def gen_index_html_per_test_runner(test_name, target_dir, img, text_file, dest_path, num_threads):
     if os.path.isdir(os.path.join(dest_path.replace('/tests', '') + target_dir)):
         index = HTML_all.PREAMBLE_STR.value
         index += HTML_Per_Test.RUN_BUTTON_STR.value 
         index += HTML_all.INIT_WEBGPU_STR.value
         # FIXME: get correct value for num_threads
-        index += HTML_Per_Test.RUN_STR.value.format(test_name=test_name, num_threads=2) 
+        index += HTML_Per_Test.RUN_STR.value.format(test_name=test_name, num_threads=num_threads) 
         index += HTML_Per_Test.STYLE_STR.value.format(img_name=img, text_file=text_file)
         with open(os.path.join(dest_path.replace('/tests', ''), target_dir) + 'index.html', 'w') as file:
             file.write(index)
@@ -247,7 +280,7 @@ def gen_index_html(dest_path, wgsl_base_path):
                                 test_in = test_target_dir + os.path.basename(test)
                                 test_img = os.path.basename(test) + '.png'
                                 text_file = os.path.basename(test) + '_simple.txt'
-                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img, text_file, dest_path)
+                                gen_index_html_per_test_runner(test_in, test_target_dir, test_img, text_file, dest_path, test_desc['num_threads'])
                         t_index += model_index_end
                         with open(os.path.join(dest_path, model, thread_inst) + '/index.html', 'w') as t_outfile:
                             t_outfile.write(t_index)
@@ -266,8 +299,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--compile', help='compile wgsls', default=False)
     parser.add_argument('--alloyfp_path', help='path to alloy forward progress directory', default='../../AlloyForwardProgress/artifact/web_test_explorer/')
-    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=False)
-    parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='lib.rs')
+    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=True)
+    parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='../src/lib.rs')
     parser.add_argument('-i', '--make_index', help='makes index.htmls', default=True)
     parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.', default=False)
     args = parser.parse_args()
@@ -280,9 +313,8 @@ if __name__ == "__main__":
             else:
                 print("invalid path to AlloyForwardProgress repo! Exiting!")
                 exit()
-            
         else:
-            print("no path to AlloyForwardProgress repo was given, defaulting to naomi's path")
+            print("no path to AlloyForwardProgress repo was given, defaulting to naomi's path <3")
             gen_wgsls_by_model(Paths.DEST_PATH.value, Paths.DEFAULT_TEST_PATH.value)
 
     if(args.make_runner):

@@ -83,7 +83,7 @@ class HTML_Per_Test(Enum):
       document.getElementById('single_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('single_run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_single.wgsl");
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_single.wgsl", {num_threads});
         resultPromise.then(result => {{
             if(result == 0){{
               outputDiv.textContent = `Threads finished: ${{result}} 
@@ -98,7 +98,7 @@ class HTML_Per_Test(Enum):
       document.getElementById('round_robin_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('round_robin_run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_round_robin.wgsl");
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_round_robin.wgsl", 32);
         resultPromise.then(result => {{
             if(result == 0){{
               outputDiv.textContent = `Threads finished: ${{result}} 
@@ -113,7 +113,7 @@ class HTML_Per_Test(Enum):
       document.getElementById('chunked_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('chunked_run_output');
         outputDiv.textContent = `running test...`;
-        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_chunked.wgsl");
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_chunked.wgsl", 32);
         resultPromise.then(result => {{
             if(result == 0){{
               outputDiv.textContent = `Threads finished: ${{result}} 
@@ -146,7 +146,7 @@ class HTML_All_Runner(Enum):
 '''
     TEST_DIV_STR        = '<div id="output{num_tests}">{instructions} instructions, {num_threads} threads, test {test}</div>\n'
     RUN_TEST_STR        = '''
-        let resultPromise{num_tests} = Promise.race([wasm_mod.run({num_threads}, "{test_in}"), new Promise((resolve, _) => {{
+        let resultPromise{num_tests} = Promise.race([wasm_mod.run({num_threads}, "{test_in}", {num_workgroups}), new Promise((resolve, _) => {{
                 setTimeout(() => {{
                 resolve(0);
                 }}, {timeout_ms});
@@ -159,27 +159,37 @@ class HTML_All_Runner(Enum):
             }}
         }});
 '''
-    RUN_BUTTON_STR = '''<button id="run_button">run all tests</button>\n'''
-    RUN_OUTPUT_STR = '''<div id="run_output"></div>\n\n'''
+    RUN_BUTTON_STR = '''<button id="single_run_button">run all single tests</button>
+<button id="round_robin_run_button">run all round robin tests</button>
+<button id="chunked_run_button">run all chunked tests</button>
+'''
+    RUN_OUTPUT_STR = '''<div id="single_run_output"></div>
+<div id="round_robin_run_output"></div>
+<div id="chunked_run_output"></div>
+\n'''
 
     SCRIPT_INIT_STR = '''
   <script type="module">
     import init from "../../../../pkg/litmus_test_web.js";
     import * as wasm_mod from "../../../../pkg/litmus_test_web.js";
 
-    init().then(() => {
+    init().then(() => {'''
+
+    BUTTON_CLICK_START_STR = '''
       // Event listener for test case 5
-      document.getElementById('run_button').addEventListener('click', () => {
+      document.getElementById('{heuristic}_run_button').addEventListener('click', () => {{
         let resultPromise;
-        const outputDiv = document.getElementById('run_output');
+        const outputDiv = document.getElementById('{heuristic}_run_output');
         var tests_passed = 0;
         var tests_failed = 0;
         var tests_completed = 0;
         outputDiv.textContent = "running tests...";
+    '''
+    BUTTON_CLICK_END_STR = '''
+    });
 '''
-    SCRIPT_END_STR = '''
 
-      });
+    SCRIPT_END_STR = '''
     });
   </script>
 '''
