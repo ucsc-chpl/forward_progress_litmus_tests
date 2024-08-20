@@ -6,7 +6,7 @@ pub fn main() {
     #[cfg(not(target_arch = "wasm32"))]
     {
         env_logger::builder().filter_level(log::LevelFilter::Info).init();
-        pollster::block_on(run(2, "round_robin.wgsl"));
+        pollster::block_on(run(2, "tests/HSA/2_threads_2_instructions/3/3_round_robin.wgsl", 32));
     }
     #[cfg(target_arch = "wasm32")]
     {
