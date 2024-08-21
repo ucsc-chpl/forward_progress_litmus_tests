@@ -78,7 +78,7 @@ class BP_Strings(Enum):
 		}
 	}
 '''
-    CHUNKED_THREAD_STR = '''if(gid_x / index == ?thread_id?){
+    CHUNKED_THREAD_STR = '''if(gid_x / chunk_size == ?thread_id?){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {

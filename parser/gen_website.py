@@ -297,9 +297,9 @@ def test():
 # this is an absolute mess
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--compile', help='compile wgsls', default=False)
+    parser.add_argument('-c', '--compile', help='compile wgsls', default=True)
     parser.add_argument('--alloyfp_path', help='path to alloy forward progress directory', default='../../AlloyForwardProgress/artifact/web_test_explorer/')
-    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=True)
+    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=False)
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='../src/lib.rs')
     parser.add_argument('-i', '--make_index', help='makes index.htmls', default=True)
     parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.', default=False)

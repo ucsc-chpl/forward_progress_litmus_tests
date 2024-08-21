@@ -20,7 +20,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var num_testing_threads:u32 = 2u;
     var chunk_size:u32 = total_num_threads / num_testing_threads;
     var index = gid_x % chunk_size;
-if(gid_x / index == 0){
+if(gid_x / chunk_size == 0){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
@@ -52,7 +52,7 @@ if(gid_x / index == 0){
     		}
 		}
 	}
-if(gid_x / index == 1){
+if(gid_x / chunk_size == 1){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
