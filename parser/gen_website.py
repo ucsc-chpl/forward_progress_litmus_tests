@@ -8,6 +8,8 @@ import subprocess
 from website_constants import Paths, HTML_all, HTML_Per_Test, HTML_All_Runner
 from wgpu_constants import WGPU_Runner
 
+# to do: deny-list certain directories (like test and m2_kernel_panic) <3
+# to do: ALL RUNNER SUS!! currently just checks that the number of finished threads is non-zero. Usually this works because if they don't all finish the program hangs and the driver kills it w/o copying the buffer back over BUT different driver could do different stuff
 # Potential features
 # - check if files already exist before writing, add a --clobber flag to overwrite them if they do otherwise keep old files
 # generates wgsls from alloy forward progress tests, sorted by progress model
@@ -79,6 +81,8 @@ def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text
     compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_single.wgsl', heuristic='single')
     compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_round_robin.wgsl', heuristic='round_robin')
     compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_chunked.wgsl', heuristic='chunked')
+    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_workgroup_barrier.wgsl', heuristic='workgroup_barrier')
+    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_workgroup_barrier_random.wgsl', heuristic='workgroup_barrier_random')
 
 # generates all of the wgsls and sorts them by progress model
 def gen_wgsls_by_model(dest_path, test_path):
@@ -155,6 +159,12 @@ def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_pro
                         # chunked
                         test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '_chunked.wgsl'
                         tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
+                        # workgroup_barrier
+                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '_workgroup_barrier.wgsl'
+                        tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
+                        # workgroup_barrier random
+                        test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test) + '_workgroup_barrier_random.wgsl'
+                        tests += cust_format(WGPU_Runner.ADD_TEST_STR.value, {'test_path': test_in})
                         
     runner_s += cust_format(WGPU_Runner.EXECUTE_GPU_FN_STR.value, {'test_paths' : tests})
     with open(outfile, 'w') as file:
@@ -169,6 +179,8 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     single_tests = ""
     round_robin_tests = ""
     chunked_tests = ""
+    workgroup_barrier_tests = ""
+    workgroup_barrier_random_tests = ""
     num_tests = 0
     for thread_inst in os.listdir(dest_path + '/' + model):
         if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
@@ -204,6 +216,20 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=32)
+                    workgroup_barrier_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_workgroup_barrier.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=test_desc['num_threads'])
+                    workgroup_barrier_random_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_workgroup_barrier_random.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=test_desc['num_threads'])
                     num_tests += 1
     promise_all += HTML_All_Runner.PROMISE_END_STR.value
     index = HTML_all.PREAMBLE_STR.value
@@ -225,6 +251,16 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     # chunked tsts runner
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='chunked')
     index += chunked_tests
+    index += promise_all
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # workgroup_barrier
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_barrier')
+    index += workgroup_barrier_tests
+    index += promise_all
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # workgroup_barrier random
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_barrier_random')
+    index += workgroup_barrier_random_tests
     index += promise_all
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     index += HTML_All_Runner.SCRIPT_END_STR.value
@@ -297,11 +333,11 @@ def test():
 # this is an absolute mess
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--compile', help='compile wgsls', default=True)
+    parser.add_argument('-c', '--compile', help='compile wgsls', default=False)
     parser.add_argument('--alloyfp_path', help='path to alloy forward progress directory', default='../../AlloyForwardProgress/artifact/web_test_explorer/')
-    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=False)
+    parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=True)
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='../src/lib.rs')
-    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=True)
+    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=False)
     parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.', default=False)
     args = parser.parse_args()
     if(args.test):

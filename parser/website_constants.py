@@ -53,6 +53,10 @@ class HTML_Per_Test(Enum):
 <div id="round_robin_run_output"></div>
 <button id="chunked_run_button">run chunked test</button>
 <div id="chunked_run_output"></div>
+<button id="workgroup_barrier_run_button">run workgroup barrier test</button>
+<div id="workgroup_barrier_run_output"></div>
+<button id="workgroup_barrier_random_run_button">run workgroup barrier random test</button>
+<div id="workgroup_barrier_random_run_output"></div>
 '''
     STYLE_STR = '''<style>
     .content {{
@@ -79,7 +83,7 @@ class HTML_Per_Test(Enum):
     import * as wasm_mod from "../../../../../pkg/litmus_test_web.js";
 
     init().then(() => {{
-      // Event listener for test case 5
+    // single
       document.getElementById('single_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('single_run_output');
         outputDiv.textContent = `running test...`;
@@ -94,7 +98,7 @@ class HTML_Per_Test(Enum):
             }}
         }});
       }});
-      // Event listener for test case 5
+      // round robin
       document.getElementById('round_robin_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('round_robin_run_output');
         outputDiv.textContent = `running test...`;
@@ -109,11 +113,41 @@ class HTML_Per_Test(Enum):
             }}
         }});
       }});
-      // Event listener for test case 5
+      // chunked
       document.getElementById('chunked_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('chunked_run_output');
         outputDiv.textContent = `running test...`;
         const resultPromise = wasm_mod.run({num_threads}, "{test_name}_chunked.wgsl", 32);
+        resultPromise.then(result => {{
+            if(result == 0){{
+              outputDiv.textContent = `Threads finished: ${{result}} 
+ Refresh page to continue`;
+            }}
+            else {{
+              outputDiv.textContent = `Threads finished: ${{result}}`;
+            }}
+        }});
+      }});
+      // workgroup barrier
+      document.getElementById('workgroup_barrier_run_button').addEventListener('click', () => {{
+        const outputDiv = document.getElementById('workgroup_barrier_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_workgroup_barrier.wgsl", 32);
+        resultPromise.then(result => {{
+            if(result == 0){{
+              outputDiv.textContent = `Threads finished: ${{result}} 
+ Refresh page to continue`;
+            }}
+            else {{
+              outputDiv.textContent = `Threads finished: ${{result}}`;
+            }}
+        }});
+      }});
+      // workgroup barrier random
+      document.getElementById('workgroup_barrier_random_run_button').addEventListener('click', () => {{
+        const outputDiv = document.getElementById('workgroup_barrier_random_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run({num_threads}, "{test_name}_workgroup_barrier_random.wgsl", 32);
         resultPromise.then(result => {{
             if(result == 0){{
               outputDiv.textContent = `Threads finished: ${{result}} 
@@ -162,10 +196,14 @@ class HTML_All_Runner(Enum):
     RUN_BUTTON_STR = '''<button id="single_run_button">run all single tests</button>
 <button id="round_robin_run_button">run all round robin tests</button>
 <button id="chunked_run_button">run all chunked tests</button>
+<button id="workgroup_barrier_run_button">run all workgroup_barrier tests</button>
+<button id="workgroup_barrier_random_run_button">run all workgroup_barrier random tests</button>
 '''
     RUN_OUTPUT_STR = '''<div id="single_run_output"></div>
 <div id="round_robin_run_output"></div>
 <div id="chunked_run_output"></div>
+<div id="workgroup_barrier_run_output"></div>
+<div id="workgroup_barrier_random_run_output"></div>
 \n'''
 
     SCRIPT_INIT_STR = '''
@@ -176,7 +214,7 @@ class HTML_All_Runner(Enum):
     init().then(() => {'''
 
     BUTTON_CLICK_START_STR = '''
-      // Event listener for test case 5
+      // Event listener {heuristic}
       document.getElementById('{heuristic}_run_button').addEventListener('click', () => {{
         let resultPromise;
         const outputDiv = document.getElementById('{heuristic}_run_output');

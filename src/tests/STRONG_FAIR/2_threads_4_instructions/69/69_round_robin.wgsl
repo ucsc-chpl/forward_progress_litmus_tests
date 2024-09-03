@@ -2,8 +2,13 @@ struct RWBuffer {
     counter: atomic<u32>,
     MAX_THREADS: u32,
     NUM_TESTING_THREADS: u32,
+    //we currently only go up to 3 threads
+    rand_idx_0: u32,
+    rand_idx_1: u32,
+    rand_idx_2: u32,
       mem_1: array<atomic<i32>,16>,
   mem_0: array<atomic<i32>,16>,
+
 
 };
 @group(0)
@@ -12,15 +17,18 @@ var<storage,read_write> rwBuffer: RWBuffer;
 
 @compute
 @workgroup_size(1)
-fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
+fn main(@builtin(global_invocation_id) global_id: vec3<u32>,
+        @builtin(local_invocation_id) local_id: vec3<u32>,
+        @builtin(workgroup_id) workgroup_id: vec3<u32>) {
     var gid_x:u32 = global_id.x;
     var pc:u32 = 0u;
     var terminate:u32;
-
+    
     var total_num_threads:u32 = rwBuffer.MAX_THREADS;
-    var num_testing_threads:u32 = 2u;
+    var num_testing_threads:u32 = ?num_testing_threads?u;
     var index = gid_x / num_testing_threads;
-if(gid_x % num_testing_threads == 0){
+
+    if(gid_x % num_testing_threads == 0){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
@@ -84,5 +92,7 @@ if(gid_x % num_testing_threads == 1){
     		}
 		}
 	}
+
+    
 	atomicAdd(&rwBuffer.counter,1u);
 }

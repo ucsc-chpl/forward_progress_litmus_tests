@@ -13,9 +13,13 @@
 <button id="single_run_button">run all single tests</button>
 <button id="round_robin_run_button">run all round robin tests</button>
 <button id="chunked_run_button">run all chunked tests</button>
+<button id="workgroup_barrier_run_button">run all workgroup_barrier tests</button>
+<button id="workgroup_barrier_random_run_button">run all workgroup_barrier random tests</button>
 <div id="single_run_output"></div>
 <div id="round_robin_run_output"></div>
 <div id="chunked_run_output"></div>
+<div id="workgroup_barrier_run_output"></div>
+<div id="workgroup_barrier_random_run_output"></div>
 
   <script>
     async function initWebGPU() {
@@ -44,7 +48,7 @@
     import * as wasm_mod from "../../../../pkg/litmus_test_web.js";
 
     init().then(() => {
-      // Event listener for test case 5
+      // Event listener single
       document.getElementById('single_run_button').addEventListener('click', () => {
         let resultPromise;
         const outputDiv = document.getElementById('single_run_output');
@@ -68,7 +72,7 @@
 
     });
 
-      // Event listener for test case 5
+      // Event listener round_robin
       document.getElementById('round_robin_run_button').addEventListener('click', () => {
         let resultPromise;
         const outputDiv = document.getElementById('round_robin_run_output');
@@ -92,10 +96,58 @@
 
     });
 
-      // Event listener for test case 5
+      // Event listener chunked
       document.getElementById('chunked_run_button').addEventListener('click', () => {
         let resultPromise;
         const outputDiv = document.getElementById('chunked_run_output');
+        var tests_passed = 0;
+        var tests_failed = 0;
+        var tests_completed = 0;
+        outputDiv.textContent = "running tests...";
+         Promise.all([
+]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
+            }
+            else {
+              tests_passed = tests_passed + 1;
+            }
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        }
+      );
+
+    });
+
+      // Event listener workgroup_barrier
+      document.getElementById('workgroup_barrier_run_button').addEventListener('click', () => {
+        let resultPromise;
+        const outputDiv = document.getElementById('workgroup_barrier_run_output');
+        var tests_passed = 0;
+        var tests_failed = 0;
+        var tests_completed = 0;
+        outputDiv.textContent = "running tests...";
+         Promise.all([
+]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
+            }
+            else {
+              tests_passed = tests_passed + 1;
+            }
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        }
+      );
+
+    });
+
+      // Event listener workgroup_barrier_random
+      document.getElementById('workgroup_barrier_random_run_button').addEventListener('click', () => {
+        let resultPromise;
+        const outputDiv = document.getElementById('workgroup_barrier_random_run_output');
         var tests_passed = 0;
         var tests_failed = 0;
         var tests_completed = 0;

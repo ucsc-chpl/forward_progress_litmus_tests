@@ -13,9 +13,13 @@
 <button id="single_run_button">run all single tests</button>
 <button id="round_robin_run_button">run all round robin tests</button>
 <button id="chunked_run_button">run all chunked tests</button>
+<button id="workgroup_barrier_run_button">run all workgroup_barrier tests</button>
+<button id="workgroup_barrier_random_run_button">run all workgroup_barrier random tests</button>
 <div id="single_run_output"></div>
 <div id="round_robin_run_output"></div>
 <div id="chunked_run_output"></div>
+<div id="workgroup_barrier_run_output"></div>
+<div id="workgroup_barrier_random_run_output"></div>
 
 <div id="output0">3 instructions, 2 threads, test 112</div>
 <div id="output1">3 instructions, 2 threads, test 126</div>
@@ -68,7 +72,7 @@
     import * as wasm_mod from "../../../../pkg/litmus_test_web.js";
 
     init().then(() => {
-      // Event listener for test case 5
+      // Event listener single
       document.getElementById('single_run_button').addEventListener('click', () => {
         let resultPromise;
         const outputDiv = document.getElementById('single_run_output');
@@ -428,7 +432,7 @@
 
     });
 
-      // Event listener for test case 5
+      // Event listener round_robin
       document.getElementById('round_robin_run_button').addEventListener('click', () => {
         let resultPromise;
         const outputDiv = document.getElementById('round_robin_run_output');
@@ -788,7 +792,7 @@
 
     });
 
-      // Event listener for test case 5
+      // Event listener chunked
       document.getElementById('chunked_run_button').addEventListener('click', () => {
         let resultPromise;
         const outputDiv = document.getElementById('chunked_run_output');
@@ -1097,6 +1101,726 @@
         });
 
         let resultPromise23 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/119/119_chunked.wgsl", 32), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise23.then((result) => {
+            if(result == 0) {
+                document.getElementById("output23").textContent = "2 instructions, 4, test 119 : failed";
+            } else {
+                document.getElementById("output23").textContent = "2 instructions, 4, test 119 : passed";
+            }
+        });
+     Promise.all([
+       resultPromise0,
+       resultPromise1,
+       resultPromise2,
+       resultPromise3,
+       resultPromise4,
+       resultPromise5,
+       resultPromise6,
+       resultPromise7,
+       resultPromise8,
+       resultPromise9,
+       resultPromise10,
+       resultPromise11,
+       resultPromise12,
+       resultPromise13,
+       resultPromise14,
+       resultPromise15,
+       resultPromise16,
+       resultPromise17,
+       resultPromise18,
+       resultPromise19,
+       resultPromise20,
+       resultPromise21,
+       resultPromise22,
+       resultPromise23,
+]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
+            }
+            else {
+              tests_passed = tests_passed + 1;
+            }
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        }
+      );
+
+    });
+
+      // Event listener workgroup_barrier
+      document.getElementById('workgroup_barrier_run_button').addEventListener('click', () => {
+        let resultPromise;
+        const outputDiv = document.getElementById('workgroup_barrier_run_output');
+        var tests_passed = 0;
+        var tests_failed = 0;
+        var tests_completed = 0;
+        outputDiv.textContent = "running tests...";
+    
+        let resultPromise0 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/112/112_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise0.then((result) => {
+            if(result == 0) {
+                document.getElementById("output0").textContent = "2 instructions, 3, test 112 : failed";
+            } else {
+                document.getElementById("output0").textContent = "2 instructions, 3, test 112 : passed";
+            }
+        });
+
+        let resultPromise1 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/126/126_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise1.then((result) => {
+            if(result == 0) {
+                document.getElementById("output1").textContent = "2 instructions, 3, test 126 : failed";
+            } else {
+                document.getElementById("output1").textContent = "2 instructions, 3, test 126 : passed";
+            }
+        });
+
+        let resultPromise2 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/131/131_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise2.then((result) => {
+            if(result == 0) {
+                document.getElementById("output2").textContent = "2 instructions, 3, test 131 : failed";
+            } else {
+                document.getElementById("output2").textContent = "2 instructions, 3, test 131 : passed";
+            }
+        });
+
+        let resultPromise3 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/146/146_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise3.then((result) => {
+            if(result == 0) {
+                document.getElementById("output3").textContent = "2 instructions, 3, test 146 : failed";
+            } else {
+                document.getElementById("output3").textContent = "2 instructions, 3, test 146 : passed";
+            }
+        });
+
+        let resultPromise4 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/148/148_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise4.then((result) => {
+            if(result == 0) {
+                document.getElementById("output4").textContent = "2 instructions, 3, test 148 : failed";
+            } else {
+                document.getElementById("output4").textContent = "2 instructions, 3, test 148 : passed";
+            }
+        });
+
+        let resultPromise5 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/157/157_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise5.then((result) => {
+            if(result == 0) {
+                document.getElementById("output5").textContent = "2 instructions, 3, test 157 : failed";
+            } else {
+                document.getElementById("output5").textContent = "2 instructions, 3, test 157 : passed";
+            }
+        });
+
+        let resultPromise6 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/159/159_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise6.then((result) => {
+            if(result == 0) {
+                document.getElementById("output6").textContent = "2 instructions, 3, test 159 : failed";
+            } else {
+                document.getElementById("output6").textContent = "2 instructions, 3, test 159 : passed";
+            }
+        });
+
+        let resultPromise7 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/160/160_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise7.then((result) => {
+            if(result == 0) {
+                document.getElementById("output7").textContent = "2 instructions, 3, test 160 : failed";
+            } else {
+                document.getElementById("output7").textContent = "2 instructions, 3, test 160 : passed";
+            }
+        });
+
+        let resultPromise8 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/166/166_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise8.then((result) => {
+            if(result == 0) {
+                document.getElementById("output8").textContent = "2 instructions, 3, test 166 : failed";
+            } else {
+                document.getElementById("output8").textContent = "2 instructions, 3, test 166 : passed";
+            }
+        });
+
+        let resultPromise9 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/167/167_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise9.then((result) => {
+            if(result == 0) {
+                document.getElementById("output9").textContent = "2 instructions, 3, test 167 : failed";
+            } else {
+                document.getElementById("output9").textContent = "2 instructions, 3, test 167 : passed";
+            }
+        });
+
+        let resultPromise10 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/168/168_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise10.then((result) => {
+            if(result == 0) {
+                document.getElementById("output10").textContent = "2 instructions, 3, test 168 : failed";
+            } else {
+                document.getElementById("output10").textContent = "2 instructions, 3, test 168 : passed";
+            }
+        });
+
+        let resultPromise11 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/17/17_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise11.then((result) => {
+            if(result == 0) {
+                document.getElementById("output11").textContent = "2 instructions, 3, test 17 : failed";
+            } else {
+                document.getElementById("output11").textContent = "2 instructions, 3, test 17 : passed";
+            }
+        });
+
+        let resultPromise12 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/22/22_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise12.then((result) => {
+            if(result == 0) {
+                document.getElementById("output12").textContent = "2 instructions, 3, test 22 : failed";
+            } else {
+                document.getElementById("output12").textContent = "2 instructions, 3, test 22 : passed";
+            }
+        });
+
+        let resultPromise13 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/4/4_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise13.then((result) => {
+            if(result == 0) {
+                document.getElementById("output13").textContent = "2 instructions, 3, test 4 : failed";
+            } else {
+                document.getElementById("output13").textContent = "2 instructions, 3, test 4 : passed";
+            }
+        });
+
+        let resultPromise14 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/42/42_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise14.then((result) => {
+            if(result == 0) {
+                document.getElementById("output14").textContent = "2 instructions, 3, test 42 : failed";
+            } else {
+                document.getElementById("output14").textContent = "2 instructions, 3, test 42 : passed";
+            }
+        });
+
+        let resultPromise15 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/47/47_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise15.then((result) => {
+            if(result == 0) {
+                document.getElementById("output15").textContent = "2 instructions, 3, test 47 : failed";
+            } else {
+                document.getElementById("output15").textContent = "2 instructions, 3, test 47 : passed";
+            }
+        });
+
+        let resultPromise16 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/62/62_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise16.then((result) => {
+            if(result == 0) {
+                document.getElementById("output16").textContent = "2 instructions, 3, test 62 : failed";
+            } else {
+                document.getElementById("output16").textContent = "2 instructions, 3, test 62 : passed";
+            }
+        });
+
+        let resultPromise17 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/63/63_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise17.then((result) => {
+            if(result == 0) {
+                document.getElementById("output17").textContent = "2 instructions, 3, test 63 : failed";
+            } else {
+                document.getElementById("output17").textContent = "2 instructions, 3, test 63 : passed";
+            }
+        });
+
+        let resultPromise18 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/87/87_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise18.then((result) => {
+            if(result == 0) {
+                document.getElementById("output18").textContent = "2 instructions, 3, test 87 : failed";
+            } else {
+                document.getElementById("output18").textContent = "2 instructions, 3, test 87 : passed";
+            }
+        });
+
+        let resultPromise19 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/9/9_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise19.then((result) => {
+            if(result == 0) {
+                document.getElementById("output19").textContent = "2 instructions, 3, test 9 : failed";
+            } else {
+                document.getElementById("output19").textContent = "2 instructions, 3, test 9 : passed";
+            }
+        });
+
+        let resultPromise20 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/116/116_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise20.then((result) => {
+            if(result == 0) {
+                document.getElementById("output20").textContent = "2 instructions, 4, test 116 : failed";
+            } else {
+                document.getElementById("output20").textContent = "2 instructions, 4, test 116 : passed";
+            }
+        });
+
+        let resultPromise21 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/117/117_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise21.then((result) => {
+            if(result == 0) {
+                document.getElementById("output21").textContent = "2 instructions, 4, test 117 : failed";
+            } else {
+                document.getElementById("output21").textContent = "2 instructions, 4, test 117 : passed";
+            }
+        });
+
+        let resultPromise22 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/118/118_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise22.then((result) => {
+            if(result == 0) {
+                document.getElementById("output22").textContent = "2 instructions, 4, test 118 : failed";
+            } else {
+                document.getElementById("output22").textContent = "2 instructions, 4, test 118 : passed";
+            }
+        });
+
+        let resultPromise23 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/119/119_workgroup_barrier.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise23.then((result) => {
+            if(result == 0) {
+                document.getElementById("output23").textContent = "2 instructions, 4, test 119 : failed";
+            } else {
+                document.getElementById("output23").textContent = "2 instructions, 4, test 119 : passed";
+            }
+        });
+     Promise.all([
+       resultPromise0,
+       resultPromise1,
+       resultPromise2,
+       resultPromise3,
+       resultPromise4,
+       resultPromise5,
+       resultPromise6,
+       resultPromise7,
+       resultPromise8,
+       resultPromise9,
+       resultPromise10,
+       resultPromise11,
+       resultPromise12,
+       resultPromise13,
+       resultPromise14,
+       resultPromise15,
+       resultPromise16,
+       resultPromise17,
+       resultPromise18,
+       resultPromise19,
+       resultPromise20,
+       resultPromise21,
+       resultPromise22,
+       resultPromise23,
+]).then((results) => {
+          for(let th_fin of results) {
+            if(th_fin == 0) {
+              tests_failed = tests_failed + 1;
+            }
+            else {
+              tests_passed = tests_passed + 1;
+            }
+          }
+          outputDiv.textContent = `All Tests Finished. Tests Passed: ${tests_passed} Tests Failed: ${tests_failed}`;
+        }
+      );
+
+    });
+
+      // Event listener workgroup_barrier_random
+      document.getElementById('workgroup_barrier_random_run_button').addEventListener('click', () => {
+        let resultPromise;
+        const outputDiv = document.getElementById('workgroup_barrier_random_run_output');
+        var tests_passed = 0;
+        var tests_failed = 0;
+        var tests_completed = 0;
+        outputDiv.textContent = "running tests...";
+    
+        let resultPromise0 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/112/112_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise0.then((result) => {
+            if(result == 0) {
+                document.getElementById("output0").textContent = "2 instructions, 3, test 112 : failed";
+            } else {
+                document.getElementById("output0").textContent = "2 instructions, 3, test 112 : passed";
+            }
+        });
+
+        let resultPromise1 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/126/126_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise1.then((result) => {
+            if(result == 0) {
+                document.getElementById("output1").textContent = "2 instructions, 3, test 126 : failed";
+            } else {
+                document.getElementById("output1").textContent = "2 instructions, 3, test 126 : passed";
+            }
+        });
+
+        let resultPromise2 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/131/131_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise2.then((result) => {
+            if(result == 0) {
+                document.getElementById("output2").textContent = "2 instructions, 3, test 131 : failed";
+            } else {
+                document.getElementById("output2").textContent = "2 instructions, 3, test 131 : passed";
+            }
+        });
+
+        let resultPromise3 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/146/146_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise3.then((result) => {
+            if(result == 0) {
+                document.getElementById("output3").textContent = "2 instructions, 3, test 146 : failed";
+            } else {
+                document.getElementById("output3").textContent = "2 instructions, 3, test 146 : passed";
+            }
+        });
+
+        let resultPromise4 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/148/148_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise4.then((result) => {
+            if(result == 0) {
+                document.getElementById("output4").textContent = "2 instructions, 3, test 148 : failed";
+            } else {
+                document.getElementById("output4").textContent = "2 instructions, 3, test 148 : passed";
+            }
+        });
+
+        let resultPromise5 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/157/157_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise5.then((result) => {
+            if(result == 0) {
+                document.getElementById("output5").textContent = "2 instructions, 3, test 157 : failed";
+            } else {
+                document.getElementById("output5").textContent = "2 instructions, 3, test 157 : passed";
+            }
+        });
+
+        let resultPromise6 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/159/159_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise6.then((result) => {
+            if(result == 0) {
+                document.getElementById("output6").textContent = "2 instructions, 3, test 159 : failed";
+            } else {
+                document.getElementById("output6").textContent = "2 instructions, 3, test 159 : passed";
+            }
+        });
+
+        let resultPromise7 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/160/160_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise7.then((result) => {
+            if(result == 0) {
+                document.getElementById("output7").textContent = "2 instructions, 3, test 160 : failed";
+            } else {
+                document.getElementById("output7").textContent = "2 instructions, 3, test 160 : passed";
+            }
+        });
+
+        let resultPromise8 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/166/166_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise8.then((result) => {
+            if(result == 0) {
+                document.getElementById("output8").textContent = "2 instructions, 3, test 166 : failed";
+            } else {
+                document.getElementById("output8").textContent = "2 instructions, 3, test 166 : passed";
+            }
+        });
+
+        let resultPromise9 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/167/167_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise9.then((result) => {
+            if(result == 0) {
+                document.getElementById("output9").textContent = "2 instructions, 3, test 167 : failed";
+            } else {
+                document.getElementById("output9").textContent = "2 instructions, 3, test 167 : passed";
+            }
+        });
+
+        let resultPromise10 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/168/168_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise10.then((result) => {
+            if(result == 0) {
+                document.getElementById("output10").textContent = "2 instructions, 3, test 168 : failed";
+            } else {
+                document.getElementById("output10").textContent = "2 instructions, 3, test 168 : passed";
+            }
+        });
+
+        let resultPromise11 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/17/17_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise11.then((result) => {
+            if(result == 0) {
+                document.getElementById("output11").textContent = "2 instructions, 3, test 17 : failed";
+            } else {
+                document.getElementById("output11").textContent = "2 instructions, 3, test 17 : passed";
+            }
+        });
+
+        let resultPromise12 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/22/22_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise12.then((result) => {
+            if(result == 0) {
+                document.getElementById("output12").textContent = "2 instructions, 3, test 22 : failed";
+            } else {
+                document.getElementById("output12").textContent = "2 instructions, 3, test 22 : passed";
+            }
+        });
+
+        let resultPromise13 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/4/4_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise13.then((result) => {
+            if(result == 0) {
+                document.getElementById("output13").textContent = "2 instructions, 3, test 4 : failed";
+            } else {
+                document.getElementById("output13").textContent = "2 instructions, 3, test 4 : passed";
+            }
+        });
+
+        let resultPromise14 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/42/42_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise14.then((result) => {
+            if(result == 0) {
+                document.getElementById("output14").textContent = "2 instructions, 3, test 42 : failed";
+            } else {
+                document.getElementById("output14").textContent = "2 instructions, 3, test 42 : passed";
+            }
+        });
+
+        let resultPromise15 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/47/47_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise15.then((result) => {
+            if(result == 0) {
+                document.getElementById("output15").textContent = "2 instructions, 3, test 47 : failed";
+            } else {
+                document.getElementById("output15").textContent = "2 instructions, 3, test 47 : passed";
+            }
+        });
+
+        let resultPromise16 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/62/62_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise16.then((result) => {
+            if(result == 0) {
+                document.getElementById("output16").textContent = "2 instructions, 3, test 62 : failed";
+            } else {
+                document.getElementById("output16").textContent = "2 instructions, 3, test 62 : passed";
+            }
+        });
+
+        let resultPromise17 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/63/63_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise17.then((result) => {
+            if(result == 0) {
+                document.getElementById("output17").textContent = "2 instructions, 3, test 63 : failed";
+            } else {
+                document.getElementById("output17").textContent = "2 instructions, 3, test 63 : passed";
+            }
+        });
+
+        let resultPromise18 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/87/87_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise18.then((result) => {
+            if(result == 0) {
+                document.getElementById("output18").textContent = "2 instructions, 3, test 87 : failed";
+            } else {
+                document.getElementById("output18").textContent = "2 instructions, 3, test 87 : passed";
+            }
+        });
+
+        let resultPromise19 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_3_instructions/9/9_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise19.then((result) => {
+            if(result == 0) {
+                document.getElementById("output19").textContent = "2 instructions, 3, test 9 : failed";
+            } else {
+                document.getElementById("output19").textContent = "2 instructions, 3, test 9 : passed";
+            }
+        });
+
+        let resultPromise20 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/116/116_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise20.then((result) => {
+            if(result == 0) {
+                document.getElementById("output20").textContent = "2 instructions, 4, test 116 : failed";
+            } else {
+                document.getElementById("output20").textContent = "2 instructions, 4, test 116 : passed";
+            }
+        });
+
+        let resultPromise21 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/117/117_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise21.then((result) => {
+            if(result == 0) {
+                document.getElementById("output21").textContent = "2 instructions, 4, test 117 : failed";
+            } else {
+                document.getElementById("output21").textContent = "2 instructions, 4, test 117 : passed";
+            }
+        });
+
+        let resultPromise22 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/118/118_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
+                setTimeout(() => {
+                resolve(0);
+                }, 15000);
+            })]);
+        resultPromise22.then((result) => {
+            if(result == 0) {
+                document.getElementById("output22").textContent = "2 instructions, 4, test 118 : failed";
+            } else {
+                document.getElementById("output22").textContent = "2 instructions, 4, test 118 : passed";
+            }
+        });
+
+        let resultPromise23 = Promise.race([wasm_mod.run(2, "tests/OBE/2_threads_4_instructions/119/119_workgroup_barrier_random.wgsl", 2), new Promise((resolve, _) => {
                 setTimeout(() => {
                 resolve(0);
                 }, 15000);

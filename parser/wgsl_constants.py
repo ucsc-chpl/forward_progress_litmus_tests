@@ -1,9 +1,11 @@
 from enum import Enum
+# GET RID OF MOST OF THIS!!! make it match new method
 # should I also make a heursitic enum??
 class Heuristics(Enum):
     SINGLE = 'SINGLE'
     ROUND_ROBIN = 'ROUND_ROBIN'
     CHUNKED = 'CHUNKED'
+    WORKGROUP_BARRIER = 'WORKGROUP_BARRIER'
 
 class Inst_REs(Enum):
     # TD_ID_RE   = r'THREAD(?P<tid>[0-9]+)\,(?P<wg>[0-9]+)'
@@ -97,6 +99,44 @@ class BP_Strings(Enum):
 		}
 	}
 '''
+    WORKGROUP_BARRIER_THREAD_STR = '''if(workgroup_x == ?thread_id? && local_x == 0){
+        terminate = 0u;
+        while (true) {
+            if(terminate == 1u) {
+                break;
+            }
+            switch pc {
+?pc_insts?
+                case ?last_pc?u {
+                    terminate = 1u;
+                    break;
+                }
+                default {
+                    //shouldn't happen 
+                }
+    		}
+		}
+	}
+'''
+    WORKGROUP_BARRIER_RANDOM_THREAD_STR = '''if(workgroup_x == ?thread_id? && local_x == rwBuffer.rand_idx_?thread_id? % 256){
+        terminate = 0u;
+        while (true) {
+            if(terminate == 1u) {
+                break;
+            }
+            switch pc {
+?pc_insts?
+                case ?last_pc?u {
+                    terminate = 1u;
+                    break;
+                }
+                default {
+                    //shouldn't happen 
+                }
+    		}
+		}
+	}
+'''
     BOILER_PLATE_SINGLE_STR = '''
 @group(0)
 @binding(0)
@@ -120,6 +160,10 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var num_testing_threads:u32 = ?num_testing_threads?u;
     var chunk_size:u32 = total_num_threads / num_testing_threads;
     var index = gid_x % chunk_size;
+'''
+    BOILER_PLATE_WORKGROUP_BARRIER_STR = '''
+    var local_x:u32 = local_id.x;
+    var workgroup_x:u32 = workgroup_id.x;
 '''
 
 class Inst_Strings_Single(Enum):
@@ -205,6 +249,36 @@ class Inst_Strings_Chunked(Enum):
 '''
     A_ST_STR = '''\t\t\tcase ?pc?u {
                     atomicStore(&rwBuffer.mem_?arg_0?[index], ?arg_1?);
+                    pc = pc + 1u;
+                    break;
+                }
+    '''
+
+# erm should probably do this with inheritance
+class Inst_Strings_Workgroup_Barrier(Enum):
+    A_EXCH_BR_STR = '''\t\t\tcase ?pc?u {
+                        if(atomicExchange(&rwBuffer.mem_?arg_0?, ?arg_2?) == ?arg_1?){
+                            ?goto?
+                        }
+                        else {
+                            pc = pc + 1u;
+                        }
+                        break;
+                    }
+'''
+
+    A_CHK_BR_STR = '''\t\t\tcase ?pc?u {
+                        if(atomicLoad(&rwBuffer.mem_?arg_0?) == ?arg_1?) {
+                            ?goto?
+                        }
+                        else { 
+                            pc = pc + 1u;
+                        }
+                        break;
+                    }
+'''
+    A_ST_STR = '''\t\t\tcase ?pc?u {
+                    atomicStore(&rwBuffer.mem_?arg_0?, ?arg_1?);
                     pc = pc + 1u;
                     break;
                 }

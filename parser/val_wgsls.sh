@@ -16,7 +16,8 @@ find "$DIRECTORY" -type f -name "*.wgsl" | while read -r file; do
     echo naga validate "$file"
     # Check the exit status of the last command
     if [ $? -eq 0 ]; then
-        echo "$file is valid."
+        echo ""
+        # echo "$file is valid."
     else
         echo "$file is invalid."
     fi

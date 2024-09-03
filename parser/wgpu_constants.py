@@ -53,8 +53,9 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u3
                     })
                 }
     };
-    const NUM_SCALARS: usize = 3;
-    const DUMMY_BUFFER_SIZE: usize = 253;
+    const NUM_SCALARS: usize = 6;
+    const DUMMY_BUFFER_SIZE: usize = 250;
+    const MAX_THREADS = 32;
 
     let MAX_THREADS: i32 = 32;
     let NUM_TESTING_THREADS: i32 = num_threads;
@@ -63,11 +64,19 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u3
     let mem: [i32; DUMMY_BUFFER_SIZE] = [0; DUMMY_BUFFER_SIZE];
     let mut data_in: [i32; DUMMY_BUFFER_SIZE + NUM_SCALARS] = [0; DUMMY_BUFFER_SIZE + NUM_SCALARS];
 
+    // the type doesn't matter as long as the bits are correct
+    let rand_ind_0 = rand::random::<i32>();
+    let rand_ind_1 = rand::random::<i32>();
+    let rand_ind_2 = rand::random::<i32>();
+
     data_in[0] = threads_finished;
     data_in[1] = MAX_THREADS;
     data_in[2] = NUM_TESTING_THREADS;
+    data_in[3] = rand_ind_0;
+    data_in[4] = rand_ind_1;
+    data_in[5] = rand_ind_2;
 
-    data_in[3..].copy_from_slice(&mem);
+    data_in[6..].copy_from_slice(&mem);
 
     let size = std::mem::size_of_val(&data_in) as wgpu::BufferAddress;
 
