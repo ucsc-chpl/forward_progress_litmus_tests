@@ -25,7 +25,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>,
     var terminate:u32;
     
     var total_num_threads:u32 = rwBuffer.MAX_THREADS;
-    var num_testing_threads:u32 = ?num_testing_threads?u;
+    var num_testing_threads:u32 = 3u;
     var chunk_size:u32 = total_num_threads / num_testing_threads;
     var index = gid_x % chunk_size;
 

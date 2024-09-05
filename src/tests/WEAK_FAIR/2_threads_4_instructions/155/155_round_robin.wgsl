@@ -6,8 +6,8 @@ struct RWBuffer {
     rand_idx_0: u32,
     rand_idx_1: u32,
     rand_idx_2: u32,
-      mem_1: array<atomic<i32>,16>,
-  mem_0: array<atomic<i32>,16>,
+      mem_0: array<atomic<i32>,16>,
+  mem_1: array<atomic<i32>,16>,
 
 
 };
@@ -25,7 +25,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>,
     var terminate:u32;
     
     var total_num_threads:u32 = rwBuffer.MAX_THREADS;
-    var num_testing_threads:u32 = ?num_testing_threads?u;
+    var num_testing_threads:u32 = 2u;
     var index = gid_x / num_testing_threads;
 
     if(gid_x % num_testing_threads == 0){

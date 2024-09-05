@@ -216,7 +216,7 @@ def gen_wgsl_round_robin(target_file, wgsl_name):
         # stitch all of the generated code together
         replacements = {'mem_locs' : mem_locs_str,
                         'workgroup_size' : r'@workgroup_size(1)',
-                        'setup' : BP_Strings.BOILER_PLATE_ROUND_ROBIN_STR.value,
+                        'setup' : cust_format(BP_Strings.BOILER_PLATE_ROUND_ROBIN_STR.value,{'num_testing_threads': num_threads}),
                         'thread_code' : thread_code_str,
                         'syncronize' : ''}
         
@@ -255,7 +255,7 @@ def gen_wgsl_chunked(target_file, wgsl_name):
         # stitch all of the generated code together
         replacements = {'mem_locs' : mem_locs_str,
                         'workgroup_size' : r'@workgroup_size(1)',
-                        'setup' : BP_Strings.BOILER_PLATE_CHUNKED_STR.value,
+                        'setup' : cust_format(BP_Strings.BOILER_PLATE_CHUNKED_STR.value,{'num_testing_threads': num_threads}),
                         'thread_code' : thread_code_str,
                         'syncronize' : ''}
         
