@@ -6,6 +6,7 @@ use std::borrow::Cow;
 use wgpu::util::DeviceExt;
 use wasm_bindgen::prelude::*;
 use log::{info};
+use rand::prelude::*;
 '''
     RUN_FN_STR = '''
 #[wasm_bindgen]
@@ -55,7 +56,7 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u3
     };
     const NUM_SCALARS: usize = 6;
     const DUMMY_BUFFER_SIZE: usize = 250;
-    const MAX_THREADS = 32;
+    //const MAX_THREADS = 32;
 
     let MAX_THREADS: i32 = 32;
     let NUM_TESTING_THREADS: i32 = num_threads;

@@ -99,7 +99,7 @@ if(gid_x % num_testing_threads == 2){
                     }
 			case 1u {
                         if(atomicLoad(&rwBuffer.mem_0[index]) == 1) {
-                            pc = 1u;
+                            pc = 0u;
                         }
                         else { 
                             pc = pc + 1u;

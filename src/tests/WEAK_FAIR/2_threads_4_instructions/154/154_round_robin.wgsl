@@ -6,8 +6,8 @@ struct RWBuffer {
     rand_idx_0: u32,
     rand_idx_1: u32,
     rand_idx_2: u32,
-      mem_0: array<atomic<i32>,16>,
-  mem_1: array<atomic<i32>,16>,
+      mem_1: array<atomic<i32>,16>,
+  mem_0: array<atomic<i32>,16>,
 
 
 };

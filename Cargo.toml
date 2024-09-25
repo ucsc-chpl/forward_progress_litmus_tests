@@ -32,5 +32,6 @@ tracing-wasm = "0.2.1"
 wasm-bindgen-futures = "0.4.30"
 web-sys = { version = "0.3", features = ["Document", "Window", "Element"] }
 include_dir = "0.7.4"
+rand = "0.8.5"
 
 [features]

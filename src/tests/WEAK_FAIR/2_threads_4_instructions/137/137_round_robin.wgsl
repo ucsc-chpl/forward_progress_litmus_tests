@@ -59,7 +59,7 @@ if(gid_x % num_testing_threads == 1){
             switch pc {
 			case 0u {
                         if(atomicLoad(&rwBuffer.mem_0[index]) == 1) {
-                            pc = 1u;
+                            pc = 2u;
                         }
                         else { 
                             pc = pc + 1u;
@@ -77,7 +77,7 @@ if(gid_x % num_testing_threads == 1){
                     }
 			case 2u {
                         if(atomicLoad(&rwBuffer.mem_0[index]) == 0) {
-                            pc = 0u;
+                            pc = 2u;
                         }
                         else { 
                             pc = pc + 1u;

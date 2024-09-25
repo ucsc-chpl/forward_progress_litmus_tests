@@ -118,7 +118,83 @@ class BP_Strings(Enum):
 		}
 	}
 '''
+    WORKGROUP_ROUND_ROBIN_THREAD_STR = '''if((workgroup_x % num_testing_threads) == ?thread_id? && local_x == 0){
+        terminate = 0u;
+        while (true) {
+            if(terminate == 1u) {
+                break;
+            }
+            switch pc {
+?pc_insts?
+                case ?last_pc?u {
+                    terminate = 1u;
+                    break;
+                }
+                default {
+                    //shouldn't happen 
+                }
+    		}
+		}
+	}
+'''
+    WORKGROUP_CHUNKED_THREAD_STR = '''if((workgroup_x / chunk_size) == ?thread_id? && local_x == 0){
+        terminate = 0u;
+        while (true) {
+            if(terminate == 1u) {
+                break;
+            }
+            switch pc {
+?pc_insts?
+                case ?last_pc?u {
+                    terminate = 1u;
+                    break;
+                }
+                default {
+                    //shouldn't happen 
+                }
+    		}
+		}
+	}
+'''
     WORKGROUP_BARRIER_RANDOM_THREAD_STR = '''if(workgroup_x == ?thread_id? && local_x == rwBuffer.rand_idx_?thread_id? % 256){
+        terminate = 0u;
+        while (true) {
+            if(terminate == 1u) {
+                break;
+            }
+            switch pc {
+?pc_insts?
+                case ?last_pc?u {
+                    terminate = 1u;
+                    break;
+                }
+                default {
+                    //shouldn't happen 
+                }
+    		}
+		}
+	}
+'''
+    WORKGROUP_ROUND_ROBIN_RANDOM_THREAD_STR = '''if((workgroup_x % num_testing_threads) == ?thread_id? && local_x == rwBuffer.rand_idx_?thread_id? % 256){
+        terminate = 0u;
+        while (true) {
+            if(terminate == 1u) {
+                break;
+            }
+            switch pc {
+?pc_insts?
+                case ?last_pc?u {
+                    terminate = 1u;
+                    break;
+                }
+                default {
+                    //shouldn't happen 
+                }
+    		}
+		}
+	}
+'''
+    WORKGROUP_CHUNKED_RANDOM_THREAD_STR = '''if((workgroup_x / chunk_size) == ?thread_id? && local_x == rwBuffer.rand_idx_?thread_id? % 256){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
@@ -164,6 +240,17 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
     BOILER_PLATE_WORKGROUP_BARRIER_STR = '''
     var local_x:u32 = local_id.x;
     var workgroup_x:u32 = workgroup_id.x;
+'''
+    BOILER_PLATE_WORKGROUP_ROUND_ROBIN_STR = '''
+    var total_num_threads:u32 = rwBuffer.MAX_THREADS;
+    var num_testing_threads:u32 = ?num_testing_threads?u;
+    var index = workgroup_x / num_testing_threads;
+'''
+    BOILER_PLATE_WORKGROUP_CHUNKED_STR = '''
+    var total_num_threads:u32 = rwBuffer.MAX_THREADS;
+    var num_testing_threads:u32 = ?num_testing_threads?u;
+    var chunk_size:u32 = total_num_threads / num_testing_threads;
+    var index = workgroup_x % chunk_size;
 '''
 
 class Inst_Strings_Single(Enum):

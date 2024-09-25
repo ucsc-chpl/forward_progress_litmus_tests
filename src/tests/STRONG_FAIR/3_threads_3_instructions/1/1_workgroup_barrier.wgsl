@@ -58,7 +58,7 @@ if(workgroup_x == 1 && local_x == 0){
             switch pc {
 			case 0u {
                         if(atomicLoad(&rwBuffer.mem_0) == 1) {
-                            pc = 1u;
+                            pc = 0u;
                         }
                         else { 
                             pc = pc + 1u;

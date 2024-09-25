@@ -6,8 +6,8 @@ struct RWBuffer {
     rand_idx_0: u32,
     rand_idx_1: u32,
     rand_idx_2: u32,
-      mem_0: atomic<i32>,
-  mem_1: atomic<i32>,
+      mem_1: atomic<i32>,
+  mem_0: atomic<i32>,
 
 
 };
@@ -73,7 +73,7 @@ if(workgroup_x == 1 && local_x == 0){
                     }
 			case 1u {
                         if(atomicLoad(&rwBuffer.mem_1) == 0) {
-                            pc = 0u;
+                            pc = 1u;
                         }
                         else { 
                             pc = pc + 1u;

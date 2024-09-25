@@ -58,7 +58,7 @@ if(workgroup_x == 1 && local_x == 0){
             switch pc {
 			case 0u {
                         if(atomicLoad(&rwBuffer.mem_0) == 0) {
-                            pc = 0u;
+                            pc = 2u;
                         }
                         else { 
                             pc = pc + 1u;
@@ -67,7 +67,7 @@ if(workgroup_x == 1 && local_x == 0){
                     }
 			case 1u {
                         if(atomicLoad(&rwBuffer.mem_0) == 0) {
-                            pc = 0u;
+                            pc = 1u;
                         }
                         else { 
                             pc = pc + 1u;
@@ -76,7 +76,7 @@ if(workgroup_x == 1 && local_x == 0){
                     }
 			case 2u {
                         if(atomicLoad(&rwBuffer.mem_0) == 0) {
-                            pc = 0u;
+                            pc = 1u;
                         }
                         else { 
                             pc = pc + 1u;

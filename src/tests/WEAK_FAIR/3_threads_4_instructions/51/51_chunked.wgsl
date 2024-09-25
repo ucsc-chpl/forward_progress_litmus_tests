@@ -46,7 +46,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>,
                     }
 			case 1u {
                         if(atomicLoad(&rwBuffer.mem_0[index]) == 1) {
-                            pc = 1u;
+                            pc = 0u;
                         }
                         else { 
                             pc = pc + 1u;

@@ -95,7 +95,7 @@ if(gid_x == 2){
                     }
 			case 1u {
                         if(atomicLoad(&rwBuffer.mem_0) == 0) {
-                            pc = 0u;
+                            pc = 1u;
                         }
                         else { 
                             pc = pc + 1u;

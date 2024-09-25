@@ -38,7 +38,19 @@ from wgpu_constants import WGPU_Runner
 # TODO Add all runner for HSA, OBE, HSA-OBE, LOBE (one button)
 # TODO figure out how to actually kill the test in the browser
 # TODO put scripts in separate javascript files instead of just in a script block in the HTML
-# TODO fix number of threads called
+# TODO fix number of threads called (FIXED?)
+
+heuristics = [
+    'single',
+    'round_robin',
+    'chunked',
+    'workgroup_barrier',
+    'workgroup_barrier_random',
+    'workgroup_round_robin',
+    'workgroup_round_robin_random',
+    'workgroup_chunked',
+    'workgroup_chunked_random'
+]
 
 #timeout test in website after 15 seconds (this doesn't actually kill the test)
 timeout_ms = 15000
@@ -78,11 +90,8 @@ def copy_test(dest_path, test_dir, test, cur_test_path, model, png, text, s_text
     shutil.copyfile(png, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.png')
     shutil.copyfile(text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '.txt')
     shutil.copyfile(s_text, dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) + '_simple.txt')
-    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_single.wgsl', heuristic='single')
-    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_round_robin.wgsl', heuristic='round_robin')
-    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_chunked.wgsl', heuristic='chunked')
-    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_workgroup_barrier.wgsl', heuristic='workgroup_barrier')
-    compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +'_workgroup_barrier_random.wgsl', heuristic='workgroup_barrier_random')
+    for heuristic in heuristics:
+        compile_wgsl.gen_wgsl(cur_test_path + '/' + bn(test) + '.txt', dest_path + '/' + model + '/' + bn(test_dir) + '/' + bn(test) + '/' + bn(test) +f'_{heuristic}.wgsl', heuristic=heuristic)
 
 # generates all of the wgsls and sorts them by progress model
 def gen_wgsls_by_model(dest_path, test_path):
@@ -175,12 +184,27 @@ def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_pro
 # generates the all_runner html for a given model
 def gen_index_html_all_runner(dest_path, wgsl_base_path, model): 
     promise_all = HTML_All_Runner.PROMISE_START_STR.value
+    promise_single = HTML_All_Runner.PROMISE_START_STR.value
+    promise_round_robin = HTML_All_Runner.PROMISE_START_STR.value
+    promise_chunked = HTML_All_Runner.PROMISE_START_STR.value
+    promise_workgroup_barrier = HTML_All_Runner.PROMISE_START_STR.value
+    promise_workgroup_barrier_random = HTML_All_Runner.PROMISE_START_STR.value
+    promise_workgroup_round_robin = HTML_All_Runner.PROMISE_START_STR.value
+    promise_workgroup_chunked = HTML_All_Runner.PROMISE_START_STR.value
+    promise_workgroup_round_robin_random = HTML_All_Runner.PROMISE_START_STR.value
+    promise_workgroup_chunked_random = HTML_All_Runner.PROMISE_START_STR.value
+
     out_divs = ""
     single_tests = ""
     round_robin_tests = ""
     chunked_tests = ""
     workgroup_barrier_tests = ""
     workgroup_barrier_random_tests = ""
+    workgroup_round_robin_tests = ""
+    workgroup_chunked_tests = ""
+    workgroup_round_robin_random_tests = ""
+    workgroup_chunked_random_tests = ""
+
     num_tests = 0
     for thread_inst in os.listdir(dest_path + '/' + model):
         if(os.path.isdir(os.path.join(dest_path, model, thread_inst))):
@@ -190,11 +214,14 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                     test_in = wgsl_base_path + os.path.basename(model) + '/' + os.path.basename(thread_inst) + '/' + os.path.basename(test) + '/' + os.path.basename(test)
                     test_desc = re.match("(?P<num_threads>[0-9])_threads_(?P<num_inst>[0-9])_instructions", thread_inst)
                     # add to this promise to the promise all statement
-                    promise_all += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests)
-                    # add this test to the test outputs
-                    out_divs += HTML_All_Runner.TEST_DIV_STR.value.format(num_tests=num_tests, instructions=test_desc['num_inst'], num_threads=test_desc['num_threads'], test=test)
-
-                    single_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                    for heuristic in heuristics:
+                        promise_all += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic=heuristic)
+                        # add this test to the test outputs
+                        out_divs += HTML_All_Runner.TEST_DIV_STR.value.format(num_tests=num_tests, instructions=test_desc['num_inst'], num_threads=test_desc['num_threads'], test=test, heuristic=heuristic)
+                    
+                    promise_single += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='single')
+                    single_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='single',
+                                                                       num_tests=num_tests, 
                                                                        num_threads=test_desc['num_threads'], 
                                                                        test_in=test_in + '_single.wgsl', 
                                                                        timeout_ms=timeout_ms,
@@ -202,67 +229,183 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                                                                        test=test,
                                                                        num_workgroups=test_desc['num_threads'])
                     
-                    round_robin_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                    promise_round_robin += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='round_robin')
+                    round_robin_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='round_robin',
+                                                                        num_tests=num_tests, 
                                                                        num_threads=test_desc['num_threads'], 
                                                                        test_in=test_in + '_round_robin.wgsl', 
                                                                        timeout_ms=timeout_ms,
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=32)
-                    chunked_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                    
+                    promise_chunked += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='chunked')
+                    chunked_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='chunked',
+                                                                        num_tests=num_tests, 
                                                                        num_threads=test_desc['num_threads'], 
                                                                        test_in=test_in + '_chunked.wgsl', 
                                                                        timeout_ms=timeout_ms,
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=32)
-                    workgroup_barrier_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                    
+                    promise_workgroup_barrier += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='workgroup_barrier')
+                    workgroup_barrier_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='workgroup_barrier',
+                                                                        num_tests=num_tests, 
                                                                        num_threads=test_desc['num_threads'], 
                                                                        test_in=test_in + '_workgroup_barrier.wgsl', 
                                                                        timeout_ms=timeout_ms,
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=test_desc['num_threads'])
-                    workgroup_barrier_random_tests += HTML_All_Runner.RUN_TEST_STR.value.format(num_tests=num_tests, 
+                    
+                    promise_workgroup_barrier_random += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='workgroup_barrier_random')
+                    workgroup_barrier_random_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='workgroup_barrier_random',
+                                                                    num_tests=num_tests, 
                                                                        num_threads=test_desc['num_threads'], 
                                                                        test_in=test_in + '_workgroup_barrier_random.wgsl', 
                                                                        timeout_ms=timeout_ms,
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=test_desc['num_threads'])
+                    
+                    promise_workgroup_round_robin += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='workgroup_round_robin')
+                    workgroup_round_robin_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='workgroup_round_robin',
+                                                                        num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_workgroup_round_robin.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=32)
+                    
+                    promise_workgroup_chunked += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='workgroup_chunked')
+                    workgroup_chunked_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='workgroup_chunked',
+                                                                        num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_workgroup_chunked.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=32)
+                    
+                    promise_workgroup_round_robin_random += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='workgroup_round_robin_random')
+                    workgroup_round_robin_random_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='workgroup_round_robin_random',
+                                                                        num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_workgroup_round_robin_random.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=32)
+                    
+                    promise_workgroup_chunked_random += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='workgroup_chunked_random')
+                    workgroup_chunked_random_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='workgroup_chunked_random',
+                                                                        num_tests=num_tests, 
+                                                                       num_threads=test_desc['num_threads'], 
+                                                                       test_in=test_in + '_workgroup_chunked_random.wgsl', 
+                                                                       timeout_ms=timeout_ms,
+                                                                       num_inst=test_desc['num_inst'],
+                                                                       test=test,
+                                                                       num_workgroups=32)
                     num_tests += 1
-    promise_all += HTML_All_Runner.PROMISE_END_STR.value
+    promise_all += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='all_tests')
+    promise_single += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='single')
+    promise_round_robin += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='round_robin')
+    promise_chunked += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='chunked')
+    promise_workgroup_barrier += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='workgroup_barrier')
+    promise_workgroup_barrier_random += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='workgroup_barrier_random')
+    promise_workgroup_round_robin += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='workgroup_round_robin')
+    promise_workgroup_chunked += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='worgroup_chunked')
+    promise_workgroup_round_robin_random += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='workgroup_round_robin_random')
+    promise_workgroup_chunked_random += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='worgroup_chunked_random')
+
     index = HTML_all.PREAMBLE_STR.value
     index += HTML_All_Runner.RUN_BUTTON_STR.value
     index += HTML_All_Runner.RUN_OUTPUT_STR.value
     index += out_divs 
     index += HTML_all.INIT_WEBGPU_STR.value
     index += HTML_All_Runner.SCRIPT_INIT_STR.value
+    # all tests runner
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='all_tests').replace('running tests...', '')
+    index += """
+    document.getElementById('single_run_button').click();
+    await sleep(2000);
+    document.getElementById('round_robin_run_button').click();
+    await sleep(2000);
+    document.getElementById('chunked_run_button').click();
+    await sleep(2000);
+    document.getElementById('workgroup_barrier_run_button').click();
+    await sleep(2000);
+    document.getElementById('workgroup_barrier_random_run_button').click();
+    await sleep(2000);
+    document.getElementById('workgroup_round_robin_run_button').click();
+    await sleep(2000);
+    document.getElementById('workgroup_chunked_run_button').click();
+    await sleep(2000);
+    document.getElementById('workgroup_round_robin_random_run_button').click();
+    await sleep(2000);
+    document.getElementById('workgroup_chunked_random_run_button').click();
+"""
+    '''
+    index += single_tests
+    index += round_robin_tests
+    index += chunked_tests
+    index += workgroup_barrier_tests
+    index += workgroup_barrier_random_tests
+    index += workgroup_round_robin_tests
+    index += workgroup_chunked_tests
+    index += workgroup_round_robin_random_tests
+    index += workgroup_chunked_random_tests
+    index += promise_all
+    '''
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     # single tests runner
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='single')
     index += single_tests
-    index += promise_all
+    index += promise_single
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     # round robin tests runner
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='round_robin')
     index += round_robin_tests
-    index += promise_all
+    index += promise_round_robin
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     # chunked tsts runner
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='chunked')
     index += chunked_tests
-    index += promise_all
+    index += promise_chunked
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     # workgroup_barrier
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_barrier')
     index += workgroup_barrier_tests
-    index += promise_all
+    index += promise_workgroup_barrier
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
     # workgroup_barrier random
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_barrier_random')
     index += workgroup_barrier_random_tests
-    index += promise_all
+    index += promise_workgroup_barrier_random
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # workgroup_barrier random
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_round_robin')
+    index += workgroup_round_robin_tests
+    index += promise_workgroup_round_robin
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # workgroup_barrier random
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_chunked')
+    index += workgroup_chunked_tests
+    index += promise_workgroup_chunked
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # workgroup_barrier random
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_round_robin_random')
+    index += workgroup_round_robin_random_tests
+    index += promise_workgroup_round_robin_random
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+    # workgroup_barrier random
+    index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='workgroup_chunked_random')
+    index += workgroup_chunked_random_tests
+    index += promise_workgroup_chunked_random
+    index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+
     index += HTML_All_Runner.SCRIPT_END_STR.value
     # TODO: create a model index file with all of the const strings labeled in comments
     # what if instead of building litmus tests based off of progress models we built progress models based on litmus tests??
@@ -297,6 +440,7 @@ def gen_index_html(dest_path, wgsl_base_path):
     # style stuff
 
     # I actually have no idea whats going on here 0.o
+    # TODO make this rea
     for model in os.listdir(dest_path):
         print(f"generating all runner index.html for {model}")
         gen_index_html_all_runner(dest_path, wgsl_base_path, model)
@@ -333,11 +477,11 @@ def test():
 # this is an absolute mess
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--compile', help='compile wgsls', default=True)
+    parser.add_argument('-c', '--compile', help='compile wgsls', default=False)
     parser.add_argument('--alloyfp_path', help='path to alloy forward progress directory', default='../../AlloyForwardProgress/artifact/web_test_explorer/')
     parser.add_argument('-r', '--make_runner', help='makes the rust stuff', default=False)
     parser.add_argument('-o', '--outfile', help='outfile for lib.rs, default is src/lib.rs', default='../src/lib.rs')
-    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=False)
+    parser.add_argument('-i', '--make_index', help='makes index.htmls', default=True)
     parser.add_argument('-t', '--test', help='runs the test function. for debugging, ignore.', default=False)
     args = parser.parse_args()
     if(args.test):

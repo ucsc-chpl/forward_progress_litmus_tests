@@ -60,7 +60,7 @@ if(gid_x / chunk_size == 1){
             switch pc {
 			case 0u {
                         if(atomicLoad(&rwBuffer.mem_0[index]) == 1) {
-                            pc = 1u;
+                            pc = 2u;
                         }
                         else { 
                             pc = pc + 1u;

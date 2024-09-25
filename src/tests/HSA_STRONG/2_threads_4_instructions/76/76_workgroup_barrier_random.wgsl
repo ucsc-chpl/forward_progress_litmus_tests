@@ -6,8 +6,8 @@ struct RWBuffer {
     rand_idx_0: u32,
     rand_idx_1: u32,
     rand_idx_2: u32,
-      mem_0: atomic<i32>,
-  mem_1: atomic<i32>,
+      mem_1: atomic<i32>,
+  mem_0: atomic<i32>,
 
 
 };
@@ -27,7 +27,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>,
     var local_x:u32 = local_id.x;
     var workgroup_x:u32 = workgroup_id.x;
 
-    if(workgroup_x == 0 && local_x == 0){
+    if(workgroup_x == 0 && local_x == rwBuffer.rand_idx_0 % 256){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {
@@ -55,7 +55,7 @@ fn main(@builtin(global_invocation_id) global_id: vec3<u32>,
     		}
 		}
 	}
-if(workgroup_x == 1 && local_x == 0){
+if(workgroup_x == 1 && local_x == rwBuffer.rand_idx_1 % 256){
         terminate = 0u;
         while (true) {
             if(terminate == 1u) {

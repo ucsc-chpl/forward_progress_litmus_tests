@@ -13,14 +13,30 @@
 
 <button id="single_run_button">run single test</button>
 <div id="single_run_output"></div>
+
 <button id="round_robin_run_button">run round robin test</button>
 <div id="round_robin_run_output"></div>
+
 <button id="chunked_run_button">run chunked test</button>
 <div id="chunked_run_output"></div>
+
 <button id="workgroup_barrier_run_button">run workgroup barrier test</button>
 <div id="workgroup_barrier_run_output"></div>
+
 <button id="workgroup_barrier_random_run_button">run workgroup barrier random test</button>
 <div id="workgroup_barrier_random_run_output"></div>
+
+<button id="workgroup_round_robin_run_button">run workgroup round robin test</button>
+<div id="workgroup_round_robin_run_output"></div>
+
+<button id="workgroup_chunked_run_button">run workgroup chunked test</button>
+<div id="workgroup_chunked_run_output"></div>
+
+<button id="workgroup_round_robin_random_run_button">run workgroup round robin random test</button>
+<div id="workgroup_round_robin_random_run_output"></div>
+
+<button id="workgroup_chunked_random_run_button">run workgroup chunked random test</button>
+<div id="workgroup_chunked_random_run_output"></div>
   <script>
     async function initWebGPU() {
         try {
@@ -46,6 +62,9 @@
   <script type="module">
     import init from "../../../../../pkg/litmus_test_web.js";
     import * as wasm_mod from "../../../../../pkg/litmus_test_web.js";
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     init().then(() => {
     // single
@@ -113,6 +132,66 @@
         const outputDiv = document.getElementById('workgroup_barrier_random_run_output');
         outputDiv.textContent = `running test...`;
         const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/175/175_workgroup_barrier_random.wgsl", 32);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+        });
+      });
+      // workgroup round robin
+      document.getElementById('workgroup_round_robin_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('workgroup_round_robin_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/175/175_workgroup_round_robin.wgsl", 32);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+        });
+      });
+      // workgroup chunked
+      document.getElementById('workgroup_chunked_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('workgroup_chunked_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/175/175_workgroup_chunked.wgsl", 32);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+        });
+      });
+      // workgroup round robin random
+      document.getElementById('workgroup_round_robin_random_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('workgroup_round_robin_random_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/175/175_workgroup_round_robin_random.wgsl", 32);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
+        });
+      });
+      // workgroup round robin random
+      document.getElementById('workgroup_chunked_random_run_button').addEventListener('click', () => {
+        const outputDiv = document.getElementById('workgroup_chunked_random_run_output');
+        outputDiv.textContent = `running test...`;
+        const resultPromise = wasm_mod.run(2, "tests/HSA_STRONG/2_threads_3_instructions/175/175_workgroup_chunked_random.wgsl", 32);
         resultPromise.then(result => {
             if(result == 0){
               outputDiv.textContent = `Threads finished: ${result} 
