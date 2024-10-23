@@ -218,7 +218,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                         promise_all += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic=heuristic)
                         # add this test to the test outputs
                         out_divs += HTML_All_Runner.TEST_DIV_STR.value.format(num_tests=num_tests, instructions=test_desc['num_inst'], num_threads=test_desc['num_threads'], test=test, heuristic=heuristic)
-                    
+
                     promise_single += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='single')
                     single_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='single',
                                                                        num_tests=num_tests, 
@@ -228,6 +228,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=test_desc['num_threads'])
+                    
                     
                     promise_round_robin += HTML_All_Runner.PROMISE_STR.value.format(num_tests=num_tests, heuristic='round_robin')
                     round_robin_tests += HTML_All_Runner.RUN_TEST_STR.value.format(heuristic='round_robin',
@@ -308,6 +309,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
                                                                        num_inst=test_desc['num_inst'],
                                                                        test=test,
                                                                        num_workgroups=32)
+
                     num_tests += 1
     promise_all += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='all_tests')
     promise_single += HTML_All_Runner.PROMISE_END_STR.value.format(heuristic='single')
@@ -360,6 +362,7 @@ def gen_index_html_all_runner(dest_path, wgsl_base_path, model):
     index += promise_all
     '''
     index += HTML_All_Runner.BUTTON_CLICK_END_STR.value
+
     # single tests runner
     index += HTML_All_Runner.BUTTON_CLICK_START_STR.value.format(heuristic='single')
     index += single_tests
