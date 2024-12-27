@@ -1,4 +1,4 @@
-use litmus_test_web::run;
+use litmus_test_web::{run, init_GPU_Objects};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen(start)]
@@ -14,6 +14,7 @@ pub fn main() {
         console_log::init().expect("could not initialize logger");
         info!("logger initialized");
         //bro what this mean
+        // 12.26.2024 update: I know what this does but I'm not removing the comment bc its funny
         //wasm_bindgen_futures::spawn_local(run());
     }
 }

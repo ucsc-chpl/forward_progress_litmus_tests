@@ -33,5 +33,8 @@ wasm-bindgen-futures = "0.4.30"
 web-sys = { version = "0.3", features = ["Document", "Window", "Element"] }
 include_dir = "0.7.4"
 rand = "0.8.5"
+lazy_static = "1.5.0"
+mut_static = "5.0.0"
+once_cell = "1.20.2"
 
 [features]

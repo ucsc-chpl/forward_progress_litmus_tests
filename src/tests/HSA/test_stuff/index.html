@@ -39,28 +39,50 @@
   <script type="module">
     import init from "../../../../../pkg/litmus_test_web.js";
     import * as wasm_mod from "../../../../../pkg/litmus_test_web.js";
+    import { init_object, update_object_name } from './your_wasm_module.js';
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    import { init_object, update_object_name } from './your_wasm_module.js';
+
+    async function test_object() {
+
+        // Initialize the object in Wasm and store the handle
+        const objectId = init_object(1, "Initial Name");
+        console.log(`Object initialized with ID: ${objectId}`);
+
+    // Persist the object ID in JavaScript
+        const persistentObject = objectId;
+
+        // Use the handle to update the object in Rust
+        const updatedName = update_object_name(persistentObject, "Updated Name");
+        console.log(`Updated object name: ${updatedName}`);
+    }
+
+
     init().then(() => {
         console.log("initing gpu objects");
-        wasm_mod.init_GPU_Objects().then(() => {
+        //wasm_mod.init_GPU_objects().then(() => {
         console.log("inited gpu objects");
     // single
       document.getElementById('single_run_button').addEventListener('click', () => {
+        test_object();
         const outputDiv = document.getElementById('single_run_output');
         outputDiv.textContent = `running test...`;
-        let promises = Array(4095);
-        for (let i =0; i<4095; i++){
-          promises[i] = wasm_mod.run(2, "tests/HSA/2_threads_2_instructions/3/3_single.wgsl", 2);
-        }
-        Promise.all(promises).then((results) => {
-            console.log(results);
+        const resultPromise = wasm_mod.run(2, "tests/HSA/2_threads_2_instructions/3/3_single.wgsl", 2);
+        resultPromise.then(result => {
+            if(result == 0){
+              outputDiv.textContent = `Threads finished: ${result} 
+ Refresh page to continue`;
+            }
+            else {
+              outputDiv.textContent = `Threads finished: ${result}`;
+            }
         });
       });
     });
-    });
+    //});
   </script>
 <style>
     .content {
