@@ -8,6 +8,53 @@ use wasm_bindgen::prelude::*;
 use log::{info};
 use rand::prelude::*;
 '''
+    GPU_OBJECTS_STR = '''
+pub struct GPUObjects {
+    pub device: wgpu::Device,
+    pub queue: wgpu::Queue,
+}
+
+impl GPUObjects {
+    pub async fn new() -> GPUObjects {
+        let instance = wgpu::Instance::default();
+        let adapter = instance
+        .request_adapter(&wgpu::RequestAdapterOptions::default())
+        .await
+        .unwrap();
+        let (device, queue) = adapter
+        .request_device(
+            &wgpu::DeviceDescriptor {
+                label: None,
+                required_features: wgpu::Features::empty(),
+                required_limits: wgpu::Limits::downlevel_defaults(),
+            },
+            None,
+        )
+        .await
+        .unwrap();
+        Self {device, queue}
+    }
+}
+
+static mut GPU_OBJECTS: Option<GPUObjects> = None;
+
+#[wasm_bindgen]
+pub async fn init_gpu_objects() {
+    unsafe {
+        GPU_OBJECTS = Some(
+            {
+                let objects = GPUObjects::new().await;
+                objects
+            }
+        );
+    }
+}
+
+
+fn get_gpu_objects() -> &'static GPUObjects {
+    unsafe{ GPU_OBJECTS.as_ref().expect("GPUObjects not initialized") }
+}
+'''
     RUN_FN_STR = '''
 #[wasm_bindgen]
 pub async fn run(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> u32 {
@@ -26,26 +73,9 @@ pub async fn run(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> u3
     EXECUTE_GPU_FN_STR = '''
 #[wasm_bindgen]
 pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> Option<u32> {
-    info!("Got into exec gpu");
-    let instance = wgpu::Instance::default();
-    info!("Got instance");
-    // `request_adapter` instantiates the general connection to the GPU
-    let adapter = instance
-        .request_adapter(&wgpu::RequestAdapterOptions::default())
-        .await?;
-    println!("got adapter");
-    let (device, queue) = adapter
-        .request_device(
-            &wgpu::DeviceDescriptor {
-                label: None,
-                required_features: wgpu::Features::empty(),
-                required_limits: wgpu::Limits::downlevel_defaults(),
-            },
-            None,
-        )
-        .await
-        .unwrap();
-    info!("Running test on {}", adapter.get_info().name);
+    let gpu_objects = get_gpu_objects();
+    let device = &gpu_objects.device;
+    let queue = &gpu_objects.queue;
     let cs_module: wgpu::ShaderModule = match kernel_file {
 ?test_paths? &_ => {
                     device.create_shader_module(wgpu::ShaderModuleDescriptor {

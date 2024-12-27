@@ -102,6 +102,7 @@ class HTML_Per_Test(Enum):
     }}
 
     init().then(() => {{
+      wasm_mod.init_gpu_objects().then(() => {{
     // single
       document.getElementById('single_run_button').addEventListener('click', () => {{
         const outputDiv = document.getElementById('single_run_output');
@@ -235,6 +236,7 @@ class HTML_Per_Test(Enum):
             else {{
               outputDiv.textContent = `Threads finished: ${{result}}`;
             }}
+          }});
         }});
       }});
     }});
@@ -303,7 +305,7 @@ class HTML_All_Runner(Enum):
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
-    init().then(() => {'''
+    init().then(() => { wasm_mod.init_gpu_objects().then(() => {'''
 
     BUTTON_CLICK_START_STR = '''
       // Event listener {heuristic}
@@ -320,6 +322,7 @@ class HTML_All_Runner(Enum):
 '''
 
     SCRIPT_END_STR = '''
+      });
     });
   </script>
 '''

@@ -598,17 +598,7 @@ def main():
                 if(args.out_file):
                     print(f'generating heuristic {args.heuristic}')
                     gen_wgsl(args.test_file, args.out_file, args.heuristic)
-                    # i have no idea whats going on here
-                    '''
-                    with open(args.out_file) as file:
-                        top = re.match(r'\/\/(?P<num_threads>[0-9]+)\,(?P<num_workgroups>[0-9]+)', file.readline())
-                        print(top)
-                        num_threads = top['num_threads']
-                        num_workgroups = top['num_workgroups']
-                        file.close()
-                
-                    gen_wgsl(args.test_file.replace('.txt', '.wgsl'), num_threads)
-                    '''
+                    
                 else:
                     print("please specify outfile")
             else:

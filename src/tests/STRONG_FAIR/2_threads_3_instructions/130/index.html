@@ -67,6 +67,7 @@
     }
 
     init().then(() => {
+      wasm_mod.init_gpu_objects().then(() => {
     // single
       document.getElementById('single_run_button').addEventListener('click', () => {
         const outputDiv = document.getElementById('single_run_output');
@@ -200,6 +201,7 @@
             else {
               outputDiv.textContent = `Threads finished: ${result}`;
             }
+          });
         });
       });
     });

@@ -149,6 +149,7 @@ def gen_wgsls_by_model(dest_path, test_path):
 # generates lib.rs for test website
 def gen_runner_web(dest_path, wgsl_base_path, outfile="/home/nrehman/forward_progress_litmus_tests/src/lib.rs"):
     runner_s = WGPU_Runner.INCLUDES_STR.value
+    runner_s += WGPU_Runner.GPU_OBJECTS_STR.value
     runner_s += WGPU_Runner.RUN_FN_STR.value
 
     # get all of the include strs
