@@ -26,7 +26,7 @@ class HTML_all(Enum):
     async function initWebGPU() {
         try {
             const adapter = await navigator.gpu.requestAdapter();
-            this.webgpu.adapter = await adapter.info;
+            const adapterInfo = await adapter.info;
             const arch = document.getElementById('arch');
             arch.textContent = `Architecture: ${adapterInfo.architecture}`;
             const vendor = document.getElementById('vendor');
