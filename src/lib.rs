@@ -23,6 +23,7 @@ impl GPUObjects {
                 label: None,
                 required_features: wgpu::Features::empty(),
                 required_limits: wgpu::Limits::downlevel_defaults(),
+                memory_hints: wgpu::MemoryHints::MemoryUsage,
             },
             None,
         )
@@ -66728,7 +66729,9 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u3
         label: None,
         layout: None,
         module: &cs_module,
-        entry_point: "main",
+        entry_point: Some("main"),
+        compilation_options: wgpu::PipelineCompilationOptions::default(),
+        cache: None,
     });
 
     let bind_group_layout = compute_pipeline.get_bind_group_layout(0);

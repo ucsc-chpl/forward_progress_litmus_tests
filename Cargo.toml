@@ -12,7 +12,7 @@ console_log = "0.2.0"
 log = "0.4.17"
 tracing = "0.1.36"
 tracing-subscriber = { version = "0.3.15", features = ["time"] }
-wgpu = "0.19.3"
+wgpu = "24.0.0"
 winit = "0.27.2"
 pollster = "0.3"
 bytemuck = { version = "1.14", features = ["derive"] }
