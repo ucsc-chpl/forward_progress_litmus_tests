@@ -115,23 +115,22 @@ async function wait(ms) {
 
 async function run_model_tests(model, status) {
     let some_failed = false;
+    let results = [];
+    status.textContent = `${model}: running tests...`;
     for (let heuristic of heuristics) {
-        status.textContent = `${model}: running ${heuristic} tests...`;
         for (let threads_instructions of Object.keys(test_json[model])){
             let thread_insts = parse_test_type(threads_instructions);
             let threads = thread_insts[0];
             let instructions = thread_insts[1];
-            let results = [];
             for (let test_num of test_json[model][threads_instructions]){
                 results.push(run_test(model, threads, instructions, test_num, heuristic));
             }
-            let test_results = await Promise.all(results);
-            for (let result of test_results) {
-                if (result == 0) {
-                    some_failed |= true;
-                }
-            }
-            wait(100);
+        }
+    }
+    let test_results = await Promise.all(results);
+    for (let result of test_results) {
+        if (result == 0) {
+            some_failed |= true;
         }
     }
     return some_failed;
@@ -154,7 +153,7 @@ export async function run_all_tests() {
         model_status.textContent = `${model}: running tests...`;
         const some_failed = await run_model_tests(model, model_status);
         model_status.textContent = `${model}: tests finished`+ (some_failed ? ", some tests failed." : ", all tests passed.");
-        //await new Promise(r => setTimeout(r, 500));
+        await new Promise(r => setTimeout(r, 500));
     }
 }
 
