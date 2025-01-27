@@ -212,14 +212,6 @@ function debugString(val) {
     return className;
 }
 /**
- * @returns {Promise<void>}
- */
-export function init_gpu_objects() {
-    const ret = wasm.init_gpu_objects();
-    return ret;
-}
-
-/**
  * @param {number} num_threads
  * @param {string} kernel_file
  * @param {number} num_workgroups
@@ -246,15 +238,15 @@ export function execute_gpu(num_threads, kernel_file, num_workgroups) {
 }
 
 function __wbg_adapter_30(arg0, arg1, arg2) {
-    wasm.closure81_externref_shim(arg0, arg1, arg2);
+    wasm.closure77_externref_shim(arg0, arg1, arg2);
 }
 
 function __wbg_adapter_33(arg0, arg1, arg2) {
-    wasm.closure85_externref_shim(arg0, arg1, arg2);
+    wasm.closure81_externref_shim(arg0, arg1, arg2);
 }
 
-function __wbg_adapter_185(arg0, arg1, arg2, arg3) {
-    wasm.closure107_externref_shim(arg0, arg1, arg2, arg3);
+function __wbg_adapter_184(arg0, arg1, arg2, arg3) {
+    wasm.closure103_externref_shim(arg0, arg1, arg2, arg3);
 }
 
 const __wbindgen_enum_GpuPowerPreference = ["low-power", "high-performance"];
@@ -417,7 +409,7 @@ function __wbg_get_imports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_185(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_184(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -644,12 +636,12 @@ function __wbg_get_imports() {
         const ret = false;
         return ret;
     };
-    imports.wbg.__wbindgen_closure_wrapper698 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 82, __wbg_adapter_30);
+    imports.wbg.__wbindgen_closure_wrapper692 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 78, __wbg_adapter_30);
         return ret;
     };
-    imports.wbg.__wbindgen_closure_wrapper875 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 86, __wbg_adapter_33);
+    imports.wbg.__wbindgen_closure_wrapper869 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 82, __wbg_adapter_33);
         return ret;
     };
     imports.wbg.__wbindgen_debug_string = function(arg0, arg1) {

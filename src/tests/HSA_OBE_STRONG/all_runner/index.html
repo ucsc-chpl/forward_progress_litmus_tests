@@ -2048,7 +2048,7 @@
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
-    init().then(() => { wasm_mod.init_gpu_objects().then(() => {
+    init().then(() => { //wasm_mod.init_gpu_objects().then(() => {
       // Event listener all_tests
       document.getElementById('all_tests_run_button').addEventListener('click', async function() {
         let resultPromise;
@@ -30140,7 +30140,7 @@
 
     });
 
-      });
+      //});
     });
   </script>
 </body>

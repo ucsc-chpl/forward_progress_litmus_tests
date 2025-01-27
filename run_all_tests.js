@@ -15,14 +15,24 @@ fetch('tests.json')
 let models = [
     "HSA",
     "HSA_OBE",
-    "HSA_OBE_STRONG",
-    "HSA_STRONG",
     "LOBE",
     "LOBE_STRONG",
     "OBE",
     "OBE_STRONG",
-    "STRONG_FAIR",
     "WEAK_FAIR",
+    "HSA_OBE_STRONG",
+    "HSA_STRONG",
+    "STRONG_FAIR",
+    
+];
+
+let probably_wont_crash_models = [
+    "HSA",
+    "HSA_OBE",
+    "LOBE",
+    "LOBE_STRONG",
+    "OBE",
+    "OBE_STRONG",
 ];
 
 let heuristics = [
@@ -44,6 +54,13 @@ export function select_all() {
     }
 }
 
+export function select(models_s) {
+    let model;
+    for (model of models_s) {
+        document.getElementById(`${model}`).checked = true;
+    }
+}
+
 export function clear_selections() {
     let model;
     for (model of models) {
@@ -52,12 +69,12 @@ export function clear_selections() {
 }
 
 export async function init_stuff() {
-    select_all();
+    select(probably_wont_crash_models);
     document.getElementById("run_button").onclick = run_all_tests;
     document.getElementById("select_all").onclick = select_all;
     document.getElementById("clear_selections").onclick = clear_selections;
     await init();
-    await wasm_mod.init_gpu_objects();
+    //await wasm_mod.init_gpu_objects();
 }
 
 function get_models() {
@@ -116,8 +133,9 @@ async function wait(ms) {
 async function run_model_tests(model, status) {
     let some_failed = false;
     let results = [];
-    status.textContent = `${model}: running tests...`;
+    
     for (let heuristic of heuristics) {
+        status.textContent = `${model}: running ${heuristic} tests...`;
         for (let threads_instructions of Object.keys(test_json[model])){
             let thread_insts = parse_test_type(threads_instructions);
             let threads = thread_insts[0];
@@ -126,6 +144,7 @@ async function run_model_tests(model, status) {
                 results.push(run_test(model, threads, instructions, test_num, heuristic));
             }
         }
+        await wait(2000);
     }
     let test_results = await Promise.all(results);
     for (let result of test_results) {

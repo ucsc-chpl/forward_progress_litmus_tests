@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-export function init_gpu_objects(): Promise<void>;
 export function run(num_threads: number, kernel_file: string, num_workgroups: number): Promise<number>;
 export function execute_gpu(num_threads: number, kernel_file: string, num_workgroups: number): Promise<number | undefined>;
 
@@ -8,7 +7,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly init_gpu_objects: () => any;
   readonly run: (a: number, b: number, c: number, d: number) => any;
   readonly execute_gpu: (a: number, b: number, c: number, d: number) => any;
   readonly __wbindgen_exn_store: (a: number) => void;
@@ -17,9 +15,9 @@ export interface InitOutput {
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_export_5: WebAssembly.Table;
+  readonly closure77_externref_shim: (a: number, b: number, c: any) => void;
   readonly closure81_externref_shim: (a: number, b: number, c: any) => void;
-  readonly closure85_externref_shim: (a: number, b: number, c: any) => void;
-  readonly closure107_externref_shim: (a: number, b: number, c: any, d: any) => void;
+  readonly closure103_externref_shim: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_start: () => void;
 }
 
