@@ -47,6 +47,8 @@ let heuristics = [
     "workgroup_chunked_random"
 ];
 
+let counter = 0;
+
 export function select_all() {
     let model;
     for (model of models) {
@@ -133,7 +135,7 @@ async function wait(ms) {
 async function run_model_tests(model, status) {
     let some_failed = false;
     let results = [];
-    
+    let test_results;
     for (let heuristic of heuristics) {
         status.textContent = `${model}: running ${heuristic} tests...`;
         for (let threads_instructions of Object.keys(test_json[model])){
@@ -144,9 +146,17 @@ async function run_model_tests(model, status) {
                 results.push(run_test(model, threads, instructions, test_num, heuristic));
             }
         }
-        await wait(2000);
+        //sus? 
+        //sus
+        test_results = results.map((test) => 
+            test.then((result) => {
+                counter+= 1;
+                document.getElementById('counter').textContent = `Num tests finished: ${counter}`;
+            })
+        );
+        await wait(500);
     }
-    let test_results = await Promise.all(results);
+    test_results = await Promise.all(test_results);
     for (let result of test_results) {
         if (result == 0) {
             some_failed |= true;
@@ -159,6 +169,7 @@ export async function run_all_tests() {
     let models_to_run = get_models();
     hide_results();
     reset_status(models_to_run);
+    counter = 0;
     if (models_to_run.length > 0) {
         document.getElementById("results").hidden = false;
     }
