@@ -66745,6 +66745,8 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u3
                                 //   myPointer = NULL;
                                 // It effectively frees the memory
 
+        storage_buffer.unmap();
+
         
         Some(result[0])
     } else {
