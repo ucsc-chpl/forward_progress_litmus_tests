@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Tests</title>
+</head>
+
+<body>
+    <script type="module" src="run_tests.js"></script>
+    <div>
+        <b style="font-size: 20px;">Run Tests</b><br>
+        <input type="checkbox" id="HSA" name="HSA" value="HSA">
+        <label for="HSA">HSA</label><br>
+        <input type="checkbox" id="HSA_OBE" name="HSA_OBE" value="HSA_OBE">
+        <label for="HSA_OBE">HSA_OBE</label><br>
+        <input type="checkbox" id="LOBE" name="LOBE" value="LOBE">
+        <label for="LOBE">LOBE</label><br>
+        <input type="checkbox" id="LOBE_STRONG" name="LOBE_STRONG" value="LOBE_STRONG">
+        <label for="LOBE_STRONG">LOBE_STRONG</label><br>
+        <input type="checkbox" id="OBE" name="OBE" value="OBE">
+        <label for="OBE">OBE</label><br>
+        <input type="checkbox" id="OBE_STRONG" name="OBE_STRONG" value="OBE_STRONG">
+        <label for="OBE_STRONG">OBE_STRONG</label><br>
+        <input type="checkbox" id="WEAK_FAIR" name="WEAK_FAIR" value="WEAK_FAIR">
+        <label for="WEAK_FAIR">WEAK_FAIR</label><br>
+        <input type="checkbox" id="HSA_OBE_STRONG" name="HSA_OBE_STRONG" value="HSA_OBE_STRONG">
+        <label for="HSA_OBE_STRONG">HSA_OBE_STRONG</label><br>
+        <input type="checkbox" id="HSA_STRONG" name="HSA_STRONG" value="HSA_STRONG">
+        <label for="HSA_STRONG">HSA_STRONG</label><br>
+        <input type="checkbox" id="STRONG_FAIR" name="STRONG_FAIR" value="STRONG_FAIR">
+        <label for="STRONG_FAIR">STRONG_FAIR</label><br>
+        <button id="clear_selections">Clear Selections</button>
+        <button id="select_all">Select All</button><br><br>
+        <button id="run_button">Run Selected Tests</button><br><br>
+    </div>
+    <div id="results" hidden>
+        <b style="font-size: 20px;">Test Results</b><br>
+        <div><text id="counter">Num Tests Finished: 0</text></div>
+        <div><text id="HSA_status">Test Not Run</text></div>
+        <div><text id="HSA_OBE_status">Test Not Run</text></div>
+        <div><text id="LOBE_status">Test Not Run</text></div>
+        <div><text id="LOBE_STRONG_status">Test Not Run</text></div>
+        <div><text id="OBE_status">Test Not Run</text></div>
+        <div><text id="OBE_STRONG_status">Test Not Run</text></div>
+        <div><text id="WEAK_FAIR_status">Test Not Run</text></div><br>
+        <div><text id="HSA_OBE_STRONG_status">Test Not Run</text></div>
+        <div><text id="HSA_STRONG_status">Test Not Run</text></div>
+        <div><text id="STRONG_FAIR_status">Test Not Run</text></div>
+    </div>
+    <div>
+        <b style="font-size: 20px;">View Tests</b><br>
+        <a href="./src/">All Tests</a>
+    </div>
+
+</body>
+</html>

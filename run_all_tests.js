@@ -13,26 +13,11 @@ fetch('tests.json')
   });
 
 let models = [
-    "HSA",
-    "HSA_OBE",
-    "LOBE",
-    "LOBE_STRONG",
-    "OBE",
-    "OBE_STRONG",
     "WEAK_FAIR",
-    "HSA_OBE_STRONG",
-    "HSA_STRONG",
-    "STRONG_FAIR",
     
 ];
 
 let probably_wont_crash_models = [
-    "HSA",
-    "HSA_OBE",
-    "LOBE",
-    "LOBE_STRONG",
-    "OBE",
-    "OBE_STRONG",
 ];
 
 let heuristics = [
@@ -73,8 +58,8 @@ export function clear_selections() {
 export async function init_stuff() {
     select(probably_wont_crash_models);
     document.getElementById("run_button").onclick = run_all_tests;
-    document.getElementById("select_all").onclick = select_all;
-    document.getElementById("clear_selections").onclick = clear_selections;
+    //document.getElementById("select_all").onclick = select_all;
+    //document.getElementById("clear_selections").onclick = clear_selections;
     await init();
     //await wasm_mod.init_gpu_objects();
 }
@@ -121,10 +106,10 @@ function parse_test_type(test_type) {
 
 async function run_test(model, threads, instructions, test_num, heuristic) {
     if (heuristics.slice(0, 3).includes(heuristic)) {
-        return wasm_mod.run(threads, `tests/${model}/${threads}_threads_${instructions}_instructions/${test_num}/${test_num}_${heuristic}.wgsl`, threads);
+        return wasm_mod.run(threads, `tests/${model}/${threads}_threads_${instructions}_instructions/${test_num}/${test_num}_${heuristic}.wgsl`, threads, false);
     }
     else {
-        return wasm_mod.run(threads, `tests/${model}/${threads}_threads_${instructions}_instructions/${test_num}/${test_num}_${heuristic}.wgsl`, 32);
+        return wasm_mod.run(threads, `tests/${model}/${threads}_threads_${instructions}_instructions/${test_num}/${test_num}_${heuristic}.wgsl`, 32, false);
     }
 }
 

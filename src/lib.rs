@@ -5,30 +5,20 @@ use wasm_bindgen::prelude::*;
 use log::{info};
 use rand::prelude::*;
 
-#[wasm_bindgen]
-pub async fn run(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> u32 {
-    info!("Program started, running kernel");
-
-    let threads_finished = execute_gpu(num_threads, kernel_file, num_workgroups).await.unwrap();
-
-    info!("Finished execute_gpu");
-    let disp_steps: String = threads_finished.to_string();
-
-    info!("Threads finished: {}", disp_steps);
-    return threads_finished;
+// for persistent device
+pub struct GPUObjects {
+    pub device: wgpu::Device,
+    pub queue: wgpu::Queue,
 }
 
-#[wasm_bindgen]
-pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u32) -> Option<u32> {
-    info!("Got into exec gpu");
-    let instance = wgpu::Instance::default();
-    info!("Got instance");
-    // `request_adapter` instantiates the general connection to the GPU
-    let adapter = instance
+impl GPUObjects {
+    pub async fn new() -> GPUObjects {
+        let instance = wgpu::Instance::default();
+        let adapter = instance
         .request_adapter(&wgpu::RequestAdapterOptions::default())
-        .await?;
-    println!("got adapter");
-    let (device, queue) = adapter
+        .await
+        .unwrap();
+        let (device, queue) = adapter
         .request_device(
             &wgpu::DeviceDescriptor {
                 label: None,
@@ -40,7 +30,77 @@ pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u3
         )
         .await
         .unwrap();
-    info!("Running test on {}", adapter.get_info().name);
+        Self {device, queue}
+    }
+}
+
+static mut GPU_OBJECTS: Option<GPUObjects> = None;
+
+#[wasm_bindgen]
+pub async fn init_gpu_objects() {
+    unsafe {
+        GPU_OBJECTS = Some(
+            {
+                let objects = GPUObjects::new().await;
+                objects
+            }
+        );
+    }
+}
+
+fn get_gpu_objects() -> &'static GPUObjects {
+    unsafe{ GPU_OBJECTS.as_ref().expect("GPUObjects not initialized") }
+}
+
+
+#[wasm_bindgen]
+pub async fn run(num_threads: i32, kernel_file: &str, num_workgroups: u32, use_persistent_adapter: bool) -> u32 {
+    info!("Program started, running kernel");
+
+    let threads_finished = execute_gpu(num_threads, kernel_file, num_workgroups, use_persistent_adapter).await.unwrap();
+
+    info!("Finished execute_gpu");
+    let disp_steps: String = threads_finished.to_string();
+
+    info!("Threads finished: {}", disp_steps);
+    return threads_finished;
+}
+
+#[wasm_bindgen]
+pub async fn execute_gpu(num_threads: i32, kernel_file: &str, num_workgroups: u32, use_persistent_adapter: bool) -> Option<u32> {
+    info!("Got into exec gpu");
+    let instance = wgpu::Instance::default();
+    info!("Got instance");
+    // `request_adapter` instantiates the general connection to the GPU
+    let device: &wgpu::Device;
+    let queue: &wgpu::Queue;
+    let device_: wgpu::Device;
+    let queue_: wgpu::Queue;
+    if use_persistent_adapter {
+        let gpu_objects = get_gpu_objects();
+        device = &gpu_objects.device;
+        queue = &gpu_objects.queue;
+    }
+    else {
+        let adapter = instance
+        .request_adapter(&wgpu::RequestAdapterOptions::default())
+        .await?;
+    println!("got adapter");
+    (device_, queue_) = adapter
+        .request_device(
+            &wgpu::DeviceDescriptor {
+                label: None,
+                required_features: wgpu::Features::empty(),
+                required_limits: wgpu::Limits::downlevel_defaults(),
+                memory_hints: wgpu::MemoryHints::MemoryUsage,
+            },
+            None,
+        )
+        .await
+        .unwrap();
+        device = &device_;
+        queue = &queue_;
+    }
     let cs_module: wgpu::ShaderModule = match kernel_file {
 
                 "tests/HSA/2_threads_2_instructions/3/3_single.wgsl" => {
