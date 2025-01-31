@@ -153,11 +153,17 @@ async function run_model_tests(model, status) {
             test.then((result) => {
                 counter+= 1;
                 document.getElementById('counter').textContent = `Num tests finished: ${counter}`;
+                return result;
             })
         );
         test_results = await Promise.all(test_results);
         for (let result of test_results) {
-            if (result == 0) {
+            if (Number.isInteger(result) && result > 0) {
+                console.log(result);
+                some_failed |= false;
+            }
+            else{
+                console.log(result);
                 some_failed |= true;
             }
         }
