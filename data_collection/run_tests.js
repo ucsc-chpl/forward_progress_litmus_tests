@@ -137,6 +137,7 @@ async function run_model_tests(model, status) {
     let results = [];
     let test_results;
     for (let heuristic of heuristics) {
+        results = [];
         status.textContent = `${model}: running ${heuristic} tests...`;
         for (let threads_instructions of Object.keys(test_json[model])){
             let thread_insts = parse_test_type(threads_instructions);
@@ -154,12 +155,11 @@ async function run_model_tests(model, status) {
                 document.getElementById('counter').textContent = `Num tests finished: ${counter}`;
             })
         );
-        await wait(500);
-    }
-    test_results = await Promise.all(test_results);
-    for (let result of test_results) {
-        if (result == 0) {
-            some_failed |= true;
+        test_results = await Promise.all(test_results);
+        for (let result of test_results) {
+            if (result == 0) {
+                some_failed |= true;
+            }
         }
     }
     return some_failed;
