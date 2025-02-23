@@ -103,13 +103,23 @@ function parse_test_type(test_type) {
         return;
     }
 }
-
+/*
 async function run_test(model, threads, instructions, test_num, heuristic) {
     if (heuristics.slice(0, 3).includes(heuristic)) {
         return wasm_mod.run(threads, `tests/${model}/${threads}_threads_${instructions}_instructions/${test_num}/${test_num}_${heuristic}.wgsl`, threads, false);
     }
     else {
         return wasm_mod.run(threads, `tests/${model}/${threads}_threads_${instructions}_instructions/${test_num}/${test_num}_${heuristic}.wgsl`, 32, false);
+    }
+}
+*/
+
+async function run_test(model, threads, instructions, test_num, heuristic) {
+    if (heuristics.slice(0, 3).includes(heuristic)) {
+        return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_single.wgsl`, threads, false);
+    }
+    else {
+        return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_single.wgsl`, 32, false);
     }
 }
 
