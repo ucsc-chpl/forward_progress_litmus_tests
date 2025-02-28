@@ -116,9 +116,8 @@ async function run_test(model, threads, instructions, test_num, heuristic) {
 
 async function run_test(model, threads, instructions, test_num, heuristic) {
     if (heuristics.slice(0, 3).includes(heuristic)) {
-        return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_${heuristic}.wgsl`, threads, false);
+        return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_single.wgsl`, threads, false);
     }
-    else {
         //return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_${heuristic}.wgsl`, 32, false);
     }
 }
