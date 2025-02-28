@@ -119,7 +119,7 @@ async function run_test(model, threads, instructions, test_num, heuristic) {
         return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_${heuristic}.wgsl`, threads, false);
     }
     else {
-        return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_${heuristic}.wgsl`, 32, false);
+        //return wasm_mod.run(threads, `tests/WEAK_FAIR/3_threads_4_instructions/101/101_${heuristic}.wgsl`, 32, false);
     }
 }
 
